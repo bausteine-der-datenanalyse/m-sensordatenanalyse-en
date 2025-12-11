@@ -1,0 +1,1372 @@
+# The Normal Distribution {#sec-normal-distribution}
+
+As the sample size increases, the estimate of the expected value becomes more accurate. Mathematically, this observation is explained by the [central limit theorem](https://en.wikipedia.org/wiki/Central_limit_theorem). For example, when rolling multiple dice, outcomes far from the expected value become increasingly unlikely. This can already be demonstrated with just a few dice (see example). 
+
+```{python}
+#| echo: false
+
+# Import packages
+import numpy as np
+import numpy.polynomial.polynomial as poly
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy
+import glob
+
+# Define functions
+
+def distribution_characteristics(x, output = True):
+
+  # Determine number of observations
+  N = len(x)
+
+  # Calculate sample mean
+  sample_mean = sum(x) / N
+
+  # Calculate sample variance
+  sample_variance = sum((x - sample_mean) ** 2) / (N - 1)
+
+  # Calculate sample standard deviation
+  sample_std = sample_variance ** 0.5
+
+  # Calculate standard error
+  standard_error = sample_std / (N ** 0.5)
+
+  # Output
+  if output:  # output = True
+    print(f"N: {N}\n",
+          f"Arithmetic mean: {sample_mean:.2f}\n",
+          f"Sample error: {standard_error:.2f}\n",
+          f"Sample variance: {sample_variance:.2f}\n",
+          f"Sample standard deviation: {sample_std:.2f}",
+          sep = '')
+
+  else:  # output = False
+    return N, sample_mean, standard_error, sample_variance, sample_std
+
+# Read datasets
+## guinea pigs
+file_path = "01-daten/ToothGrowth.csv"
+guinea_pigs = pd.read_csv(filepath_or_buffer = file_path, sep = ',', header = 0, \
+  names = ['ID', 'len', 'supp', 'dose'], dtype = {'ID': 'int', 'len': 'float', 'dose': 'float', 'supp': 'category'})
+```
+
+
+::: {#nte-dice .callout-note collapse="true"}
+## Frequency Distribution of Dice Outcomes
+For a single die, there are 6 possible outcomes; for 2 dice, 6 * 6 possible combinations; for 3 dice, 6 * 6 * 6 combinations, and so on. Because many combinations have the same total value, results near the expected value occur more frequently than, for example, rolling all ones.
+
+:::: {.panel-tabset}
+## One Die
+```{python}
+one_die = []
+
+for i in range(1, 7):
+  one_die.append(i)
+
+one_die = pd.Series(one_die)
+
+print("Frequency distribution of dice rolls:")
+print(one_die.value_counts(), "\n")
+print(f"Average: {one_die.mean():.1f}")
+
+plt.bar(one_die.unique(), one_die.value_counts())
+plt.xlabel('Die Face')
+plt.ylabel('Number of Combinations')
+plt.show()
+```
+
+## two dice
+
+```{python}
+two_dice = []
+
+for i in range(1, 7):
+    die_1 = i
+
+    for j in range(1, 7):
+        die_2 = j
+        two_dice.append(die_1 + die_2)
+
+two_dice = pd.Series(two_dice)
+
+print("Frequency distribution of the sum of dice:")
+print(two_dice.value_counts().sort_index(ascending=True), "\n")
+print(f"Average: {two_dice.mean():.1f}")
+print(f"Average per die: {two_dice.mean() / 2:.1f}")
+
+plt.bar(two_dice.unique(), two_dice.value_counts().sort_index(ascending=True))
+plt.xlabel('Sum of dice')
+plt.ylabel('Number of combinations')
+plt.grid()
+plt.show()
+```
+
+## three dice
+
+```{python}
+three_dice = []
+
+for i in range(1, 7):
+    die_1 = i
+
+    for j in range(1, 7):
+        die_2 = j
+
+        for k in range(1, 7):
+            die_3 = k
+            three_dice.append(die_1 + die_2 + die_3)
+
+three_dice = pd.Series(three_dice)
+
+print("Frequency distribution of the sum of dice:")
+print(three_dice.value_counts().sort_index(ascending=True), "\n")
+print(f"Average sum: {three_dice.mean():.1f}")
+print(f"Average per die: {three_dice.mean() / 3:.1f}")
+
+plt.bar(three_dice.unique(), three_dice.value_counts().sort_index(ascending=True))
+plt.xlabel('Sum of dice')
+plt.ylabel('Number of combinations')
+plt.grid()
+plt.show()
+```
+
+::::
+:::
+
+The convergence of measurements toward a population mean as the sample size increases also holds when the population mean and variance are unknown. As the sample size grows, the measurements approach the [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution), which is also known as the Gaussian bell curve after its discoverer, Carl Friedrich Gauss.
+
+The convergence of the distribution of measurements to the normal distribution for larger samples can be illustrated using the body mass of penguins from the palmerpenguins dataset.
+
+::: {.border}
+
+**palmerpenguins**
+
+![Penguins from the Palmer Station dataset](00-bilder/lter_penguins_allison_horst_CC0.png)
+
+*Meet the Palmer Penguins* by \@allison_horst is licensed under [CC0-1.0](https://github.com/allisonhorst/palmerpenguins?tab=CC0-1.0-1-ov-file#creative-commons) and is available on [GitHub](https://github.com/allisonhorst/palmerpenguins?tab=readme-ov-file#meet-the-palmer-penguins). 2020
+
+The dataset is released under the [CC0](https://creativecommons.org/public-domain/cc0/) license and is available in R as well as on [GitHub](https://github.com/allisonhorst/palmerpenguins?tab=readme-ov-file). 2020
+
+``` {.raw}
+# R commands to load the dataset
+install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+Horst AM, Hill AP, and Gorman KB. 2020. palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. [https://allisonhorst.github.io/palmerpenguins/](https://allisonhorst.github.io/palmerpenguins/). doi: 10.5281/zenodo.3960218.
+``` {python}
+penguins = pd.read_csv(filepath_or_buffer="01-daten/penguins.csv")
+
+# Remove animals with incomplete entries
+
+penguins.drop(np.where(penguins.apply(pd.isna).any(axis=1))[0], inplace=True)
+
+print(penguins.info(), "\n")
+```
+
+:::
+
+&nbsp;
+
+The dataset contains data for three penguin species.
+``` {python}
+print(penguins.groupby(by = penguins['species']).size())
+```
+
+Among other things, body weight was measured in grams, which is recorded in the column `body_mass_g`. The weight distribution of the three species is displayed using a histogram for each species. Additionally, the sample mean and sample standard deviation are calculated for each species. These values can be used to compute a normal distribution curve and overlay it on the histogram (as shown in @nte-normaldistribution-plot). This allows a visual check of whether the empirical distribution of the sample values corresponds to a normal distribution with the same mean and standard deviation. (For measurement data, this is often less clear than for the distribution of dice rolls.)
+
+::: {.panel-tabset}
+
+## Plot
+
+```{python}
+#| echo: false
+#| fig-alt: "Three histograms for the penguin species Adelie, Chinstrap, and Gentoo are shown. The x-axis represents weight in grams and the y-axis shows probability density. A normal distribution curve with the sample parameters is overlaid on each histogram."
+
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (7.5, 6), sharey = True, layout = 'tight')
+plt.suptitle('Weight Distribution of Penguins')
+
+# Adelie
+species = 'Adelie'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+ax1.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C0', density = True)
+ax1.set_xlabel('Weight in grams')
+ax1.set_ylabel('Probability density')
+ax1.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal distribution curve
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = 1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax1.plot(x_values, y_values, color = 'black', linewidth = 1, label = 'Normal distribution')
+ax1.legend()
+
+# Chinstrap
+species = 'Chinstrap'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+ax2.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C1', density = True)
+ax2.set_xlabel('Weight in grams')
+ax2.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal distribution curve
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = 1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax2.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+# Gentoo
+species = 'Gentoo'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+ax3.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C2', density = True)
+ax3.set_xlabel('Weight in grams')
+ax3.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal distribution curve
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = 1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax3.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+plt.show()
+```
+
+## Code
+```{python}
+#| output: false
+
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (7.5, 6), sharey = True, layout = 'tight')
+plt.suptitle('Weight Distribution of Penguins')
+
+# Adelie
+
+species = 'Adelie'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+
+ax1.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C0', density = True)
+ax1.set_xlabel('Weight in grams')
+ax1.set_ylabel('Probability Density')
+ax1.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal Distribution Curve
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values =  1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax1.plot(x_values, y_values, color = 'black', linewidth = 1, label = 'Normal Distribution')
+ax1.legend()
+
+# Chinstrap
+
+species = 'Chinstrap'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+
+ax2.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C1', density = True)
+ax2.set_xlabel('Weight in grams')
+ax2.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal Distribution Curve
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values =  1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax2.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+# Gentoo
+
+species = 'Gentoo'
+data = penguins['body_mass_g'][penguins['species'] == species]
+
+## Histogram
+
+ax3.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C2', density = True)
+ax3.set_xlabel('Weight in grams')
+ax3.set_title(label = str(species) + " N = " + str(data.size))
+
+## Normal Distribution Curve
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values =  1 / (sample_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - sample_mean) ** 2 / (2 * sample_std ** 2))
+
+ax3.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+plt.show()
+```
+
+:::
+
+The normal distribution is a density curve that a histogram approaches as the number of measurements goes to infinity and the class width approaches zero. 
+
+::: {#imp-histogram .callout-important collapse="false"}
+## Histogram
+A histogram is a graphical representation of the frequency distribution of cardinally scaled variables (i.e., with numerical, ordered values). The data are divided into classes, which can have either constant or variable widths. Adjacent rectangles are drawn with the width of each class, and the area of each rectangle represents the (relative or absolute) class frequency. The height of each rectangle then represents the (relative or absolute) frequency density, i.e., the (relative or absolute) frequency divided by the width of the corresponding class.
+
+:::: {#nte-histogram .callout-note collapse="true"}
+## Calculating and Visualizing a Histogram
+
+As an example, we use the length of the tooth-forming cells of guinea pigs that received a vitamin C dose of 2.
+```{python}
+dose2 = guinea_pigs.loc[guinea_pigs['dose'] == 2, 'len']
+print(*list(dose2))  # * = print without commas
+print("N", len(dose2), "Minimum:", dose2.min(), "Maximum:", dose2.max(), "Range", dose2.max() - dose2.min())
+```
+
+
+
+The function `np.histogram(a, bins = 10, range = None, density = None)` can be used to compute a histogram.
+
+  - `a` is the data to be analyzed
+  - `bins` specifies the number of bins (classes); by default, 10 bins are used.
+  - `range = (float, float)` allows setting the lower and upper limits of the bins.
+  - `density = True` allows representing the value as the probability density function instead of absolute frequencies. This is calculated as follows:
+    - relative frequency = number of values per bin / total number of values
+    - probability density = number of values per bin / (total number of values * bin width)
+    - bin width = (maximum value - minimum value) / number of bins
+  
+For a manageable number of values, a histogram with 5 bins is computed. For comparison, the probability density is also displayed.
+```{python}
+print(np.histogram(dose2, bins = 5))
+print("Probability density:", np.histogram(dose2, bins = 5, density = True)[0])
+```
+
+The function `np.histogram()` returns an array of absolute frequencies or frequency densities for each bin as the first output. The second output is an array of the x-positions of the bin edges — for each bin, the position of the left edge is given, and for the last bin, the position of the right edge is also included. For 5 bins, this results in 6 edge positions.
+
+The bin width can be obtained, for example, using the `np.diff()` method.
+```{python}
+hist_abs, bin_edges = np.histogram(dose2, bins=5)
+bin_width = np.diff(bin_edges)
+print(bin_width)
+```
+
+By multiplying the frequency density by the class width, the relative frequencies can be calculated.
+```{python}
+hist_density = np.histogram(dose2, bins=5, density=True)[0]
+hist_relative = hist_density * bin_width
+print(hist_relative)
+```
+
+The sum of the relative frequencies is 1. A histogram can be created using the function `plt.hist(x, bins=None, *, range=None, density=False)`, which internally calls `np.histogram()` for calculations. The function parameters correspond to those of the NumPy function, with the argument `x` specifying the data to be plotted. Additional graphical parameters can also be passed. The function returns 3 values: the absolute frequency of the bins (or, if `density=True`, the probability density), the x positions of the rectangles, and the objects used for plotting (the latter are stored in the variable `ignore` in the code below and are not used further).
+
+::::: {.panel-tabset}
+
+## absolute frequency
+
+```{python}
+#| fig-alt: "A histogram with 5 bins"
+
+plt.hist(dose2, bins=5, edgecolor='black')
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# Axis labels
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('absolute frequency')
+
+plt.show()
+```
+
+
+
+## Relative Frequency
+A representation of relative frequencies is not directly possible.
+```{python}
+#| fig-alt: "A histogram with 5 bins"
+
+hist_density, bins, ignore = plt.hist(dose2, bins=5, density=True, edgecolor='black')
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# calculate relative frequency
+bin_width = np.diff(bins)[0]
+hist_relative = hist_density * bin_width
+
+# generate yticks at positions from min(hist_density) to max(hist_density)
+# but with values from hist_relative
+plt.yticks(
+    ticks=np.linspace(min(hist_density), max(hist_density), len(hist_relative)),
+    labels=np.linspace(hist_relative.round(2).min(), hist_relative.round(2).max(), len(hist_relative)).round(3)
+)
+
+# axis labels
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('Relative frequency')
+
+plt.show()
+```
+
+## Frequency Density
+```{python}
+#| fig-alt: "A histogram with 5 bins"
+
+plt.hist(dose2, bins = 5, density = True, edgecolor = 'black')
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# Axis labels
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('Frequency density')
+
+plt.show()
+```
+
+:::::
+
+&nbsp;
+
+Histograms are not always the best choice to characterize the distribution of a sample. The visual impression depends on the number of bins chosen – for example:
+
+::::: {.panel-tabset}
+
+## 3 Bins
+```{python}
+plt.hist(guinea_pigs['len'], bins = 3, density = True, edgecolor = 'black', alpha = 0.6);
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# Axis labels
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('Probability density')
+
+plt.show()
+```
+
+## 5 Classes
+```{python}
+plt.hist(guinea_pigs['len'], bins = 5, density = True, edgecolor = 'black', alpha = 0.6)
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# Axis labels
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('Frequency density')
+
+plt.show()
+```
+
+## 7 Classes
+
+```{python}
+plt.hist(guinea_pigs['len'], bins = 7, density = True, edgecolor = 'black', alpha = 0.6);
+plt.title('Length of Tooth-Forming Cells in Guinea Pigs')
+
+# Axis labels
+plt.xlabel('Length of Tooth-Forming Cells (μm)')
+plt.ylabel('Frequency Density')
+
+plt.show()
+```
+
+:::::
+::::
+:::
+
+::: {.border}
+
+The probability density function (PDF) of the normal distribution describes the proportion of values that lie within a specific range. When calculating relative frequencies in @nte-histogram, we saw that the sum of relative frequencies is 1. This corresponds to the area under the density curve.
+
+The probability density function of the normal distribution is defined as: 
+
+$$
+f(x) = \frac{1}{\sigma \sqrt{2\pi}} ~ e^{-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2}
+$$
+
+The shape of the normal distribution is determined by the factor $e^{-\frac{1}{2}\left(\frac{x -\mu}{\sigma}\right)^2}$ in the function. The maximum of the function occurs at $x = \mu$. From there, it decreases symmetrically and approaches the x-axis. The decline of the function is faster when $\sigma$ is smaller. The inflection points of the curve are located one standard deviation away from the mean.
+
+A normal distribution with mean $\mu = 0$ and standard deviation $\sigma = 1$ is called the standard normal distribution.
+
+[@Baitsch-2019, pp. 51-54]
+
+:::
+
+&nbsp;
+
+## Adjusting a Normal Distribution
+To approximate the distribution of a dataset with a normal distribution, its mean and standard deviation are inserted into the normal distribution's function. In Python, these calculations can be performed directly. More convenient are the functions provided by the SciPy package, which will be presented in detail in the next section. The following example shows calculation and visualization using Python and SciPy.
+
+::: {#nte-normaldistribution-plot .callout-note collapse="true"}
+## Calculating and plotting density curves
+
+Let's consider the distribution statistics of the group of guinea pigs that received a dose of 2 milligrams of vitamin C.
+
+```{python}
+print(distribution_characteristics(dose2), "\n");
+
+dose2_mean = distribution_characteristics(dose2, output = False)[1]
+dose2_std = distribution_characteristics(dose2, output = False)[4]
+
+print("Exact mean:", dose2_mean)
+print("Exact standard deviation:", dose2_std)
+```
+
+If we insert the standard deviation and the arithmetic mean into the normal distribution function, we get:
+
+$$
+f(x) = \frac{1}{3.7742 \sqrt{2\pi}} ~ e^{-\frac{1}{2}\left(\frac{x-26.10}{3.7742}\right)^2}
+$$
+
+$$
+f(x) = 0.1057 \cdot e^{-\frac{1}{2}\left(\frac{x-26.10}{3.7742}\right)^2}
+$$
+
+In Python, these calculations can be implemented and visualized:
+``` {python}
+#| fig-alt: "Histogram with 7 bins and an overlaid normal distribution curve using sample parameters."
+
+# Plot histogram of probability density
+
+plt.hist(dose2, bins=7, density=True, edgecolor='black', alpha=0.6)
+plt.title('Length of tooth-forming cells in guinea pigs')
+
+# Axis labels
+
+plt.xlabel('Length of tooth-forming cells (μm)')
+plt.ylabel('Probability density')
+
+# Calculate normal distribution
+
+hist, bin_edges = np.histogram(dose2, bins=7)
+
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+
+## Compute normal distribution function in Python
+
+y_values = 1 / (dose2_std * np.sqrt(2 * np.pi)) * np.exp(- (x_values - dose2_mean) ** 2 / (2 * dose2_std ** 2))
+plt.plot(x_values, y_values, label='Normal Distribution', lw=4)
+
+## Using SciPy
+
+y_values_scipy = scipy.stats.norm.pdf(x_values, loc=dose2_mean, scale=dose2_std)
+plt.plot(x_values, y_values_scipy, label='SciPy', linestyle='dashed')
+
+plt.legend()
+plt.show()
+```
+
+The distribution of the length of tooth-forming cells in guinea pigs that received a dose of 2 milligrams of vitamin C could follow a normal distribution. However, due to the small sample size, this is difficult to assess.
+
+:::
+
+&nbsp;
+
+## The SciPy Package
+Functions for calculating density curves can be imported via the SciPy package. The `stats` module (statistical functions) includes numerous functions for hypothesis testing. Functions for the normal distribution are called as follows:
+
+```{python}
+import scipy
+print("Probability density of the normal distribution at x = 0:", scipy.stats.norm.pdf(0), "\n")
+```
+
+For the normal distribution, four functions are relevant:
+
+::: {layout="[45, 55]"}
+
+```{python}
+#| echo: false
+#| fig-alt: "A curve of the probability density of the normal distribution with a vertical line drawn at x = 0.5."
+
+value = 0.5
+
+x_values = np.linspace(-4, 4, 100)
+y_values = scipy.stats.norm.pdf(x_values)
+
+plt.figure(figsize = (3, 3))
+plt.plot(x_values, y_values, color = 'black', lw = 3)
+plt.ylim(bottom = 0, top = 0.5)
+plt.vlines(value, ymin = 0, ymax = scipy.stats.norm.pdf(value), label = 'scipy.stats.norm.pdf(' + str(value) +')', lw = 4)
+
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+plt.legend(loc = 'upper left')
+plt.show()
+```
+
+**Description** 
+The function `scipy.stats.norm.pdf(x)` calculates the density of the normal distribution at the point `x` (pdf = probability density function). `x` can also be an array — the curve on the left was calculated using the command `scipy.stats.norm.pdf(np.linspace(-4, 4, 100))`.
+
+```{python}
+#| echo: false
+#| fig-alt: "A curve showing the probability density of the normal distribution. The area under the curve to the left of x = 0.5 is filled."
+
+plt.figure(figsize = (3, 3))
+plt.plot(x_values, y_values, color = 'black', lw = 3)
+plt.fill_between(x_values[x_values <= value], y_values[x_values <= value], label = 'scipy.stats.norm.cdf(' + str(value) +')', alpha = 0.3)
+plt.ylim(bottom = 0, top = 0.5)
+
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+plt.legend(loc = 'upper left')
+plt.show()
+```
+
+**Description**  
+The function `scipy.stats.norm.cdf(x)` calculates the proportion of values to the left of `x` (cdf = cumulative density function).
+
+```{python}
+#| echo: false
+#| fig-alt: "A curve of the probability density of the normal distribution. At x ~ -0.38, a vertical line is drawn under the curve. The areas under the curve to the left and right of it are shaded differently."
+
+value = 0.35
+
+x_values = np.linspace(-4, 4, 100)
+y_values = scipy.stats.norm.pdf(x_values)
+
+plt.figure(figsize = (3, 3))
+plt.plot(x_values, y_values, color = 'black', lw = 3)
+plt.ylim(bottom = 0, top = 0.6)
+# ymax is the probability density at the x-value calculated using the PPF
+plt.vlines(scipy.stats.norm.ppf(value), ymin = 0, ymax = scipy.stats.norm.pdf(scipy.stats.norm.ppf(value)), label = 'scipy.stats.norm.ppf(' + str(value) +')', lw = 4)
+
+plt.fill_between(x_values[x_values <= scipy.stats.norm.ppf(value)], y_values[x_values <= scipy.stats.norm.ppf(value)], label = 'Proportion of values left of q', alpha = 0.3)
+plt.fill_between(x_values[x_values >= scipy.stats.norm.ppf(value)], y_values[x_values >= scipy.stats.norm.ppf(value)], label = 'Proportion of values right of q', alpha = 0.3)
+
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+plt.legend(loc = 'upper left')
+plt.show()
+```
+
+**Description**  
+The function `scipy.stats.norm.ppf(q)` is the quantile function of the normal distribution and the inverse of the cumulative density function (cdf). The function computes, for $0 \le q \le 1$, the value `x` to the left of which the proportion `q` of all values lies and to the right of which the proportion `1-q` lies (ppf = percentile point function).
+
+```{python}
+#| echo: false
+#| fig-alt: ""
+
+size = 4
+values = scipy.stats.norm.rvs(size=size)
+
+x_values = np.linspace(-4, 4, 100)
+y_values = scipy.stats.norm.pdf(x_values)
+
+plt.figure(figsize=(3, 3))
+plt.plot(x_values, y_values, color='black', lw=3)
+plt.ylim(bottom=0, top=0.5)
+plt.vlines(values, ymin=0, ymax=scipy.stats.norm.pdf(values), label='scipy.stats.norm.rvs(' + str(size) + ')', lw=4)
+
+plt.xlabel('Standard Deviation')
+plt.ylabel('Probability Density')
+plt.legend(loc='upper left')
+plt.show()
+```
+
+**Description**  
+The function `scipy.stats.norm.rvs(size)` draws `size` random numbers from the normal distribution.  
+*Note: The random numbers are generated dynamically in the script.*
+:::
+
+The shape of the normal distribution can be adjusted using the parameters `loc = mean` and `scale = standard_deviation`. By default, the standard normal distribution with `loc = 0` and `scale = 1` is used. The function parameters can be single values (scalars) or arrays/lists.
+
+## Normal Distribution Exercises
+You may have heard of Mensa International, an organization for highly gifted individuals. To become a member of this organization, one must have a higher intelligence quotient (IQ) than 98% of the population in their country of origin ([Wikipedia](https://en.wikipedia.org/wiki/Mensa_International)). 
+
+1. If the average IQ is 100 and the standard deviation is 15, what IQ would you need to be accepted into Mensa International?
+
+2. Mensa International is not the only organization of its kind. Other organizations have even stricter criteria. What IQ is required to become a member of these organizations?
+
+  - Intertel (criterion: IQ in the top 1%)
+  - Triple Nine Society (criterion: IQ in the top 0.1%)
+  - Prometheus Society (criterion: IQ in the top 0.003%)
+
+3. IQ is not equivalent to innate intelligence and also depends on how much opportunity someone has had for mental training, e.g., through schooling. The lowest average IQ was measured at 71 [in the country Niger](https://www.laenderdaten.info/iq-nach-laendern.php). Assuming you have an IQ of 100, would you meet the Mensa International criterion in Niger?
+
+::: {.callout-tip collapse="true"}
+## Sample Solution Normal Distribution
+Exercise 1: An IQ of more than ...
+
+```{python}
+print(scipy.stats.norm.ppf(loc = 100, scale = 15, q = 0.98))
+```
+
+Exercise 2:  
+You need an IQ of at least...
+```{python}
+print(scipy.stats.norm.ppf(loc = 100, scale = 15, q = 0.99))
+print(scipy.stats.norm.ppf(loc = 100, scale = 15, q = 0.999))
+print(scipy.stats.norm.ppf(loc = 100, scale = 15, q = 1 - (0.003 / 100)))
+```
+
+Exercise 3: Not quite.
+```{python}
+print(scipy.stats.norm.cdf(loc=71, scale=15, x=100))
+```
+
+
+:::
+
+By the way, as [Der Spiegel reports](https://www.spiegel.de/lebenundlernen/intelligenz-von-studenten-neugier-schlaegt-iq-a-816084.html), students with average IQs perform just as successfully as highly gifted students, provided they are curious enough and work diligently.
+
+## Confidence Intervals
+Inferential statistics is based on the principle of drawing conclusions about the true population value from sample values. The reasoning is as follows:
+
+1. When a sample is drawn from a population, the sample values are normally distributed around the population mean. For a normal distribution:
+
+    - 68.27% of all values lie within $\pm 1 ~ s$,
+    - 95.45% of all values lie within $\pm 2 ~ s$, and
+    - 99.73% of all values lie within $\pm 3 ~ s$.
+
+2. With the same probability distribution, the unknown population mean is distributed around a random value from the sample.
+
+3. The expected value can be estimated with a certain probability using the standard error of the mean of a sample. A confidence level is chosen, i.e., the probability that the expected value actually lies within the estimated range. The opposite case, where the expected value does not lie within the estimated range, is called the significance or alpha level, denoted by the Greek letter $\alpha$. $\alpha$ ranges from 0 to 1, and the confidence level is $1 - \alpha$ (see: [Type I and II errors](https://en.wikipedia.org/wiki/Type_I_and_type_II_errors)).
+
+    - the expected value lies in 68.27% of cases within $\pm 1 ~ \frac{s}{\sqrt{n}}$,
+    - the expected value lies in 95.45% of cases within $\pm 2 ~ \frac{s}{\sqrt{n}}$, and
+    - the expected value lies in 99.73% of cases within $\pm 3 ~ \frac{s}{\sqrt{n}}$.
+
+Often, the alpha level $\alpha = 0.05$ or a 95% confidence interval is chosen, which corresponds to $\pm 1.96 ~ \frac{s}{\sqrt{n}}$. This, however, applies only to large samples. For small sample sizes, sample means follow the t-distribution, which will be introduced in the next section.
+
+**to do Maik: here one could / should introduce one-sided and two-sided hypothesis tests and the concept of "alpha-half". This could also be illustrated nicely with arrows going only to the right or both sides.**
+
+The following example visually demonstrates the idea that with a certain probability, one can infer the population mean (expected value) from the sample mean.
+
+::: {#inferential-statistics .callout-note collapse="true"}
+## Principle of Inferential Statistics
+
+:::: {.panel-tabset}
+## Standard Normal Distribution
+In a normal distribution, values near the expected value occur more frequently than values far from it. How often or rarely a value occurs relative to the mean can be expressed using the standard deviation.
+
+The chart below shows randomly drawn values and a normal distribution curve.
+
+```{python}
+#| echo: false
+#| fig-alt: "A histogram with 30 bins is displayed. The x-axis shows standard deviation units from -3 to +3, the y-axis shows probability density. The sample mean 0 is marked with a vertical line, and integer standard deviation units are indicated with dashed vertical lines. The standard normal distribution curve is overlaid. Horizontal arrows indicate distances of ±1, 2, and 3 standard deviations and the percentages of values within these ranges (68.27 %, 95.45 %, 99.73 %)."
+
+# Parameters for standard normal distribution
+mu, sigma = 0, 1  # mean and standard deviation
+
+# Generate data
+seed = 4
+np.random.seed(seed = seed)
+data = np.random.default_rng().normal(mu, sigma, 1000)
+
+# Plot
+plt.figure(figsize = (8.5, 6))
+
+# Plot histogram
+array, bins, patches = plt.hist(data, bins = 30, density = True, alpha = 0.6, color = 'lightgoldenrodyellow', edgecolor='black')
+
+# Draw mean line
+mean_line = plt.axvline(mu, color = 'steelblue', linestyle = 'solid', linewidth = 3)
+
+# Draw positive and negative standard deviations
+pos_std_lines = [plt.axvline(mu + i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+neg_std_lines = [plt.axvline(mu - i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+
+# Draw double-headed arrows
+for i in range(1, 4):
+  text = ['68.27 %', '95.45 %', '99.73 %']
+  plt.annotate(text = ' ' + text[i - 1], xy = (mu - i * sigma, 0.4 - i / 10), xytext = (mu + i * sigma, 0.4 - i / 10), arrowprops = dict(arrowstyle = '<->'))
+
+# Standard normal distribution curve
+x_values = np.linspace(min(bins), max(bins), 100)
+y_values = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(- (x_values - mu) ** 2 / (2 * sigma ** 2))
+normal_dist_curve = plt.plot(x_values, y_values, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Legend
+plt.legend([normal_dist_curve[0], mean_line, neg_std_lines[0]],
+           ['Standard Normal Distribution', 'Mean', 'Standard Deviation'],
+           loc='upper right', handlelength = 3)
+
+plt.title('Standard Normal Distribution')
+plt.xlabel('Standard Deviation')
+plt.ylabel('Probability Density')
+
+plt.show()
+```
+
+## Single Measurement
+A single measurement from the distribution almost never equals the expected value. However, one knows that values close to the expected value occur more frequently than those far away.
+
+```{python}
+#| echo: false
+#| fig-alt: "Based on the previous plot, a single measurement at s = -1.25 is marked, with a normal distribution curve drawn around it."
+
+# Parameters of the standard normal distribution
+mu, sigma = 0, 1  # mean and standard deviation
+
+# Generate data
+seed = 4
+np.random.seed(seed = seed)
+data = np.random.default_rng().normal(mu, sigma, 1000)
+
+# Plot
+plt.figure(figsize = (8.5, 6))
+
+# Plot histogram
+array, bins, patches = plt.hist(data, bins = 30, density = True, alpha = 0.6, color = 'lightgoldenrodyellow', edgecolor='black')
+
+# Draw mean line
+mean_line = plt.axvline(mu, color = 'steelblue', linestyle = 'solid', linewidth = 2)
+
+# Normal distribution curve
+x_values = np.linspace(min(bins), max(bins), 100)
+y_values = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(- (x_values - mu) ** 2 / (2 * sigma ** 2))
+normal_dist_curve = plt.plot(x_values, y_values, color = 'steelblue', linestyle = 'solid', linewidth = 2)
+
+# Draw positive and negative standard deviations
+pos_std_lines = [plt.axvline(mu + i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+neg_std_lines = [plt.axvline(mu - i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+
+# Single measurement
+measurement = -1.25
+mean_measurement = plt.axvline(measurement, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Normal distribution curve for the measurement
+x_meas_values = np.linspace(min(bins) + measurement, max(bins) + measurement, 100)
+y_meas_values = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(- (x_values - mu) ** 2 / (2 * sigma ** 2))
+meas_dist_curve = plt.plot(x_meas_values, y_meas_values, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Draw arrow
+plt.annotate(text = ' ' + str(measurement) + 's', xy = (measurement, 0.42), xytext = (mu, 0.42), arrowprops = dict(arrowstyle = '<->'))
+
+# Legend
+plt.legend([normal_dist_curve[0], mean_line, neg_std_lines[0], mean_measurement],
+           ['Standard normal distribution', 'actual mean', 'standard deviation', 'measurement and\nprobability distribution'],
+           loc='upper right', handlelength = 3)
+
+plt.title('Standard Normal Distribution')
+plt.xlabel('Standard Deviation')
+plt.ylabel('Probability Density')
+
+plt.show()
+```
+
+
+## Sample N = 12
+The mean of a sample almost never equals the expected value. However, the expected spread, expressed in units of the standard error of the mean, is significantly narrower than that of a single observation. This is also clearly visible in the graph. The density curve is much narrower and taller than the normal distribution curve of a single measurement. This is due to the small standard deviation in the sample of ~0.2, which compresses the curve.
+
+```{python}
+#| echo: false
+#| fig-alt: "Based on the first plot, a randomly generated sample mean is drawn, with a normal distribution curve around it using sigma = standard error of the mean."
+
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy
+
+# Standard normal distribution parameters
+mu, sigma = 0, 1  # mean and standard deviation
+
+# Generate data
+seed = 4
+np.random.seed(seed = seed)
+data = np.random.default_rng().normal(mu, sigma, 1000)
+
+# Plot setup
+plt.figure(figsize = (8.5, 6))
+
+# Plot histogram
+array, bins, patches = plt.hist(data, bins = 30, density = True, alpha = 0.6, color = 'lightgoldenrodyellow', edgecolor='black')
+
+# Draw mean
+mean_line = plt.axvline(mu, color = 'steelblue', linestyle = 'solid', linewidth = 3)
+
+# Draw positive and negative standard deviations
+pos_std_lines = [plt.axvline(mu + i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+neg_std_lines = [plt.axvline(mu - i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+
+# Normal distribution curve
+x_values = np.linspace(min(bins), max(bins), 100)
+y_values = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(- (x_values - mu) ** 2 / (2 * sigma ** 2))
+normal_dist_curve = plt.plot(x_values, y_values, color = 'steelblue', linestyle = 'solid', linewidth = 2)
+
+# Sample
+N = 12
+np.random.seed(seed = 4)
+sample = np.random.default_rng().normal(mu, sigma, N)
+
+sample_std = sample.std(ddof = 1)
+sample_mean = sample.mean()
+standard_error = sample_std / np.sqrt(len(sample))
+
+# Standard error curve for sample
+x = np.linspace(sample_mean - 4 * sample_std, sample_mean + 4 * sample_std, 100)
+y_values = scipy.stats.t.pdf(x = x_values, df = N - 1, loc = sample_mean, scale = standard_error)  # t-distribution
+
+# Draw sample mean
+mean_sample = plt.axvline(sample_mean, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Plot t-distribution curve
+sample_dist_curve = plt.plot(x_values, y_values, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Legend
+plt.legend([normal_dist_curve[0], mean_line, neg_std_lines[0], mean_sample, sample_dist_curve[0]],
+           ['Standard normal distribution', 'Mean', 'Standard deviation', 'Sample mean', 't-distribution'],
+           loc='upper right', handlelength = 3)
+
+plt.title('Standard Normal Distribution')
+plt.xlabel('Standard Deviation')
+plt.ylabel('Probability Density')
+
+plt.show()
+```
+
+
+
+
+
+
+## Code
+
+Code for the panel Sample N = 12
+
+```{python}
+#| output: false
+
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy
+
+# Parameters of the standard normal distribution
+mu, sigma = 0, 1  # mean and standard deviation
+
+# Generate data
+seed = 4
+np.random.seed(seed = seed)
+data = np.random.default_rng().normal(mu, sigma, 1000)
+
+# Plot
+plt.figure(figsize = (8.5, 6))
+
+# Plot histogram
+array, bins, patches = plt.hist(data, bins = 30, density = True, alpha = 0.6, color = 'lightgoldenrodyellow', edgecolor='black')
+
+# Draw mean line
+mean_line = plt.axvline(mu, color = 'steelblue', linestyle = 'solid', linewidth = 3)
+
+# Draw positive and negative standard deviations
+pos_std_lines = [plt.axvline(mu + i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+neg_std_lines = [plt.axvline(mu - i * sigma, color = 'steelblue', linestyle = 'dotted', linewidth = 2) for i in range(1, 4)]
+
+# Normal distribution curve
+x_values = np.linspace(min(bins), max(bins), 100)
+y_values = 1 / (sigma * np.sqrt(2 * np.pi)) * np.exp(- (x_values - mu) ** 2 / (2 * sigma ** 2))
+normal_dist_curve = plt.plot(x_values, y_values, color = 'steelblue', linestyle = 'solid', linewidth = 2)
+
+# Sample
+N = 12
+np.random.seed(seed = 4)
+sample = np.random.default_rng().normal(mu, sigma, N)
+
+sample_std = sample.std(ddof = 1)
+sample_mean = sample.mean()
+standard_error =  sample_std / np.sqrt(len(sample))
+
+# Histogram calculation for sample
+# hist, bins = np.histogram(sample, bins = 30, density = True)
+
+# Standard error curve for sample
+# x_values = np.linspace(min(bins), max(bins), 100)
+x = np.linspace(sample_mean - 4 * sample_std, sample_mean + 4 * sample_std, 100)
+y_values = scipy.stats.t.pdf(x = x_values, df = N - 1, loc = sample_mean, scale = standard_error) # t-distribution
+
+# Draw sample mean
+mean_sample = plt.axvline(sample_mean, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Draw sample distribution curve
+sample_dist_curve = plt.plot(x_values, y_values, color = 'black', linestyle = 'solid', linewidth = 2)
+
+# Legend
+plt.legend([normal_dist_curve[0], mean_line, neg_std_lines[0], mean_sample, sample_dist_curve[0]],
+           ['Standard normal distribution', 'Mean', 'Standard deviation', 'Sample mean', 't-distribution'],
+           loc='upper right', handlelength = 3)
+
+plt.title('Standard Normal Distribution')
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+
+plt.show()
+```
+
+::::
+:::
+
+&nbsp;
+
+## The t-Distribution
+The t-distribution was discovered by William Sealy Gosset (though not the very first) and popularized. It is also known as Student's t-distribution: Since Gosset's employer, the Guinness Brewery, did not allow him to publish the discovery, Gosset published under the pseudonym Student. ([Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-distribution))
+
+The t-distribution describes the distribution of sample means with unknown population variance, where the standard error is estimated using the sample standard deviation. Compared to the normal distribution, the t-distribution has the [degrees of freedom](https://en.wikipedia.org/wiki/Degree_of_freedom_(statistics)) as an additional parameter.
+
+::: {#imp-freiheitsgrad .callout-important collapse="false"}
+## Degrees of Freedom
+
+"The number of independent pieces of information that go into estimating a parameter is called the degrees of freedom. In general, the degrees of freedom of an estimate of a parameter equal the number of independent individual pieces of information used in the estimate minus the number of parameters that are estimated as intermediate steps in calculating the parameter itself. For example, $n$ values are used to compute the sample variance. Nevertheless, the degrees of freedom are $n - 1$, because the mean is estimated as an intermediate step, losing one degree of freedom."
+
+Degrees of freedom (statistics), by various [authors](https://en.wikipedia.org/wiki/Degree_of_freedom_(statistics)), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), retrieved from [Wikipedia](https://en.wikipedia.org/wiki/Degree_of_freedom_(statistics)). 2025
+:::
+
+The general probability density function of the t-distribution is:
+
+$$
+f(x) = \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\sqrt{\nu \pi} , \Gamma\left(\frac{\nu}{2}\right)} \left(1 + \frac{x^2}{\nu}\right)^{-\frac{\nu + 1}{2}}
+$$
+
+  - $\nu$ (nu) is the degrees of freedom.
+  - $\Gamma$ is the [Gamma function](https://en.wikipedia.org/wiki/Gamma_function), which for integer arguments $n$ satisfies $\Gamma(n) = (n-1)!$.
+
+Since the degrees of freedom for calculating the sample mean is $n - 1$, it can also be written as:
+$$
+f(x) = \frac{\Gamma\left(\frac{n}{2}\right)}{\sqrt{(n-1) \pi} , \Gamma\left(\frac{n-1}{2}\right)} \left(1 + \frac{x^2}{n-1}\right)^{-\frac{n}{2}}
+$$
+
+  - $n$ is the sample size.
+
+The `scipy.stats` module provides functions to compute the t-distribution:
+
+  - `scipy.stats.t.pdf(x, df, loc=0, scale=1)` computes the probability density for values `x` for a t-distribution with `df` degrees of freedom, mean `loc`, and standard deviation `scale` (pdf = probability density function).
+  - `scipy.stats.t.cdf(x, df, loc=0, scale=1)` computes the cumulative probability left of `x` (cdf = cumulative density function).
+  - `scipy.stats.t.ppf(q, df, loc=0, scale=1)` is the quantile function of the t-distribution (ppf = percentile point function).
+  - `scipy.stats.t.rvs(df, loc=0, scale=1, size=1)` generates `size` random samples from the t-distribution.
+
+Function parameters can be single values (scalars) or arrays/lists.
+
+As the sample size increases, the t-distribution approaches the normal distribution. A common rule of thumb is $n > 30$. The graphic below shows the convergence of the t-distribution to the normal distribution.
+
+::: {.panel-tabset}
+
+## Plot
+```{python}
+#| echo: false
+#| fig-alt: "Probability density curves of the normal distribution and t-distributions with different degrees of freedom."
+# plt.figure(figsize = (3, 3))
+
+x_values = np.linspace(-4, 4, 100)
+
+# Normal distribution
+y_values = scipy.stats.norm.pdf(x_values)
+plt.plot(x_values, y_values, color = 'black', lw = 3, label = 'Normal distribution')
+# plt.ylim(bottom = 0, top = 0.5)
+
+# t-distributions
+marker = [".", "1", "x"]
+
+[plt.plot(x_values, scipy.stats.t.pdf(x_values, df = (i + (i - 1) * 2)), linestyle = 'dotted', marker = marker[i - 1], linewidth = 2, alpha = 0.6, label = 'df = ' + str((i + (i - 1) * 2))) for i in range(1, 4)]
+
+plt.suptitle('The df Parameter of the t-Distribution')
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+plt.legend(loc = 'upper left')
+plt.show()
+```
+
+## Code
+```{python}
+#| output: false
+
+x_values = np.linspace(-4, 4, 100)
+
+# Normal distribution
+
+y_values = scipy.stats.norm.pdf(x_values)
+plt.plot(x_values, y_values, color='black', lw=3, label='Normal distribution')
+
+# plt.ylim(bottom=0, top=0.5)
+
+# t-distributions
+
+marker = [".", "1", "x"]
+
+[plt.plot(x_values, scipy.stats.t.pdf(x_values, df=(i + (i - 1) * 2)), linestyle='dotted', marker=marker[i - 1], linewidth=2, alpha=0.6, label='df = ' + str((i + (i - 1) * 2))) for i in range(1, 4)]
+
+plt.suptitle('The df Parameter of the t-Distribution')
+plt.xlabel('Standard deviation')
+plt.ylabel('Probability density')
+plt.legend(loc='upper left')
+plt.show()
+```
+
+:::
+
+The maximum of the t-distribution is less dense, but the tails of the distribution are denser than those of the normal distribution.
+
+Thus, for the t-distribution of sample means, we have:
+
+$$
+\bar{x} \pm t_{n-1} \cdot \frac{s}{\sqrt{n}}
+$$
+
+  - $t$ is the return value of the function `scipy.stats.t.ppf(q, df = n - 1, loc = 0, scale = 1)`
+  - q is the chosen alpha level, or for a two-sided hypothesis test $\frac{\alpha}{2}$ and $1 - \frac{\alpha}{2}$.
+  - The result is the return value of the functions:
+    - `scipy.stats.t.ppf(q = alpha/2, df = n - 1, loc = sample_mean, scale = sample_standard_error)`
+    - `scipy.stats.t.ppf(q = 1 - alpha/2, df = n - 1, loc = sample_mean, scale = sample_standard_error)`
+
+::: {#tip-t .callout-tip collapse="false"}
+## t-distribution or normal distribution?
+
+On a computer, the t-distribution is just as easy (or difficult) to compute as the normal distribution. Since the t-distribution approaches the normal distribution for larger sample sizes anyway, it is recommended to always use the t-distribution.
+
+:::
+
+### Example: Weight of female penguins
+The t-distribution of the estimated sample mean for small sample sizes is shown for female penguins observed in the year 2008.
+
+```{python}
+print(penguins.groupby(by = [penguins['species'], penguins['sex'], penguins['year']]).size())
+```
+
+::: {.panel-tabset}
+
+## Graphics
+
+```{python}
+#| echo: false
+#| fig-alt: "Shown are three histograms for the penguin species Adelie, Chinstrap, and Gentoo for female individuals observed in the year 2008. The x-axis shows body mass in grams and the y-axis shows the density. Each histogram includes the t-distribution of the sample mean."
+
+year = 2008
+sex = 'female'
+species = 'Adelie'
+
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (7.5, 6), sharey = True, layout = 'tight')
+plt.suptitle('Weight distribution of female penguins in 2008')
+
+# Adelie
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+ax1.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C0', density = True)
+ax1.set_xlabel('Weight in grams')
+ax1.set_ylabel('Density')
+ax1.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+sample_mean = data.mean()
+sample_sd = data.std(ddof = 1)
+standard_error = sample_sd / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax1.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+# Chinstrap
+species = 'Chinstrap'
+
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+ax2.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C1', density = True)
+ax2.set_xlabel('Weight in grams')
+ax2.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+sample_mean = data.mean()
+sample_sd = data.std(ddof = 1)
+standard_error = sample_sd / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax2.plot(x_values, y_values, color = 'black', linewidth = 1, label = 't-distribution')
+ax2.legend(loc = 'upper left')
+
+# Gentoo
+species = 'Gentoo'
+
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+ax3.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C2', density = True)
+ax3.set_xlabel('Weight in grams')
+ax3.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+sample_mean = data.mean()
+sample_sd = data.std(ddof = 1)
+standard_error = sample_sd / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax3.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+plt.show()
+```
+
+## Code
+```{python}
+#| output: false
+
+year = 2008
+sex = 'female'
+species = 'Adelie'
+
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (7.5, 6), sharey = True, layout = 'tight')
+plt.suptitle('Weight distribution of female penguins in 2008')
+
+# Adelie
+
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+
+ax1.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C0', density = True)
+ax1.set_xlabel('Weight in grams')
+ax1.set_ylabel('Density')
+ax1.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+standard_error = sample_std / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax1.plot(x_values, y_values, color = 'black', linewidth = 1, label = 't-distribution')
+ax1.legend(loc = 'upper left')
+
+# Chinstrap
+
+species = 'Chinstrap'
+
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+
+ax2.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C1', density = True)
+ax2.set_xlabel('Weight in grams')
+ax2.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+standard_error = sample_std / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax2.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+# Gentoo
+
+species = 'Gentoo'
+
+data = penguins['body_mass_g'][(penguins['species'] == species) & (penguins['sex'] == sex) & (penguins['year'] == year)]
+sample_size = data.size
+
+## Histogram
+
+ax3.hist(data, alpha = 0.6, edgecolor = 'lightgrey', color = 'C2', density = True)
+ax3.set_xlabel('Weight in grams')
+ax3.set_title(label = str(species) + " N = " + str(sample_size))
+
+## t-distribution of the sample mean
+
+sample_mean = data.mean()
+sample_std = data.std(ddof = 1)
+standard_error = sample_std / np.sqrt(sample_size)
+hist, bin_edges = np.histogram(data)
+x_values = np.linspace(min(bin_edges), max(bin_edges), 100)
+y_values = scipy.stats.t.pdf(x_values, loc = sample_mean, scale = standard_error, df = sample_size - 1)
+
+ax3.plot(x_values, y_values, color = 'black', linewidth = 1)
+
+plt.show()
+```
+
+:::
+
+## Exercise: Confidence Intervals
+1. Estimate the body weight of female penguins of the species Adelie, Chinstrap, and Gentoo observed in the year 2008.
+
+2. Which confidence interval can you report for the mean values if a confidence level of 90% is required?
+
+::: {#tip-pinguinaufgabe .callout-tip collapse="true"}
+## Tip and Sample Solution
+
+The following steps will help you solve the task:
+
+1. Determine the sample mean $\bar{x}$.
+2. Determine the sample standard deviation $s$, the sample size $N$, and the standard error $\frac{s}{\sqrt{N}}$.
+3. Determine the z- or t-values from the normal or t-distribution for the chosen confidence level — for a two-sided hypothesis test use $\frac{\alpha}{2}$ and $1 - \frac{\alpha}{2}$.
+4. Compute the confidence interval $\bar{x} \pm t_{\alpha / 2} ~ \frac{s}{\sqrt{n}}$.
+
+:::: {.callout-tip collapse="true"}
+## Sample Solution
+
+Define alpha level and select penguins
+
+```{python}
+alpha = 1 - 0.9
+data = penguins[(penguins['sex'] == sex) & (penguins['year'] == year)]
+```
+
+1. Determine sample means.
+```{python}
+penguin_means = data['body_mass_g'].groupby(by=data['species']).mean()
+print(penguin_means)
+```
+
+
+2. Determine sample standard deviation, sample size, and standard error
+```{python}
+penguin_stds = data['body_mass_g'].groupby(by = data['species']).std(ddof = 1)
+penguin_sizes = data['body_mass_g'].groupby(by = data['species']).size()
+penguin_stderrors = penguin_stds / np.sqrt(penguin_sizes)
+
+print("Sample standard deviations:\n", penguin_stds)
+print("\nSample sizes:\n", penguin_sizes)
+print("\nStandard errors:\n", penguin_stderrors)
+```
+
+
+3. Determining t-Values
+
+```{python}
+t_lower = scipy.stats.t.ppf(alpha / 2, loc = 0, scale = 1, df = penguin_sizes - 1)
+print("t-value lower interval limit:", t_lower)
+
+t_upper = scipy.stats.t.ppf(1 - alpha / 2, loc = 0, scale = 1, df = penguin_sizes - 1)
+print("t-value upper interval limit:", t_upper)
+```
+
+4. calculating confidence intervals 
+```{python}
+# with scipy.stats.t.ppf
+lower_intervals = scipy.stats.t.ppf(alpha / 2, loc = penguin_means, scale = penguin_stderrors, df = penguin_sizes - 1)
+print("Lower interval bounds:", lower_intervals)
+
+upper_intervals = scipy.stats.t.ppf(1 - alpha / 2, loc = penguin_means, scale = penguin_stderrors, df = penguin_sizes - 1)
+print("Upper interval bounds:", upper_intervals)
+
+print("\n'Manual' calculation:\n")
+
+# 'manual'
+
+print(penguin_means + t_lower * penguin_stderrors)
+print(penguin_means + t_upper * penguin_stderrors)
+```
+
+::::
+:::

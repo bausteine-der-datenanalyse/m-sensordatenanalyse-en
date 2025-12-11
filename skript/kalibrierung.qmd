@@ -1,0 +1,423 @@
+# Calibration
+In an ideal measurement, the desired value depends linearly on the measured value. Many analog sensors, however, do not respond linearly to the measured quantity due to material properties or temperature dependence. This means that the measured values are not directly proportional to the actual quantity. This so-called **linearity error** must be corrected in order to measure accurately.
+
+There are two approaches to handle this. First, nonlinear methods for parameter estimation can be used, which are discussed in the **cross-reference to the module** “Data Fitting and Optimization”. Second, the linearity error can be corrected in order to use simpler linear parameter estimation methods. The correction of linearity errors is covered in this chapter.
+
+**Data from another measurement: Andre’s bike sensor always measures 3 degrees too high because the display generates heat (offset error).**
+```{python}
+#| echo: false
+
+# Load modules
+import numpy as np
+import numpy.polynomial.polynomial as poly
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+## Example Pt100
+
+The Pt100 is a platinum resistance thermometer (Pt = platinum) with a defined resistance value of $100 \Omega$ at a temperature of 0°C (hence the name Pt**100**). The resistance of a Pt100 increases with temperature. At 100 °C, for example, the resistance is $138.51 \Omega$. However, the relationship between the input variable, the electrical resistance, and the temperature measured in this way is only approximately linear.
+
+The properties of a Pt100 resistor are specified in the standard DIN EN IEC 60751 [@DIN60751]. There, the relationship is described using two polynomials for the temperature range from -200 °C to 0 °C and for the temperature range from 0 °C to 850 °C.
+
+For the temperature range –200 °C to 0 °C:
+$$
+R_T = R_0 \cdot \left(1 + A \cdot T + B \cdot T^2 + C \cdot (T - 100^\circ\text{C}) \cdot T^3\right)
+$$
+
+For the temperature range from 0 °C to +850 °C:
+$$
+R_T = R_0 \cdot \left(1 + A \cdot T + B \cdot T^2\right)
+$$
+
+Where:
+
+* $R_T$ is the resistance at temperature $T$,
+* $R_0$ is the resistance at $0^\circ\text{C}$,
+* $A$, $B$, and $C$ are constants that describe the specific characteristics of the sensor. They are:
+
+  * $A = 3.9083 \times 10^{-3} ~ {^\circ\text{C}}^{-1}$
+  * $B = -5.775 \times 10^{-7} ~ {^\circ\text{C}}^{-2}$
+  * $C = -4.183 \times 10^{-12} ~ {^\circ\text{C}}^{-4}$
+
+[@DIN60751, p. 13]
+
+The appendix of the standard contains tables that show the relationship between temperature and measured resistance. The format of the tables makes it possible to quickly determine the measured temperature from a given resistance value. The first column lists temperatures in steps of ten, and the following ten columns contain the ones digit. For temperatures below zero, the ones digit must be subtracted (indicated by the minus sign $-$), whereas for temperatures above zero it must be added (indicated by the plus sign $+$). A consolidated version can be found, for example, [here](https://s8b8d6a7.delivery.rocketcdn.me/wp-content/uploads/2022/08/Pt100-Tabelle-Screen.pdf).
+
+![Excerpt from Table A.1](00-bilder/pt100-table-din60751.png){#fig-pt100 fig-alt="Excerpt from Table A.1. For temperatures from -200 to -170 degrees Celsius, the resistance values measured by a Pt100 are listed in 1-degree increments."}
+
+[@DIN60751, p. 25]
+
+The notation $t_{90} / °C$ is based on the International Temperature Scale ITS-90 from 1990, which defines temperatures $T_{90}$ in Kelvin and $t_{90}$ in degrees Celsius. The notation therefore indicates that the values in the table are given in degrees Celsius. (@DIN60751, p. 10)
+
+### Task: Read Pt100 Table
+
+For data analysis, the tabular format is less suitable. The consolidated version provided [here](https://s8b8d6a7.delivery.rocketcdn.me/wp-content/uploads/2022/08/Pt100-Tabelle-Screen.pdf) has been copied into two CSV files. Read the files so that the electrical resistance and the temperature each form an ascending data series (e.g., as a list, NumPy array, or Pandas data structure). The file paths are:
+
+```{raw}
+'skript/01-daten/pt100-table-below-zero.csv'
+'skript/01-daten/pt100-table-below-zero.csv'
+```
+
+**Marc can try another sample solution**
+
+::: {#tip-pt100 .callout-tip collapse="true"}
+## Sample solution: Reading the Pt100 table
+``` {python}
+filepath_belowzero = '01-daten/pt100-table-below-zero.csv'
+filepath_abovezero = '01-daten/pt100-table-above-zero.csv'
+```
+
+Reading and inspecting files. First, the file containing temperatures below 0 degrees Celsius.
+
+```{python}
+# belowzero
+belowzero = pd.read_csv(filepath_or_buffer = filepath_belowzero, sep=',')
+
+print(belowzero.head(), "\n")
+print(belowzero.tail())
+```
+
+There are 201 values (from -200 to 0). The data starts at the row with index 1 (if the first row is read as a header). This row contains only one entry in column `'0'`. The following rows should be read from right to left. The decimal separator is `,`.
+
+Reading the data from right to left can be achieved in many ways. A one-line solution starts by passing a negative step size to the `pd.iloc[::-1]` method.
+
+```{python}
+df = pd.DataFrame(np.array([[3, 2, 1], [6, 5, 4]]))
+print(df, "\n")
+print(df.iloc[::-1])
+```
+
+This results in the *rows* of the DataFrame being displayed in reverse order. To display the *columns* in reverse order, the DataFrame is transposed twice using the `pd.T` method.
+```{python}
+print(df.T.iloc[::-1].T)
+```
+
+With the NumPy method `np.flatten()`, an array can be reduced to a one-dimensional structure. To do this, the DataFrame is first converted to a NumPy array using the method `pd.to_numpy()`.
+
+```{python}
+print(df.T.iloc[::-1].T.to_numpy())
+print() # empty line
+print(df.T.iloc[::-1].T.to_numpy().flatten())
+```
+
+Try looking at the head of the Pt100 data
+```{python}
+belowzero = pd.read_csv(filepath_or_buffer=filepath_belowzero, sep=',', decimal=',', header=0, skiprows=1, index_col=0)
+
+print(belowzero.head())
+print()  # empty line
+print(belowzero.head().T.iloc[::-1].T.to_numpy().flatten())
+```
+
+To skip the missing values, we convert the current result back into a `pd.Series()` and use the `pd.Series.dropna()` method.
+
+```{python}
+pd.Series(belowzero.head().T.iloc[::-1].T.to_numpy().flatten()).dropna()
+```
+
+And now for the entire file:
+```{python}
+belowzero_ohm = pd.Series(belowzero.T.iloc[::-1].T.to_numpy().flatten()).dropna()
+print(belowzero_ohm.head(), belowzero_ohm.tail(), sep='\n')
+```
+
+We can simply generate the temperature using a range object:
+```{python}
+belowzero_temperature = pd.Series(range(-200, 1)) # range stop is exlusiv
+print(belowzero_temperature.head(), belowzero_temperature.tail(), sep = '\n')
+```
+
+For temperatures above 0 degrees, the procedure can be simplified, since the file has the same structure and the values are sorted in ascending order.
+
+```{python}
+abovezero = pd.read_csv(filepath_or_buffer = filepath_abovezero, sep = ',', decimal = ',', header = 0, skiprows = 1, index_col = 0)
+
+abovezero_ohm = pd.Series(abovezero.to_numpy().flatten()).dropna()
+print(abovezero_ohm.head(), abovezero_ohm.tail(), sep = '\n')
+```
+
+Both datasets contain an entry for 0 degrees temperature, so this can be removed from the second dataset.
+```{python}
+abovezero_ohm = abovezero_ohm[1:]
+print(abovezero_ohm.head(), abovezero_ohm.tail(), sep='\n')
+```
+
+The temperature is again generated using a range object.
+
+```{python}
+abovezero_temperature = pd.Series(range(1, 851)) # range stop is exclusive
+```
+
+The Series created from both datasets can be combined:
+
+```{python}
+pt100 = pd.DataFrame({'Temperature': pd.concat([belowzero_temperature, abovezero_temperature], ignore_index = True), 'Ohm': pd.concat([belowzero_ohm, abovezero_ohm], ignore_index = True)})
+print(pt100.head(), pt100.tail(), sep = '\n')
+
+print(pt100.info())
+```
+
+
+
+
+:::
+
+### Visualizing Non-Linearity
+
+Using the data from @tip-pt100, the sensor's non-linearity can be illustrated.
+
+```{python}
+#| fig-alt: "Plot of temperature in degrees Celsius on the x-axis and electrical resistance in ohms on the y-axis"
+
+plt.plot(pt100['Temperature'], pt100['Ohm'], marker = 'o', linestyle = '', label = 'electrical resistance', alpha = 0.6)
+plt.plot([pt100['Temperature'].iloc[0], pt100['Temperature'].iloc[-1]], [pt100['Ohm'].iloc[0], pt100['Ohm'].iloc[-1]], linewidth = 2, label = 'reference line')
+plt.yticks(pt100['Ohm'][::50]);
+
+plt.xlabel('Temperature in °C')
+plt.ylabel('Electrical resistance in Ohm')
+plt.grid()
+plt.legend()
+
+plt.show()
+
+```
+
+&nbsp;
+
+It is noticeable that the data contains a missing value. The position of the missing value is determined using two Pandas methods. `pd.diff()` returns the difference of each value with its predecessor. `pd.idxmin()` returns the row index (more precisely, the label) of the smallest value. (If the missing value were above the line, `pd.idxmax()` would be used.)
+
+```{python}
+print(( missing_value_position := pt100['Ohm'].diff().idxmin() )) # := is the so-called walrus operator
+print(pt100.iloc[list(range(missing_value_position - 2, missing_value_position + 3))])
+```
+
+The correct value can be read from the DIN standard [@DIN60751, p. 26] (153.96). However, the value can also be interpolated (see example).
+
+::: {#nte-interpolieren .callout-note collapse="true"}
+
+## Interpolation
+
+The simplest form of interpolation is linear interpolation.
+
+```{python}
+interpolate_me = pt100.loc[missing_value_position - 1 : missing_value_position + 1, 'Ohm'].copy()
+interpolate_me[missing_value_position] = np.nan
+print(interpolate_me)
+
+print("linearly interpolated value:", interpolate_me.interpolate(), sep = "\n")
+```
+
+By rounding, the correct result is obtained (but one should not rely on this).
+
+```{python}
+print("linearly interpolated value:", interpolate_me.interpolate().round(2), sep = "\n")
+correct_value = interpolate_me.interpolate().round(2)[missing_value_position]
+```
+
+Another option is non-linear interpolation (which is not the focus of this module).
+
+:::: {#nte-nonlinear .callout-note collapse="true"}
+
+## Non-linear Interpolation
+
+Non-linear interpolation requires more data points. Let's try cubic interpolation:
+
+```{python}
+interpolate_me_again = pt100.loc[missing_value_position - 3 : missing_value_position + 4, 'Ohm'].copy()
+interpolate_me_again[missing_value_position] = np.nan
+print("polynomial interpolated value:", interpolate_me_again.interpolate(method='polynomial', order=3), sep="\n")
+```
+
+The result is not necessarily better.
+
+::::
+:::
+
+The missing value (whose position is determined in the example above) is corrected:
+
+```{python}
+pt100.loc[missing_value_position, 'Ohm'] = correct_value
+print(pt100.loc[missing_value_position - 1 : missing_value_position + 1, 'Ohm'])
+```
+
+Then the nonlinearity can be visualized again:
+
+```{python}
+#| fig-alt: "Plot of temperature in degrees Celsius on the x-axis and electrical resistance in Ohms on the y-axis"
+
+plt.plot(pt100['Temperature'], pt100['Ohm'], marker='o', linestyle='', label='electrical resistance', alpha=0.6)
+plt.plot([pt100['Temperature'].iloc[0], pt100['Temperature'].iloc[-1]], 
+         [pt100['Ohm'].iloc[0], pt100['Ohm'].iloc[-1]], 
+         linewidth=2, label='reference line')
+plt.yticks(pt100['Ohm'][::50]);
+
+plt.xlabel('Temperature in °C')
+plt.ylabel('Electrical resistance in Ohm')
+plt.grid()
+plt.legend()
+
+plt.show()
+```
+
+### Quantifying Nonlinearity
+
+Two methods for quantifying nonlinearity are the fixed-point method and the tolerance band method.
+
+::: {#imp-fixed-point-method .callout-important}
+
+## Fixed-Point Method
+
+The endpoints of the actual characteristic curve are connected by a straight line. The linearity error is the maximum deviation of the curve from this line. [@Dubbel2011, p. W2 (p. 1661)]
+:::
+
+First, we determine the predicted values of a line through the endpoints.
+
+```{python}
+#| fig-alt: "Plot showing temperature in degrees Celsius on the x-axis and electrical resistance in ohms on the y-axis"
+
+lm = poly.polyfit(
+  x = [pt100['Temperature'].iloc[0], pt100['Temperature'].iloc[-1]],
+  y = [pt100['Ohm'].iloc[0], pt100['Ohm'].iloc[-1]],
+  deg = 1)
+print(lm.round(2)) # intercept + slope
+
+predicted_values = poly.polyval(x = pt100['Temperature'], c = lm)
+
+plt.plot(pt100['Temperature'], pt100['Ohm'], marker = 'o', linestyle = '', label = 'electrical resistance', alpha = 0.6)
+plt.plot(pt100['Temperature'], predicted_values, linewidth = 2, label = 'predicted values from line connecting endpoints')
+plt.yticks(pt100['Ohm'][::50]);
+
+plt.xlabel('Temperature in °C')
+plt.ylabel('Electrical resistance in Ohms')
+plt.grid()
+plt.legend()
+
+plt.show()
+```
+
+&nbsp;
+
+From the difference between the measured electrical resistance and the linear predicted values, the maximum linearity error can be determined.
+
+```{python}
+linearity_error = (pt100['Ohm'] - predicted_values).abs().max()
+print(f"Linearity error using the fixed-point method: {linearity_error:.2f} Ohm.")
+```
+
+::: {#imp-tolerance-band-method .callout-important}
+
+## Tolerance Band Method
+
+In the tolerance band method, a line is placed through the measurement points such that the sum of the squared deviations of the points from this line (least squares method) or the largest single deviation ([Chebyshev approximation](https://en.wikipedia.org/wiki/Chebyshev_polynomials)) is minimized. The magnitude of the linearity error is the maximum perpendicular distance of the characteristic curve from this fitted line. [@Dubbel2011, p. W3 (p. 1662)]
+:::
+
+We have already introduced the principle of the least squares method.
+
+```{python}
+#| fig-alt: "Plot of temperature in degrees Celsius on the x-axis and electrical resistance in Ohms on the y-axis"
+
+lm = poly.polyfit(
+  x = pt100['Temperature'],
+  y = pt100['Ohm'],
+  deg = 1)
+print(lm.round(2)) # intercept + slope
+
+predicted_values = poly.polyval(x = pt100['Temperature'], c = lm)
+
+plt.plot(pt100['Temperature'], pt100['Ohm'], marker = 'o', linestyle = '', label = 'electrical resistance', alpha = 0.6)
+plt.plot(pt100['Temperature'], predicted_values, linewidth = 2, label = 'regression line')
+plt.yticks(pt100['Ohm'][::50]);
+
+plt.xlabel('Temperature in °C')
+plt.ylabel('Electrical resistance in Ohms')
+plt.grid()
+plt.legend()
+
+plt.show()
+```
+
+&nbsp;
+
+The maximum linearity error (= the largest residual) can be determined from the difference between the measured electrical resistance and the linear predicted values.
+```{python}
+linearity_error = (pt100['Ohm'] - predicted_values).abs().max()
+print(f"Linearity error according to tolerance band method: {linearity_error:.2f} Ohm.")
+```
+
+## Calibration and Adjustment
+The correction of linearity errors can be carried out in two ways: by calibrating or adjusting the measuring device.
+
+In the narrow sense, calibration refers to the determination of the relationship between measured values or their arithmetic mean and the agreed correct value of the measurand.
+
+::: {#imp-kalibrierung1 .callout-important}
+## Calibration according to DIN 1319
+
+"Determining the relationship between a measured value [...] or expected value [...] of the output quantity [...] and the corresponding true [...] or correct value [...] of the measurand that is present as the input quantity for a given measuring device [...]." [@DIN1319-1, p. 22]
+:::
+
+In a broader sense, calibration also includes "the creation of a correction table [...], the determination of calibration factors or an (empirical) calibration function" [@DIN1319-1, p. 22]. These are methods used to correct nonlinear measurement values without modifying the measuring device itself.
+
+In contrast, adjustment permanently alters the measuring device.
+
+::: {#imp-justierung .callout-important}
+## Adjustment according to DIN 1319
+
+"Setting or aligning a measuring device [...], in order to eliminate systematic measurement deviations [...] as far as required for the intended application." [@DIN1319-1, p. 22]
+:::
+
+## Calibration Methods
+DIN 1319 lists three calibration methods:
+
+1. Correction table,
+2. Determination of calibration factors, and
+3. Determination of an (empirical) calibration function.
+
+Which method is used depends on the application area, data availability, and the desired accuracy.
+
+... we could easily develop those. Calibration factors we probably can't obtain?!
+
+When should each method be used? See the document *Application of Correction Methods.docx*
+
+| Method                 | Applied when …                    | Advantages                       | Disadvantages                                       |
+| ---------------------- | --------------------------------- | -------------------------------- | ---------------------------------------------------- |
+| **Correction table**   | nonlinear, difficult to model     | easy to use                      | requires many data points; interpolation otherwise inaccurate |
+| **Calibration factors**| linear deviation                  | easy to implement                | insufficient for nonlinear behavior                  |
+| **Calibration function**| nonlinear, modelable             | very accurate                    | higher effort required                               |
+
+
+### Correction Table
+A correction table can represent arbitrary corrections, provided that sufficient data points are available.
+
+### Determination of Calibration Factors
+A calibration factor can be specified when a constant relative deviation is present (e.g. calibration factor 1.05 — see https://www.lanuk.nrw.de/fileadmin/lanuv/luft/immissionen/ber_trend/Aequivalenznachweis/AEquivalenztest_und_Faktorenbestimmung_2023.pdf p. 1).
+
+### Determination of an (Empirical) Calibration Function
+A calibration function allows the modeling of functional relationships (function — functional: oh really).
+
+no empirical calibration function **Example and illustration Pt100**
+
+## Miscellaneous
+
+
+(other error sources: [hysteresis](https://en.wikipedia.org/wiki/Hysteresis), drift, noise, or zero-offset drift)
+
+Methods for correction: Where is the variable transformation required to perform linear parameter estimation?
+
+1. Creation of a calibration curve/table:  
+   The sensor is measured at a series of known values (calibration points). These points are used to create an individual curve or table that represents the actual behavior of the sensor.
+
+2. Application of mathematical corrections:
+
+   - **Nonlinear regression:**  
+     A function (e.g. polynomial) is fitted to the calibration data. The difference between the measured values and the function is minimized to achieve the best possible fit. → **m-data-fitting-and-optimization**
+
+   - **Specific coefficients:**  
+     For certain sensor types, standard models with predefined coefficients are used.
+       - ITS-90 and Callendar–Van Dusen coefficients: For calibration of platinum sensors.  
+       - Steinhart–Hart coefficients: A common method for thermistors to compute temperature.
+
+A sufficient number of calibration points should be collected across the entire measurement range to ensure accurate representation of nonlinearity.
+
+Error compensation:  
+Through correction, zero-offset and span errors can be accounted for, improving the sensor's accuracy across its entire measurement range.

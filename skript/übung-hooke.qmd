@@ -1,0 +1,659 @@
+# Exercise: Hooke's Law
+
+Sensor data often come in multiple files. Possible reasons for this include measurements being taken
+
+* by different people,
+* at different locations,
+* at different times,
+* using different devices, or
+* for different measurement quantities.
+
+In the folder '01-daten/hooke', there are several txt files containing measurements of spring extension. In this chapter, you will apply what you have learned so far and answer the following questions:
+
+1. Are there any invalid measurements?
+2. What values can be determined for the spring constants?
+3. Were the measurements taken with the same spring (or with springs of the same spring constant) if a confidence level of 90% or 95% is assumed?
+
+In section @sec-read-files you will find guidance, and in section @sec-task-read a sample solution for reading the files. Afterwards, you are expected to work on the tasks independently. Section @sec-solution-data-prep provides a sample solution for data preprocessing. Section @sec-solution-spring-constants contains the sample solution for determining the spring constants.
+
+*Note: Depending on the approach chosen, different results may arise (for example, when evaluating and handling extreme values / outliers).*
+
+```{python}
+#| echo: false
+
+import numpy as np
+import numpy.polynomial.polynomial as poly
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy
+import glob
+```
+
+## Reading Files {#sec-reading-files}
+To read files, you can use the `glob` module (see [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-sensordatenanalyse/output/book/)).
+
+First, you can pass the argument `pathname = *` to the function `glob.glob()`. The wildcard `*` stands for any sequence of characters (except path elements like `/` or `.`), allowing you to list all files stored in the specified folder. This way, you can determine the number of files and their extensions if they are not yet known.
+
+```{python}
+folder_path = '01-daten/hooke'
+
+file_path_list = glob.glob(pathname='*', root_dir=folder_path, recursive=False)
+print(file_path_list)
+print(f"Number of files: {len(file_path_list)}")
+```
+
+Using the file paths, the files can be read into a list using a loop. Initially, only the first 3 rows of each file are read to get an impression of the file structure.
+```{python}
+for file_path in file_path_list:
+  temp_storage = pd.read_csv(filepath_or_buffer = folder_path + '/' + file_path, nrows = 3)
+  print(file_path, "\n", temp_storage, "\n", sep = '')
+```
+
+
+
+The files do not contain column headers and use the tab character `\t` as a delimiter. The first column contains a timestamp, the second the measured spring extension, and the third (presumably) the attached weight.
+
+## Task: Reading Files {#sec-task-reading}
+Now read in the files. While doing so, check:
+
+  - whether the data types are correctly interpreted, and 
+  - for missing values.
+
+You can:
+
+  a) Read each file individually.  
+  b) Use the `glob` module to read the files automatically and store each in a separate object (*Note:* This approach is demonstrated in the [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-sensordatenanalyse/output/book/)).  
+  c) Use the `glob` module to read the files automatically and merge them into a single file.
+
+These options require increasing levels of programming effort. The more separate files you want to analyze, the more automation is needed. Since sensor data analysis often involves numerous files, the model solution shows variant c).
+
+::: {#tip-stepwise .callout-tip collapse="false"}
+## Step-by-Step Approach
+Reading the files is likely to be the most time-consuming and error-prone step. Develop your solution step by step. Start with variant a). Once you have read the files, you can familiarize yourself with variant b) using the `glob` module. Building on that, variant c) allows you to automate the process for any number of files.
+:::
+
+::: {#tip-sample-files .callout-tip collapse="true"}
+## Model Solution: Reading Files
+The first attempt to read the files may fail with an error message. Therefore, the instructions are embedded in a try-except structure to catch the problematic file. (If multiple files cause errors, they would need to be stored in a list and processed later with a loop, if possible.)
+
+```{python}
+#| warning: false
+
+hooke = pd.DataFrame(columns = ['Time', 'Distance', 'Weight', 'Team']) # an empty DataFrame
+
+for path in file_path_list:
+
+  try:
+    temp_storage = pd.read_csv(filepath_or_buffer = folder_path + '/' + path, sep = '\t', names = ['Time', 'Distance', 'Weight'])
+
+    # Add filename as a column
+    temp_storage['Team'] = path[5:-4] # remove 'team_' and the file extension
+
+    hooke = pd.concat([hooke, temp_storage], ignore_index = True)
+  
+  except Exception as error:
+    print("Problematic file path: ", path, error, sep = "\n")
+    problem_file_path = path
+
+print(hooke.info(), "\n")
+print("Successfully read:\n", hooke['Team'].unique(), sep = '')
+```
+
+According to the error message, line 135 contains 4 columns instead of 3. Therefore, the file causing the error is processed line by line, and each line with more than 3 entries is printed. For verification, the first 5 lines are also displayed.
+
+```{python}
+# create an empty DataFrame with 3 columns
+
+df = pd.DataFrame(data = [], columns = ['Time', 'Distance', 'Weight'])
+
+problem_file_object = open(file = folder_path + '/' + problem_file_path, mode = 'r')
+
+index = 0
+for line in problem_file_object:
+  try:
+    buffer = line.split(sep = "\t")
+    if len(buffer) > 3:
+      print("Index =", index, ":", buffer)
+    elif index <= 5:
+      print(line)
+    index += 1
+  except Exception as error:
+    print(error)
+
+problem_file_object.close()
+```
+
+Every second line is empty. In line 134, a newline '\\n' is read. Therefore, the file is processed again using an adjusted loop. The extra newline '\\n' is removed from the relevant line. Empty lines are skipped. The correct lines are appended to the DataFrame 'hooke'.
+
+```{python}
+problem_file_object = open(file = folder_path + '/' + problem_file_path, mode = 'r')
+
+for line in problem_file_object:
+  try:
+    buffer = line.split(sep = "\t")
+    if len(buffer) > 3:
+      buffer = buffer[:3]
+    elif len(buffer) < 3:  # skip empty lines
+      continue
+    # Append team name as 4th column
+    buffer.append(problem_file_path[5:-4])  # remove 'team_' prefix and file extension
+
+
+    hooke.loc[len(hooke)] = pd.Series(buffer).values
+
+  except Exception as error:
+    print(error)
+    print(pd.Series(buffer).values)
+
+
+problem_file_object.close()
+
+print("Successfully read:\n", hooke['Team'].unique(), "\n", sep = '')
+print(hooke.info())
+```
+
+Next, we look at the rows that contain null values ...
+```{python}
+print(hooke.loc[hooke.apply(pd.isna).any(axis=1), :])
+```
+
+
+... and removed.
+```{python}
+hooke.drop(np.where(hooke.apply(pd.isna).any(axis=1))[0], inplace=True)
+```
+
+Next, the data types are checked.
+
+  - The time can remain as a string, since it is not needed for the analysis.
+  - The measured distance is noted with ' cm' – this string will be removed. Afterwards, the column should be recognized as numeric.
+  - The weight should contain numeric values, but is read in as an object type and needs further investigation.
+  - The Team column could be assigned the [Pandas category datatype](https://pandas.pydata.org/docs/user_guide/categorical.html), but this is not necessary.
+
+Remove the string ' cm'.
+```{python}
+hooke.replace(' cm', '', regex = True, inplace = True)
+```
+
+You can check if all elements of a column are numeric using the Pandas method `pd.Series.str.isnumeric()`. A look at the data shows the cause.
+```{python}
+print(hooke['Weight'].str.isnumeric().sum())
+
+print(hooke['Weight'].head())
+print(hooke['Weight'].tail())
+```
+
+The line breaks are also removed.
+```{python}
+hooke.replace('\n', '', regex=True, inplace=True)
+print(hooke['Weight'].str.isnumeric().sum())
+print(hooke['Weight'].tail())
+```
+
+```{python}
+print(hooke.info(), "\n")
+
+# explicit assignment
+
+hooke['Distance'] = hooke['Distance'].astype('float')
+hooke['Weight'] = hooke['Weight'].astype('float')
+
+print(hooke.info())
+```
+
+:::
+
+The result might look like this:
+```{python}
+hooke.groupby(by = ['Team', 'Weight'], sort = False)['Distance'].describe()
+```
+
+## Sample Solution: Data Preparation {#sec-solution-data-preparation}
+In the next step, the data will be checked and, if necessary, cleaned. This includes the following steps:
+
+  - checking for outliers (using studentized z-scores and visually) and cleaning if necessary,
+  - normalizing the distance measurement to the zero point and converting the units used to SI units, and
+  - graphical representation.
+
+::: {#wrn-globgroupby .callout-warning appearance="simple"}
+## glob, pd.groupby, and SciPy
+The execution of the following code may vary locally, depending on the order in which files are read using the glob module. In the following, index positions in a groupby object are determined where a condition is true. These index positions are then used to access the original DataFrame. Pandas sorts the groups in a groupby object alphabetically by default (`sort=True`). If the files read with glob are not in alphabetical order, incorrect index positions may be used to access the DataFrame.
+
+This can be avoided either by sorting the DataFrame according to the groupby criteria or, as shown here, by using the argument `pd.groupby(by=condition, sort=False)`. The latter approach is more flexible.
+
+Also, `scipy.stats.zscore()` may return either a `pd.Series` or a `np.array` depending on the version. Accordingly, methods from Pandas or NumPy should be used.
+
+:::
+
+1. **Are there invalid measurements?**
+
+### Checking for Outliers
+Outliers can be checked (among other methods) using studentized z-scores and visually.
+
+::: {.panel-tabset}
+
+## Determining Outliers
+1. Determine the number of outliers and display their positions.
+```{python}
+# Find z-scores greater than or equal to abs(3)
+## Solution for SciPy 1.14.1 (returns pd.Series)
+## z_values_ge3_sum = hooke.groupby(by=['Team', 'Weight'])['Distance'].apply(lambda x: scipy.stats.zscore(x, ddof=1)).abs().ge(3).sum()
+
+## Solution for SciPy 1.15 and later (returns np.array)
+z_values_ge3_sum = hooke.groupby(by=['Team', 'Weight'], sort=False)['Distance'].apply(scipy.stats.zscore, ddof=1).apply(np.abs).apply(lambda x: np.greater_equal(x, 3)).apply(sum).sum()
+
+print("Number of studentized z-scores with absolute value ≥ 3:", z_values_ge3_sum, "\n")
+
+# Find z-scores greater than or equal to abs(2.5)
+## Solution for SciPy 1.14.1 (returns pd.Series)
+## z_values_ge25_sum = hooke.groupby(by=['Team', 'Weight'])['Distance'].apply(lambda x: scipy.stats.zscore(x, ddof=1)).abs().ge(2.5).sum()
+
+## Solution for SciPy 1.15 and later (returns np.array)
+z_values_ge25_sum = hooke.groupby(by=['Team', 'Weight'], sort=False)['Distance'].apply(scipy.stats.zscore, ddof=1).apply(np.abs).apply(lambda x: np.greater_equal(x, 2.5)).apply(sum).sum()
+print("Number of studentized z-scores with absolute value ≥ 2.5:", z_values_ge25_sum)
+
+# Display rows with z-scores greater than abs(2.5)
+## Solution for SciPy 1.14.1 (returns pd.Series)
+## bool_index = hooke.groupby(by=['Team', 'Weight'])['Distance'].apply(lambda x: scipy.stats.zscore(x, ddof=1)).abs().ge(2.5).values
+
+## Solution for SciPy 1.15 and later (returns np.array)
+### Step 1: Capture boolean values
+bool_index = hooke.groupby(by=['Team', 'Weight'], sort=False)['Distance'].apply(scipy.stats.zscore, ddof=1).apply(np.abs).apply(lambda x: np.greater_equal(x, 2.5)).values
+### Step 2: Flatten to a 1D array
+bool_index = np.hstack(bool_index)
+
+print("\nOutliers are located at these index positions:", np.nonzero(bool_index))
+```
+
+2. Output of the lines from the measurement series
+```{python}
+# Selecting rows with z-values greater than or equal to 2.5
+z_values_ge_25 = hooke.iloc[bool_index , :]  # --> The problem is likely here
+print(z_values_ge_25, "\n")
+
+# Determine combinations of Weight & Team
+
+print("Determining combinations of Weight & Team")
+teams = z_values_ge_25['Team'].unique()
+
+## Iterate through teams and store corresponding weights
+
+team_weights = []  # empty list
+for i in range(len(teams)):
+  print(teams[i])
+  print(z_values_ge_25.loc[z_values_ge_25['Team'] == teams[i], 'Weight'], "\n")
+  team_weights.append(z_values_ge_25.loc[z_values_ge_25['Team'] == teams[i], 'Weight'].values)
+
+# print("As a list of arrays:")
+
+# print(team_weights, "\n")
+```
+
+## Combined Output of Measurement Series
+
+This output is intended for illustration and verification.
+
+```{python}
+# Select measurement series
+measurement_series = pd.DataFrame()
+for i in range(len(teams)):
+    for j in range(len(team_weights[i])):
+
+        print(teams[i], team_weights[i][j])
+
+        measurement_series = pd.concat([
+            hooke.loc[
+                (hooke['Team'] == teams[i]) & (hooke['Weight'] == team_weights[i][j])
+            ]
+        ])
+
+# Compute studentized z-scores of the measurement series
+## Solution for SciPy 1.14.1 (returns pd.Series)
+## measurement_series_z_scores = measurement_series.groupby(by=['Team', 'Weight'])['Distance'].apply(lambda x: scipy.stats.zscore(x, ddof=1)).reset_index(drop=True)
+
+## Solution for SciPy 1.15 and newer (returns np.array)
+## Convert row-wise return to a one-dimensional array:
+measurement_series_z_scores = np.hstack(
+    measurement_series.groupby(by=['Team', 'Weight'], sort=False)['Distance']
+    .apply(lambda x: scipy.stats.zscore(x, ddof=1))
+    .reset_index(drop=True)
+)
+
+# Combined output of the data
+## Solution for SciPy 1.14.1 (returns pd.Series)
+## measurement_series.insert(loc=2, column='z-Score Distance', value=measurement_series_z_scores.values)
+
+## Solution for SciPy 1.15 and newer (returns np.array)
+measurement_series.insert(loc=2, column='z-Score Distance', value=measurement_series_z_scores)
+print(measurement_series)
+```
+
+:::
+
+The values can be visualized easily using the Pandas method `pd.plot()`. However, this method is not as flexible as the matplotlib package. For example, a scatter plot (`kind = 'scatter'`) is only available for DataFrames, not for groupby objects. This can be worked around by setting a marker and setting the line width to 0.
+
+```{python}
+#| fig-alt: "Graphical representation of the measurement series containing studentized z-values >= 2.5."
+
+measurement_series.reset_index(drop = True).groupby(by = ['Team', 'Weight'], sort = False)['Distance'].plot(marker = 'o', lw = 0)
+
+plt.xlabel('Measurement')
+plt.ylabel('Distance')
+plt.legend()
+
+plt.show()
+```
+
+&nbsp;
+
+Values with absolute studentized z-scores $\ge$ 2.5 could be considered outliers and removed. In this case, they are retained.
+
+### Conversion of Measurement Quantities
+In the next step, the distance measurements are normalized to the zero point to represent the spring elongation. Similarly, the weight in $g$ is converted into the acting force in 
+$N$.
+
+::: {#tip-units .callout-tip collapse="true"}
+## Example Solution
+
+#### Normalize Distance Measurements to Meters and Zero Point
+Normalize distance measurements to the zero point. Rename the column `Distance` to `Distance_Change`.
+
+```{python}
+zero_points = hooke.loc[hooke['Weight'] == 0, : ].groupby(by = 'Team', sort = False)['Distance'].mean()
+
+print("Zero points", zero_points, sep = '\n')
+
+teams = zero_points.index
+
+for i in range(len(teams)):
+
+  hooke.loc[hooke['Team'] == teams[i] , 'Distance'] = hooke.loc[hooke['Team'] == teams[i] , 'Distance'].sub(zero_points.values[i]).mul(-1)
+
+hooke.rename(columns = {'Distance': 'Distance_Change'}, inplace = True)
+hooke['Distance_Change'] = hooke['Distance_Change'].div(100)
+```
+
+#### Convert Weight to Acting Force
+Convert weight in $g$ to the acting force in $N$. The column will be added to the dataset.
+
+```{python}
+hooke['Force'] = hooke['Weight'].div(1000).mul(9.81)
+```
+
+:::
+
+The result might look like this. The column `Distance` was renamed to `Distance_Change`.
+
+```{python}
+hooke.groupby(by = ['Team', 'Force'], sort = False)['Distance_Change'].describe()
+```
+
+### Graphical Representation
+Since there are only four teams, the measurements can be visualized graphically. One possible representation can be found in the first tab, with intermediate steps and conclusions in the following tabs.
+
+::: {.panel-tabset}
+
+## Graphical Representation
+
+```{python}
+#| echo: false
+#| fig-alt: "The x-axis shows spring extension in meters, the y-axis shows the applied force in Newtons. In addition to the data points, the mean for each weight is marked with a large X, and the range ± 1 standard error from the mean is shown."
+
+num_teams = hooke['Team'].unique().size
+
+plt.figure(figsize = (7.5, 12))
+for i in range(num_teams):
+  
+  plt.subplot(4, 1, i + 1) # plt.subplot counts from 1
+
+  # Scatter plot
+  plotting_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+  plt.scatter(x = plotting_data['Distance_Change'], y = plotting_data['Force'], alpha = 0.6)
+
+  plt.title(label = hooke['Team'].unique()[i])
+  plt.xlabel("Spring extension in m")
+  plt.ylabel("Applied force in N")
+
+  # Error bars
+  distance_means_by_force = plotting_data.groupby(by = plotting_data['Force'], sort = False)['Distance_Change'].mean()
+  distance_stderrors_by_force = plotting_data.groupby(by = plotting_data['Force'], sort = False)['Distance_Change'].std(ddof = 1).div(
+      np.sqrt(plotting_data['Distance_Change'].groupby(by = plotting_data['Force'], sort = False).size())
+  )
+
+  errorbar_container = plt.errorbar(
+      x = distance_means_by_force,
+      y = distance_means_by_force.index,
+      xerr = distance_stderrors_by_force,
+      linestyle = 'none',
+      marker = 'x',
+      color = 'black',
+      markersize = 12,
+      elinewidth = 3,
+      ecolor = 'red',
+      capsize = 12
+  )
+
+  # see: https://matplotlib.org/stable/api/container_api.html#matplotlib.container.ErrorbarContainer
+  plt.legend(
+      [errorbar_container.lines[0], errorbar_container.lines[2][0]],
+      ['Mean', 'Standard error'],
+      loc = 'upper left'
+  )
+
+plt.tight_layout()
+plt.show()
+```
+
+## Calculating Means and Standard Errors
+The output is limited to the first few rows for space reasons.
+```{python}
+#| echo: false
+
+## Calculate Means and Standard Errors
+
+# Output is limited to the first few rows for space reasons
+
+# Means of teams by force
+
+distance_means_by_team_and_force = hooke.groupby(by = [hooke['Team'], hooke['Force']], sort = False)['Distance_Change'].mean()
+distance_means_by_team_and_force.name = 'SpringExtension'
+
+print("Means of distance change by team and force:", distance_means_by_team_and_force.head(), sep = '\n')
+
+print() # empty line
+
+# Standard errors of teams by force
+
+distance_stderrors_by_team_and_force = hooke.groupby(by = [hooke['Team'], hooke['Force']], sort = False)['Distance_Change'].std(ddof = 1).div(np.sqrt(hooke['Distance_Change'].groupby(by = [hooke['Team'], hooke['Force']], sort = False).size()))
+distance_stderrors_by_team_and_force.name = 'StandardError'
+
+print("Standard errors of means by team and force", distance_stderrors_by_team_and_force.head(), sep = '\n')
+```
+
+## Code
+
+```{python}
+#| output: false
+
+# Mean values of teams by force
+
+distance_means_by_team_and_force = hooke.groupby(by = [hooke['Team'], hooke['Force']], sort = False)['Distance_Change'].mean()
+distance_means_by_team_and_force.name = 'SpringExtension'
+
+print("Mean values of distance change by team and force:", distance_means_by_team_and_force.head(), sep = '\n')
+
+print() # empty line
+
+# Standard errors of teams by force
+
+distance_stderrors_by_team_and_force = hooke.groupby(by = [hooke['Team'], hooke['Force']], sort = False)['Distance_Change'].std(ddof = 1).div(np.sqrt(hooke['Distance_Change'].groupby(by = [hooke['Team'], hooke['Force']], sort = False).size()))
+distance_stderrors_by_team_and_force.name = 'StandardError'
+
+print("Standard errors of the means by team and force", distance_stderrors_by_team_and_force.head(), sep = '\n')
+
+# graphical representation
+
+num_teams = hooke['Team'].unique().size
+
+plt.figure(figsize = (7.5, 12))
+for i in range(num_teams):
+
+  plt.subplot(4, 1, i + 1) # plt.subplot counts from 1
+
+  # scatter plot
+
+  plotting_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+  plt.scatter(x = plotting_data['Distance_Change'], y = plotting_data['Force'], alpha = 0.6)
+
+  plt.title(label = hooke['Team'].unique()[i])
+  plt.xlabel("Spring extension in m")
+  plt.ylabel("Applied force in N")
+
+  # # error bars
+
+  distance_means_by_force = plotting_data.groupby(by = plotting_data['Force'], sort = False)['Distance_Change'].mean()
+  distance_stderrors_by_force = plotting_data.groupby(by = plotting_data['Force'], sort = False)['Distance_Change'].std(ddof = 1).div(np.sqrt(plotting_data['Distance_Change'].groupby(by = plotting_data['Force'], sort = False).size()))
+
+  errorbar_container = plt.errorbar(x = distance_means_by_force, y = distance_means_by_force.index, xerr = distance_stderrors_by_force,
+  linestyle = 'none', marker = 'x', color = 'black', markersize = 12, elinewidth = 3, ecolor = 'red', capsize = 12)
+
+  # see: [https://matplotlib.org/stable/api/container_api.html#matplotlib.container.ErrorbarContainer](https://matplotlib.org/stable/api/container_api.html#matplotlib.container.ErrorbarContainer)
+
+  plt.legend([errorbar_container.lines[0], errorbar_container.lines[2][0]],
+  ['Mean', 'Standard Error'],
+  loc = 'upper left')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Evaluation
+
+- The measurement series of the team *die_ahnungslosen* matches the expected linear trend.
+- For team *fabi*, there seems to be an error in data collection for the first attached weight (50 grams). It was probably measured as 0 grams by mistake.
+- The measurement series of the team *kreativköpfe* largely follows the expected linear trend.
+- The measurement series of the team *ma* appears to be affected by significant measurement errors, at least for the first four attached weights.
+
+The measurement series of team *ma* will be removed from the dataset due to major measurement errors. For team *fabi*, the measurement for the 50-gram weight will be removed.
+
+```{python}
+hooke.drop(index = hooke.loc[hooke['Team'] == 'ma', :].index, inplace = True)
+hooke.drop(index = hooke.loc[(hooke['Team'] == 'fabi') & (hooke['Weight'] == 50), :].index, inplace = True)
+```
+
+:::
+
+&nbsp;
+
+::: {#tip-manydatasets .callout-tip}
+## Approach for Large Numbers of Datasets
+When dealing with a large number of datasets, graphical inspection alone can reach its limits. In this case, it is recommended to combine visual and metric-based methods to identify patterns and verify them across many measurements. For example, after a visual inspection of measurement series with extreme values or outliers, all series could be checked to see if the mean spring elongation increases with increasing weight, as expected. Deviating series could then be further checked graphically.
+:::
+
+## Sample Solution: Determining Spring Constants {#sec-solution-springconstants}
+The next step is to determine the spring constants using linear regression.
+
+2. **What values can be determined for the spring constants?**  
+3. **Were the measurements performed with the same spring, assuming a confidence level of 90% or 95%?**
+
+::: {.panel-tabset}
+## $\alpha = 0.10$
+```{python}
+#| echo: false
+
+num_teams = hooke['Team'].unique().size
+alpha = 0.10
+
+for i in range(num_teams):
+
+  reg_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+  x = reg_data['Distance_Change']
+  y = reg_data['Force']
+  n = len(x)
+  
+  print("\n", hooke['Team'].unique()[i], " Confidence Level: ", 1 - alpha, sep = '')
+
+  slope, intercept, rvalue, pvalue, slope_stderr = scipy.stats.linregress(x, y)
+  print(f"y = {intercept:.4f} + {slope:.4f} * x\n",
+        f"r = {rvalue:.4f} R2 = {rvalue ** 2:.4f} p = {pvalue:.4f}\n",
+        f"Standard error of the slope: {slope_stderr:.4f}", sep = '')
+
+  print(f"{slope - scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}  ≤ {slope:.3f} ≤ {slope + scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}")
+```
+
+## $\alpha = 0.05$
+
+```{python}
+#| echo: false
+
+num_teams = hooke['Team'].unique().size
+alpha = 0.05
+
+for i in range(num_teams):
+
+    reg_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+    x = reg_data['Distance_Change']
+    y = reg_data['Force']
+    n = len(x)
+  
+    print("\n", hooke['Team'].unique()[i], " Confidence level: ", 1 - alpha, sep = '')
+
+    slope, intercept, rvalue, pvalue, slope_stderr = scipy.stats.linregress(x, y)
+    print(f"y = {intercept:.4f} + {slope:.4f} * x\n",
+          f"r = {rvalue:.4f} R2 = {rvalue ** 2:.4f} p = {pvalue:.4f}\n",
+          f"Standard error of the slope: {slope_stderr:.4f}", sep = '')
+
+    print(f"{slope - scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}  ≤ {slope:.3f} ≤ {slope + scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}")
+```
+
+## Code
+```{python}
+#| output: false
+
+num_teams = hooke['Team'].unique().size
+alpha = 0.10
+
+for i in range(num_teams):
+
+  reg_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+  x = reg_data['Distance_Change']
+  y = reg_data['Force']
+  n = len(x)
+
+  print("\n", hooke['Team'].unique()[i], " Confidence Level: ", 1 - alpha, sep='')
+
+  slope, intercept, rvalue, pvalue, slope_stderr = scipy.stats.linregress(x, y)
+  print(f"y = {intercept:.4f} + {slope:.4f} * x\n",
+  f"r = {rvalue:.4f} R2 = {rvalue ** 2:.4f} p = {pvalue:.4f}\n",
+  f"Standard Error of Slope: {slope_stderr:.4f}", sep='')
+
+  print(f"{slope - scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}  ≤ {slope:.3f} ≤ {slope + scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}")
+
+alpha = 0.05
+
+for i in range(num_teams):
+
+  reg_data = hooke.loc[hooke['Team'] == hooke['Team'].unique()[i], :]
+  x = reg_data['Distance_Change']
+  y = reg_data['Force']
+  n = len(x)
+
+  print("\n", hooke['Team'].unique()[i], " Confidence Level: ", 1 - alpha, sep='')
+
+  slope, intercept, rvalue, pvalue, slope_stderr = scipy.stats.linregress(x, y)
+  print(f"y = {intercept:.4f} + {slope:.4f} * x\n",
+  f"r = {rvalue:.4f} R2 = {rvalue ** 2:.4f} p = {pvalue:.4f}\n",
+  f"Standard Error of Slope: {slope_stderr:.4f}", sep='')
+
+  print(f"{slope - scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}  ≤ {slope:.3f} ≤ {slope + scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}")
+```
+
+## Evaluation
+The point estimate of the spring constant for Team fabi 34.105 lies within the 95% confidence interval of Team die_ahnungslosen' measurement 33.998 ≤ 34.918 ≤ 35.838. However, the point estimate of the spring constant for Team fabi 34.105 **does not lie within the 90% confidence interval** of Team die_ahnungslosen' measurement 34.148 ≤ 34.918 ≤ 35.689.
+
+Regardless of the chosen confidence level, the point estimate of the spring constant for Team kreativkoepfe 29.764 does not lie within the confidence intervals of the other two teams.
+
+:::: {#wrn-results .callout-warning appearance="simple"}
+## Results
+Depending on the chosen approach, different outcomes are possible, for example by removing individual values classified as outliers or by treating Team fabi's measurement series for the attached 50-gram weight differently.
+::::

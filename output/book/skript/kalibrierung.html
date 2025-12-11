@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Kalibrierung – Bausteine Computergestützter Datenanalyse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../skript/übung-hooke.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-f67a6f502b8d980179456538afc82e6f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
+<link rel="icon" type="image/x-icon" href="logo.ico">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/kalibrierung.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kalibrierung</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Suchen" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../skript/00-bilder/logo_with_text_new.svg" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../skript/00-bilder/logo_with_text_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Methodenbaustein Sensordatenanalyse</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Suchen"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Methodenbaustein Sensordatenanalyse</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/einleitung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Das Prinzip von Messungen</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/normalverteilung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Die Normalverteilung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/lineare-parameterschätzung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Lineare Parameterschätzung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/fehlerrechnung.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Fehlerrechnung</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/übung-hooke.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Übung Hooke’sches Gesetz</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../skript/kalibrierung.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kalibrierung</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+   
+  <ul>
+  <li><a href="#beispiel-pt100" id="toc-beispiel-pt100" class="nav-link active" data-scroll-target="#beispiel-pt100"><span class="header-section-number">6.1</span> Beispiel Pt100</a>
+  <ul class="collapse">
+  <li><a href="#aufgabe-pt100-tabelle-einlesen" id="toc-aufgabe-pt100-tabelle-einlesen" class="nav-link" data-scroll-target="#aufgabe-pt100-tabelle-einlesen">Aufgabe Pt100-Tabelle einlesen</a></li>
+  <li><a href="#nicht-linearität-darstellen" id="toc-nicht-linearität-darstellen" class="nav-link" data-scroll-target="#nicht-linearität-darstellen">Nicht-Linearität darstellen</a></li>
+  <li><a href="#nicht-linearität-quantifizieren" id="toc-nicht-linearität-quantifizieren" class="nav-link" data-scroll-target="#nicht-linearität-quantifizieren">Nicht-Linearität quantifizieren</a></li>
+  </ul></li>
+  <li><a href="#kalibrieren-und-justieren" id="toc-kalibrieren-und-justieren" class="nav-link" data-scroll-target="#kalibrieren-und-justieren"><span class="header-section-number">6.2</span> Kalibrieren und Justieren</a></li>
+  <li><a href="#kalibriermethoden" id="toc-kalibriermethoden" class="nav-link" data-scroll-target="#kalibriermethoden"><span class="header-section-number">6.3</span> Kalibriermethoden</a>
+  <ul class="collapse">
+  <li><a href="#korrektionstabelle" id="toc-korrektionstabelle" class="nav-link" data-scroll-target="#korrektionstabelle">Korrektionstabelle</a></li>
+  <li><a href="#ermittlung-von-kalibrierfaktoren" id="toc-ermittlung-von-kalibrierfaktoren" class="nav-link" data-scroll-target="#ermittlung-von-kalibrierfaktoren">Ermittlung von Kalibrierfaktoren</a></li>
+  <li><a href="#ermittlung-einer-empirischen-kalibrierfunktion" id="toc-ermittlung-einer-empirischen-kalibrierfunktion" class="nav-link" data-scroll-target="#ermittlung-einer-empirischen-kalibrierfunktion">Ermittlung einer (empirischen) Kalibrierfunktion</a></li>
+  </ul></li>
+  <li><a href="#resterampe" id="toc-resterampe" class="nav-link" data-scroll-target="#resterampe"><span class="header-section-number">6.4</span> Resterampe</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Kalibrierung</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Bei einer idealen Messung hängt der gesuchte Wert linear vom gemessenen Wert ab. Viele analoge Sensoren reagieren aufgrund von Materialeigenschaften oder abhängig von der Temperatur nicht linear auf die gemessene Größe. Das heißt, die Messwerte sind nicht direkt proportional zur Messgröße. Dieser sogenannte <strong>Linearitätsfehler</strong> muss korrigiert werden, um genau zu messen.</p>
+<p>Dafür gibt es zwei Möglichkeiten. Zum einen können nicht lineare Verfahren zur Parameterschätzung verwendet werden, was im <a href="https://bausteine-der-datenanalyse.github.io/m-datenfitting-und-optimierung/output/book/">Methodenbaustein Datenfitting und Datenoptimierung</a> behandelt wird. Zum anderen kann der Liniearitätsfehler korrigiert werden, um mit den leichter zu handhabenden linearen Verfahren der Parameterschätzung arbeiten zu können. Die Korrektion von Linearitätsfehlern wird in diesem Kapitel behandelt.</p>
+<p><strong>Daten von einer anderen Messung: Andres Fahrradsensor misst immer 3 Grad zu viel, weil das Display Abwärme macht (Offset-Fehler).</strong></p>
+<section id="beispiel-pt100" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="beispiel-pt100"><span class="header-section-number">6.1</span> Beispiel Pt100</h2>
+<p>Das Pt100 ist ein Platin-Widerstandsthermometer (Pt = Platin) mit einem definierten Widerstandswert von <span class="math inline">\(100 \Omega\)</span> bei einer Temperatur von 0°C (daher der Name Pt<strong>100</strong>). Der Widerstand eines Pt100 steigt mit der Temperatur. Bei 100 °C beträgt der Widerstand beispielsweise <span class="math inline">\(138,51 \Omega\)</span>. Der Zusammenhang zwischen der Eingangsgröße, dem elektrischen Widerstand, und der so gemessenen Temperatur ist jedoch nur näherungsweise linear.</p>
+<p>Die Eigenschaften eines Pt100 Widerstandes sind in der Norm DIN EN IEC 60751 <span class="citation" data-cites="DIN60751">(<a href="#ref-DIN60751" role="doc-biblioref">Deutsches Institut für Normung 2023</a>)</span> festgelegt. Dort wird der Zusammenhang durch zwei Polynome für den Temperaturbereich von -200 °C bis 0 °C und für den Temperaturbereich von 0 °C bis 850 °C beschrieben.</p>
+<p>Für den Temperaturbereich –200 °C bis 0 °C: <span class="math display">\[
+R_T = R_0 \cdot \left(1 + A \cdot T + B \cdot T^2 + C \cdot (T - 100 ^\circ\text{C}) \cdot T^3\right)
+\]</span></p>
+<p>Für den Temperaturbereich von 0 °C bis +850 °C: <span class="math display">\[
+R_T = R_0 \cdot \left(1 + A \cdot T + B \cdot T^2\right)
+\]</span></p>
+<p>Dabei gilt:</p>
+<ul>
+<li><p><span class="math inline">\(R_T\)</span> ist der Widerstand bei der Temperatur <span class="math inline">\(T\)</span>,</p></li>
+<li><p><span class="math inline">\(R_0\)</span> ist der Widerstand bei <span class="math inline">\(0^\circ\text{C}\)</span>,</p></li>
+<li><p><span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> und <span class="math inline">\(C\)</span> sind Konstanten, die den spezifischen Charakter des Sensors beschreiben. Dabei sind:</p>
+<ul>
+<li><span class="math inline">\(A = 3.9083 \times 10^{-3} ~ {^\circ\text{C}}^{-1}\)</span></li>
+<li><span class="math inline">\(B = -5.775 \times 10^{-7} ~ {^\circ\text{C}}^{-2}\)</span></li>
+<li><span class="math inline">\(C = -4.183 \times 10^{-12} ~ {^\circ\text{C}}^{-4}\)</span></li>
+</ul></li>
+</ul>
+<p><span class="citation" data-cites="DIN60751">(<a href="#ref-DIN60751" role="doc-biblioref">Deutsches Institut für Normung 2023, 13</a>)</span></p>
+<p>Im Anhang der Norm befinden sich Tabellen, die die Beziehung zwischen Temperatur und gemessenem Widerstand wiedergeben. Das Format der Tabellen, erlaubt es, aus einem gemessenen Widerstandswert schnell die gemessene Temperatur zu ermitteln. Dazu sind in der ersten Spalte die Temperaturen in Zehnerschritten, in den folgenden zehn Spalten die Einerstelle eingetragen. Für Temperaturen unter Null ist die Einerstelle jeweils zu subtrahieren (erkennbar am Vorzeichen <span class="math inline">\(-\)</span>), für Temperaturen über Null dagegen zu addieren (erkennbar am Vorzeichen <span class="math inline">\(+\)</span>). Eine zusammengefasste Darstellung finden Sie zum Beispiel <a href="https://s8b8d6a7.delivery.rocketcdn.me/wp-content/uploads/2022/08/Pt100-Tabelle-Screen.pdf">hier</a>.</p>
+<div id="fig-pt100" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Ausschnitt der Tabelle A.1. Für die Temperaturen von -200 bis -170 Grad Celsius sind in 1-Grad-Schritten die von einem Pt100 gemessenen Widerstandswerte eingetragen.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pt100-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="00-bilder/pt100-table-din60751.png" class="img-fluid figure-img" alt="Ausschnitt der Tabelle A.1. Für die Temperaturen von -200 bis -170 Grad Celsius sind in 1-Grad-Schritten die von einem Pt100 gemessenen Widerstandswerte eingetragen.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pt100-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Abbildung&nbsp;6.1: Ausschnitt der Tabelle A.1
+</figcaption>
+</figure>
+</div>
+<p><span class="citation" data-cites="DIN60751">(<a href="#ref-DIN60751" role="doc-biblioref">Deutsches Institut für Normung 2023, 25</a>)</span></p>
+<p>Die Notation <span class="math inline">\(t_{90} / °C\)</span> beruht auf der Internationalen Temperaturskala ITS-90 von 1990, die Temperaturen <span class="math inline">\(T_{90}\)</span> in Kelvin und <span class="math inline">\(t_{90}\)</span> in Grad Celsius definiert. Die Notation zeigt also an, dass in der Tabelle Angaben in Grad Celsius stehen.(<span class="citation" data-cites="DIN60751">Deutsches Institut für Normung (<a href="#ref-DIN60751" role="doc-biblioref">2023</a>)</span>, S. 10)</p>
+<section id="aufgabe-pt100-tabelle-einlesen" class="level3">
+<h3 class="anchored" data-anchor-id="aufgabe-pt100-tabelle-einlesen">Aufgabe Pt100-Tabelle einlesen</h3>
+<p>Für die Datenanalyse ist das tabellarische Format weniger geeignet. Die <a href="https://s8b8d6a7.delivery.rocketcdn.me/wp-content/uploads/2022/08/Pt100-Tabelle-Screen.pdf">hier</a> zusammengefasste Darstellung wurde in zwei CSV-Dateien kopiert. Lesen Sie die Dateien so ein, dass der elektrische Widerstand und die Temperatur jeweils eine aufsteigende Datenreihe bilden (z. B. als Liste, NumPy-Array oder eine Pandas-Datenstruktur). Die Dateipfade lauten:</p>
+<pre class="{raw}"><code>'skript/01-daten/pt100-table-below-zero.csv'
+'skript/01-daten/pt100-table-below-zero.csv'</code></pre>
+<p><strong>Marc kann eine weitere Musterlösung versuchen</strong></p>
+<div id="tip-pt100" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tipp&nbsp;6.1: Musterlösung Pt100-Tabelle einlesen
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div id="49ac0b4c" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>dateipfad_belowzero <span class="op">=</span> <span class="st">'01-daten/pt100-table-below-zero.csv'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dateipfad_abovezero <span class="op">=</span> <span class="st">'01-daten/pt100-table-above-zero.csv'</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Dateien einlesen und betrachten. Zunächst die Datei mit Temperaturen unter 0 Grad Celsius.</p>
+<div id="be75dd8e" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># belowzero</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>belowzero <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> dateipfad_belowzero, sep <span class="op">=</span> <span class="st">','</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero.tail())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Temperatur in °C Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5  \
+0               NaN          0         -1         -2         -3         -4   
+1            -200.0      18,52        NaN        NaN        NaN        NaN   
+2            -190.0      22,83       22,4      21,97      21,54      21,11   
+3            -180.0       27,1      26,67      26,24      25,82      25,39   
+4            -170.0      31,34      30,91      30,49      30,07      29,64   
+
+  Unnamed: 6 Unnamed: 7 Unnamed: 8 Unnamed: 9 Unnamed: 10  
+0         -5         -6         -7         -8          -9  
+1        NaN        NaN        NaN        NaN         NaN  
+2      20,68      20,25      19,82      19,38       18,95  
+3      24,97      24,54      24,11      23,68       23,25  
+4      29,22       28,8      28,37      27,95       27,52   
+
+    Temperatur in °C Unnamed: 1 Unnamed: 2 Unnamed: 3 Unnamed: 4 Unnamed: 5  \
+17             -40.0      84,27      83,87      83,48      83,08      82,69   
+18             -30.0      88,22      87,83      87,43      87,04      86,64   
+19             -20.0      92,16      91,77      91,37      90,98      90,59   
+20             -10.0      96,09      95,69       95,3      94,91      94,52   
+21               0.0        100      99,61      99,22      98,83      98,44   
+
+   Unnamed: 6 Unnamed: 7 Unnamed: 8 Unnamed: 9 Unnamed: 10  
+17      82,29      81,89       81,5       81,1        80,7  
+18      86,25      85,85      85,46      85,06       84,67  
+19      90,19       89,8       89,4      89,01       88,62  
+20      94,12      93,73      93,34      92,95       92,55  
+21      98,04      97,65      97,26      96,87       96,48  </code></pre>
+</div>
+</div>
+<p>Es gibt 201 Werte (von -200 bis 0). Die Daten beginnen in der Zeile mit dem Index 1 (wenn die erste Zeile als header eingelesen wird). Diese enthält nur einen Eintrag in der Spalte ‘0’. Die folgenden Zeilen sind von rechts nach links einzulesen. Das Dezimaltrennzeichen ist das <code>,</code>.</p>
+<p>Das Einlesen der Daten von rechts nach links kann auf viele Arten bewerkstelligt werden. Eine einzeilige Lösung beginnt damit, der Methode <code>pd.iloc[::-1]</code> eine negative Schrittweite zu übergeben.</p>
+<div id="400d7b41" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(np.array([[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>], [<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>]]))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.iloc[::<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   0  1  2
+0  3  2  1
+1  6  5  4 
+
+   0  1  2
+1  6  5  4
+0  3  2  1</code></pre>
+</div>
+</div>
+<p>Das führt dazu, dass die <em>Zeilen</em> des DataFrame in umgekehrter Reihenfolge ausgegeben werden. Um die <em>Spalten</em> in umgekehrter Reihenfolge auszugeben, wird der DataFrame mit der Methode <code>pd.T</code> zwei mal transponiert.</p>
+<div id="a1e3fa88" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   2  1  0
+0  1  2  3
+1  4  5  6</code></pre>
+</div>
+</div>
+<p>Mit der NumPy-Methode <code>np.flatten()</code> kann ein Array in eine eindimensionale Struktur reduziert werden. Dafür wird mit der Methode <code>pd.to_numpy()</code> der DataFrame als NumPy-Array ausgegeben.</p>
+<div id="4f1c0dcf" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy())</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>() <span class="co"># leere Zeile</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1 2 3]
+ [4 5 6]]
+
+[1 2 3 4 5 6]</code></pre>
+</div>
+</div>
+<p>Versuchen wir es mit dem Kopf der Pt100-Daten.</p>
+<div id="dccd4699" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>belowzero <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> dateipfad_belowzero, sep <span class="op">=</span> <span class="st">','</span>, decimal <span class="op">=</span> <span class="st">','</span>, header <span class="op">=</span> <span class="dv">0</span>, skiprows <span class="op">=</span> <span class="dv">1</span>, index_col <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero.head())</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>() <span class="co"># leere Zeile</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero.head().T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          0     -1     -2     -3     -4     -5     -6     -7     -8     -9
+-200  18.52    NaN    NaN    NaN    NaN    NaN    NaN    NaN    NaN    NaN
+-190  22.83  22.40  21.97  21.54  21.11  20.68  20.25  19.82  19.38  18.95
+-180  27.10  26.67  26.24  25.82  25.39  24.97  24.54  24.11  23.68  23.25
+-170  31.34  30.91  30.49  30.07  29.64  29.22  28.80  28.37  27.95  27.52
+-160  35.54  35.12  34.70  34.28  33.86  33.44  33.02  32.60  32.18  31.76
+
+[  nan   nan   nan   nan   nan   nan   nan   nan   nan 18.52 18.95 19.38
+ 19.82 20.25 20.68 21.11 21.54 21.97 22.4  22.83 23.25 23.68 24.11 24.54
+ 24.97 25.39 25.82 26.24 26.67 27.1  27.52 27.95 28.37 28.8  29.22 29.64
+ 30.07 30.49 30.91 31.34 31.76 32.18 32.6  33.02 33.44 33.86 34.28 34.7
+ 35.12 35.54]</code></pre>
+</div>
+</div>
+<p>Um die fehlenden Werte zu überspringen, wandeln wir das bisherige Ergebnis wieder in eine <code>pd.Series()</code> und verwenden die Methode <code>pd.Series.dropna()</code>.</p>
+<div id="7a917f10" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pd.Series(belowzero.head().T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten()).dropna()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>9     18.52
+10    18.95
+11    19.38
+12    19.82
+13    20.25
+14    20.68
+15    21.11
+16    21.54
+17    21.97
+18    22.40
+19    22.83
+20    23.25
+21    23.68
+22    24.11
+23    24.54
+24    24.97
+25    25.39
+26    25.82
+27    26.24
+28    26.67
+29    27.10
+30    27.52
+31    27.95
+32    28.37
+33    28.80
+34    29.22
+35    29.64
+36    30.07
+37    30.49
+38    30.91
+39    31.34
+40    31.76
+41    32.18
+42    32.60
+43    33.02
+44    33.44
+45    33.86
+46    34.28
+47    34.70
+48    35.12
+49    35.54
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Und jetzt für die gesamte Datei:</p>
+<div id="604ed436" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>belowzero_ohm <span class="op">=</span> pd.Series(belowzero.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten()).dropna()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero_ohm.head(), belowzero_ohm.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9     18.52
+10    18.95
+11    19.38
+12    19.82
+13    20.25
+dtype: float64
+205     98.44
+206     98.83
+207     99.22
+208     99.61
+209    100.00
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Die Temperatur können wir einfach durch ein range-Objekt erzeugen:</p>
+<div id="2522e03d" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>belowzero_temperatur <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="op">-</span><span class="dv">200</span>, <span class="dv">1</span>)) <span class="co"># range stop ist exlusiv</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(belowzero_temperatur.head(), belowzero_temperatur.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0   -200
+1   -199
+2   -198
+3   -197
+4   -196
+dtype: int64
+196   -4
+197   -3
+198   -2
+199   -1
+200    0
+dtype: int64</code></pre>
+</div>
+</div>
+<p>Für die Temperaturen oberhalb von 0 Grad kann das Vorgehen vereinfacht werden, da die Datei gleich aufgebaut ist und die Werte aufsteigend sortiert sind.</p>
+<div id="4565e59b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>abovezero <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> dateipfad_abovezero, sep <span class="op">=</span> <span class="st">','</span>, decimal <span class="op">=</span> <span class="st">','</span>, header <span class="op">=</span> <span class="dv">0</span>, skiprows <span class="op">=</span> <span class="dv">1</span>, index_col <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>abovezero_ohm <span class="op">=</span> pd.Series(abovezero.to_numpy().flatten()).dropna()</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(abovezero_ohm.head(), abovezero_ohm.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0    100.00
+1    100.39
+2    100.78
+3    101.17
+4    101.56
+dtype: float64
+846    389.31
+847    389.60
+848    389.90
+849    390.19
+850    390.48
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Beide Datensätze enthalten einen Eintrag für die Temperatur 0 Grad, sodass dieser in der zweiten Datei entfernt werden kann.</p>
+<div id="9a003db5" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>abovezero_ohm <span class="op">=</span> abovezero_ohm[<span class="dv">1</span>:]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(abovezero_ohm.head(), abovezero_ohm.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1    100.39
+2    100.78
+3    101.17
+4    101.56
+5    101.95
+dtype: float64
+846    389.31
+847    389.60
+848    389.90
+849    390.19
+850    390.48
+dtype: float64</code></pre>
+</div>
+</div>
+<p>Die Temperatur wird wieder durch ein range-Objekt erzeugt.</p>
+<div id="8b03ae39" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>abovezero_temperatur <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">851</span>)) <span class="co"># range stop ist exlusiv</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Die aus beiden Datensätzen erzeugten Series können zusammengefasst werden:</p>
+<div id="85e2d595" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pt100 <span class="op">=</span> pd.DataFrame({<span class="st">'Temperatur'</span>: pd.concat([belowzero_temperatur, abovezero_temperatur], ignore_index <span class="op">=</span> <span class="va">True</span>), <span class="st">'Ohm'</span>: pd.concat([belowzero_ohm, abovezero_ohm], ignore_index <span class="op">=</span> <span class="va">True</span>)})</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.head(), pt100.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.info())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Temperatur    Ohm
+0        -200  18.52
+1        -199  18.95
+2        -198  19.38
+3        -197  19.82
+4        -196  20.25
+      Temperatur     Ohm
+1046         846  389.31
+1047         847  389.60
+1048         848  389.90
+1049         849  390.19
+1050         850  390.48
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 1051 entries, 0 to 1050
+Data columns (total 2 columns):
+ #   Column      Non-Null Count  Dtype  
+---  ------      --------------  -----  
+ 0   Temperatur  1051 non-null   int64  
+ 1   Ohm         1051 non-null   float64
+dtypes: float64(1), int64(1)
+memory usage: 16.6 KB
+None</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="nicht-linearität-darstellen" class="level3">
+<h3 class="anchored" data-anchor-id="nicht-linearität-darstellen">Nicht-Linearität darstellen</h3>
+<p>Mit den Daten aus <a href="#tip-pt100" class="quarto-xref">Tipp&nbsp;<span>6.1</span></a> kann die Nicht-Linearität des Sensors dargestellt werden.</p>
+<div id="4ad47236" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], pt100[<span class="st">'Ohm'</span>], marker <span class="op">=</span> <span class="st">'o'</span>, linestyle <span class="op">=</span> <span class="st">''</span>, label <span class="op">=</span> <span class="st">'elektrischer Widerstand'</span>, alpha <span class="op">=</span> <span class="fl">0.6</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>plt.plot([pt100[<span class="st">'Temperatur'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperatur'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]], [pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]], linewidth <span class="op">=</span> <span class="dv">2</span>, label <span class="op">=</span> <span class="st">'Referenzlinie'</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>plt.yticks(pt100[<span class="st">'Ohm'</span>][::<span class="dv">50</span>])<span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Temperatur in °C'</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'elektrischer Widerstand in Ohm'</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kalibrierung_files/figure-html/cell-16-output-1.png" alt="Darstellung der Temperatur in Grad Celsius auf der x-Achse und des elektrischen Widerstands in Ohm auf der y-Achse" width="606" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>&nbsp;</p>
+<p>Es fällt auf, dass die Daten einen Fehlwert enthalten. Die Position des Fehlwerts wird mit zwei Pandas-Methoden bestimmt. <code>pd.diff()</code> gibt die Differenz jedes Werts zu seinem Vorgänger zurück. <code>pd.idxmin()</code> gibt den Zeilenindex (genauer das label) des kleinsten Werts zurück. (Läge der Fehlwert oberhalb der Linie, würde <code>pd.idxmax()</code> verwendet werden.)</p>
+<div id="edfa9cb0" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(( position_fehlwert <span class="op">:=</span> pt100[<span class="st">'Ohm'</span>].diff().idxmin() )) <span class="co"># := ist der sog. Walross-Operator</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.iloc[<span class="bu">list</span>(<span class="bu">range</span>(position_fehlwert <span class="op">-</span> <span class="dv">2</span>, position_fehlwert <span class="op">+</span> <span class="dv">3</span>))])</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>341
+     Temperatur     Ohm
+339         139  153.21
+340         140  153.58
+341         141   13.96
+342         142  154.33
+343         143  154.71</code></pre>
+</div>
+</div>
+<p>Der korrekte Wert kann aus der DIN-Norm <span class="citation" data-cites="DIN60751">(<a href="#ref-DIN60751" role="doc-biblioref">Deutsches Institut für Normung 2023, 26</a>)</span> abgelesen werden (153,96). Man könnte den Wert aber auch interpolieren (siehe Beispiel).</p>
+<div id="nte-interpolieren" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Beispiel&nbsp;6.2: Interpolation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Die einfachste Form der Interpolation ist die lineare Interpolation.</p>
+<div id="4264c4e1" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>interpolate_me <span class="op">=</span> pt100.loc[position_fehlwert <span class="op">-</span> <span class="dv">1</span> : position_fehlwert <span class="op">+</span> <span class="dv">1</span>, <span class="st">'Ohm'</span>].copy()</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>interpolate_me[position_fehlwert] <span class="op">=</span> np.nan</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(interpolate_me)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"linear interpolierter Wert:"</span>, interpolate_me.interpolate(), sep <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>340    153.58
+341       NaN
+342    154.33
+Name: Ohm, dtype: float64
+linear interpolierter Wert:
+340    153.580
+341    153.955
+342    154.330
+Name: Ohm, dtype: float64</code></pre>
+</div>
+</div>
+<p>Durch Runden wird das korrekte Ergebnis erreicht (darauf verlassen sollte man sich aber nicht).</p>
+<div id="b8c9ebab" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"linear interpolierter Wert:"</span>, interpolate_me.interpolate().<span class="bu">round</span>(<span class="dv">2</span>), sep <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>korrekter_wert <span class="op">=</span> interpolate_me.interpolate().<span class="bu">round</span>(<span class="dv">2</span>)[position_fehlwert]</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>linear interpolierter Wert:
+340    153.58
+341    153.96
+342    154.33
+Name: Ohm, dtype: float64</code></pre>
+</div>
+</div>
+<p>Eine andere Option ist die nicht-lineare Interpolation (die nicht Inhalt dieses Bausteins ist).</p>
+<div id="nte-nonlinear" class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Beispiel&nbsp;6.1: Nicht-lineare Interpolation
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Die nicht-lineare Interpolation benötigt mehr Datenpunkte. Wir versuchen die kubische Interpolation:</p>
+<div id="c189dad6" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>interpolate_me_again <span class="op">=</span> pt100.loc[position_fehlwert <span class="op">-</span> <span class="dv">3</span> : position_fehlwert <span class="op">+</span> <span class="dv">4</span>, <span class="st">'Ohm'</span>].copy()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>interpolate_me_again[position_fehlwert] <span class="op">=</span> np.nan</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"polynomial interpolierter Wert:"</span>, interpolate_me_again.interpolate(method <span class="op">=</span> <span class="st">'polynomial'</span>, order <span class="op">=</span> <span class="dv">3</span>), sep <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>polynomial interpolierter Wert:
+338    152.830000
+339    153.210000
+340    153.580000
+341    153.952213
+342    154.330000
+343    154.710000
+344    155.080000
+345    155.460000
+Name: Ohm, dtype: float64</code></pre>
+</div>
+</div>
+<p>Das Ergebnis ist nicht unbedingt besser. Warum das so ist, erfahren Sie im <a href="https://bausteine-der-datenanalyse.github.io/m-datenfitting-und-optimierung/output/book/">Methodenbaustein Datenfitting und Datenoptimierung</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Der Fehlwert (dessen Position in obigem Beispiel bestimmt wird) wird korrigiert:</p>
+<div id="ed8f7b38" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pt100.loc[position_fehlwert, <span class="st">'Ohm'</span>] <span class="op">=</span> korrekter_wert</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.loc[position_fehlwert <span class="op">-</span> <span class="dv">1</span> : position_fehlwert <span class="op">+</span> <span class="dv">1</span>, <span class="st">'Ohm'</span>])</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>340    153.58
+341    153.96
+342    154.33
+Name: Ohm, dtype: float64</code></pre>
+</div>
+</div>
+<p>Sodann kann die Nichtlinearität erneut dargestellt werden:</p>
+<div id="71c1b980" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], pt100[<span class="st">'Ohm'</span>], marker <span class="op">=</span> <span class="st">'o'</span>, linestyle <span class="op">=</span> <span class="st">''</span>, label <span class="op">=</span> <span class="st">'elektrischer Widerstand'</span>, alpha <span class="op">=</span> <span class="fl">0.6</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>plt.plot([pt100[<span class="st">'Temperatur'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperatur'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]], [pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]], linewidth <span class="op">=</span> <span class="dv">2</span>, label <span class="op">=</span> <span class="st">'Referenzlinie'</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>plt.yticks(pt100[<span class="st">'Ohm'</span>][::<span class="dv">50</span>])<span class="op">;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Temperatur in °C'</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'elektrischer Widerstand in Ohm'</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kalibrierung_files/figure-html/cell-22-output-1.png" alt="Darstellung der Temperatur in Grad Celsius auf der x-Achse und des elektrischen Widerstands in Ohm auf der y-Achse" width="606" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="nicht-linearität-quantifizieren" class="level3">
+<h3 class="anchored" data-anchor-id="nicht-linearität-quantifizieren">Nicht-Linearität quantifizieren</h3>
+<p>Zwei Methoden zur Quantifizierung der Nicht-Liniearität sind die Festpunkt- und die Toleranzbandmethode.</p>
+<div id="imp-festpunktmethode" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition&nbsp;6.1: Festpunktmethode
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Die Endpunkte der realen Kennlinie werden durch eine Gerade verbunden. Der Linearitätsfehler ist das Maximum der Abweichung der Kennlinie zu dieser Geraden. <span class="citation" data-cites="Dubbel2011">(<a href="#ref-Dubbel2011" role="doc-biblioref">Grote und Feldhusen 2011, W2</a> (S. 1661))</span></p>
+</div>
+</div>
+<p>Dazu bestimmen wir zunächst die Vorhersagewerte einer Geraden durch die Endpunkte.</p>
+<div id="137ff330" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> poly.polyfit(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> [pt100[<span class="st">'Temperatur'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperatur'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> [pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  deg <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lm.<span class="bu">round</span>(<span class="dv">2</span>)) <span class="co"># intercept + slope</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>vorhersagewerte <span class="op">=</span> poly.polyval(x <span class="op">=</span> pt100[<span class="st">'Temperatur'</span>], c <span class="op">=</span> lm)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], pt100[<span class="st">'Ohm'</span>], marker <span class="op">=</span> <span class="st">'o'</span>, linestyle <span class="op">=</span> <span class="st">''</span>, label <span class="op">=</span> <span class="st">'elektrischer Widerstand'</span>, alpha <span class="op">=</span> <span class="fl">0.6</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], vorhersagewerte, linewidth <span class="op">=</span> <span class="dv">2</span>, label <span class="op">=</span> <span class="st">'Vorhersagewerte endpunktverbindende Gerade'</span>)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>plt.yticks(pt100[<span class="st">'Ohm'</span>][::<span class="dv">50</span>])<span class="op">;</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Temperatur in °C'</span>)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'elektrischer Widerstand in Ohm'</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[89.37  0.35]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kalibrierung_files/figure-html/cell-23-output-2.png" alt="Darstellung der Temperatur in Grad Celsius auf der x-Achse und des elektrischen Widerstands in Ohm auf der y-Achse" width="606" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>&nbsp;</p>
+<p>Aus der Differenz des gemessenen elektrischen Widerstands und der linearen Vorhersagewerte kann der maximale Linearitätsfehler bestimmt werden.</p>
+<div id="25c737b5" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>linearitätsfehler <span class="op">=</span> (pt100[<span class="st">'Ohm'</span>] <span class="op">-</span> vorhersagewerte).<span class="bu">abs</span>().<span class="bu">max</span>()</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linearitätsfehler nach Festpunktmethode: </span><span class="sc">{</span>linearit<span class="sc">ä</span>tsfehler<span class="sc">:.2f}</span><span class="ss"> Ohm."</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linearitätsfehler nach Festpunktmethode: 16.43 Ohm.</code></pre>
+</div>
+</div>
+<div id="imp-toleranzbandmethode" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition&nbsp;6.2: Toleranzbandmethode
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bei der Toleranzbandmethode wird eine Gerade so durch die Messpunkte gelegt, dass die Summe der quadrierten Abweichungen der Messpunkte zu dieser Geraden (Methode der kleinsten Quadrate) oder die größte einzelne Abweichung (<a href="https://de.wikipedia.org/wiki/Tschebyschow-Polynom">Tschebyscheff-Approximation</a>) minimiert wird. Die Größe des Linearitätsfehlers ist die maximale senkrechte Entfernung der Kennlinie zu dieser Ausgleichsgeraden. <span class="citation" data-cites="Dubbel2011">(<a href="#ref-Dubbel2011" role="doc-biblioref">Grote und Feldhusen 2011, W3</a> (S. 1662))</span></p>
+</div>
+</div>
+<p>Das Prinzip der Methode der kleinsten Quadrate haben wir bereits kennengelernt.</p>
+<div id="baf15391" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> poly.polyfit(</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> pt100[<span class="st">'Temperatur'</span>],</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> pt100[<span class="st">'Ohm'</span>],</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  deg <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lm.<span class="bu">round</span>(<span class="dv">2</span>)) <span class="co"># intercept + slope</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>vorhersagewerte <span class="op">=</span> poly.polyval(x <span class="op">=</span> pt100[<span class="st">'Temperatur'</span>], c <span class="op">=</span> lm)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], pt100[<span class="st">'Ohm'</span>], marker <span class="op">=</span> <span class="st">'o'</span>, linestyle <span class="op">=</span> <span class="st">''</span>, label <span class="op">=</span> <span class="st">'elektrischer Widerstand'</span>, alpha <span class="op">=</span> <span class="fl">0.6</span>)</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperatur'</span>], vorhersagewerte, linewidth <span class="op">=</span> <span class="dv">2</span>, label <span class="op">=</span> <span class="st">'Regressionsgerade'</span>)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>plt.yticks(pt100[<span class="st">'Ohm'</span>][::<span class="dv">50</span>])<span class="op">;</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Temperatur in °C'</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'elektrischer Widerstand in Ohm'</span>)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[100.67   0.35]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="kalibrierung_files/figure-html/cell-25-output-2.png" alt="Darstellung der Temperatur in Grad Celsius auf der x-Achse und des elektrischen Widerstands in Ohm auf der y-Achse" width="606" height="429" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>&nbsp;</p>
+<p>Aus der Differenz des gemessenen elektrischen Widerstands und der linearen Vorhersagewerte kann der maximale Linearitätsfehler (= das größte Residuum) bestimmt werden.</p>
+<div id="dc3ad14e" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>linearitätsfehler <span class="op">=</span> (pt100[<span class="st">'Ohm'</span>] <span class="op">-</span> vorhersagewerte).<span class="bu">abs</span>().<span class="bu">max</span>()</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linearitätsfehler nach Toleranzbandmethode: </span><span class="sc">{</span>linearit<span class="sc">ä</span>tsfehler<span class="sc">:.2f}</span><span class="ss"> Ohm."</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linearitätsfehler nach Toleranzbandmethode: 11.45 Ohm.</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="kalibrieren-und-justieren" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="kalibrieren-und-justieren"><span class="header-section-number">6.2</span> Kalibrieren und Justieren</h2>
+<p>Die Korrektion von Linearitätsfehlern kann auf zwei Arten geschehen: durch Kalibrierung oder Justierung des Messgeräts.</p>
+<p>Mit dem Begriff Kalibrierung wird im engeren Sinn die Ermittlung des Zusammenhangs zwischen Messwerten bzw. ihres arithmetischen Mittelswerts und dem vereinbarten richtigen Wert der Meßgröße bezeichnet.</p>
+<div id="imp-kalibrierung1" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition&nbsp;6.3: Kalibrierung nach DIN 1319
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Ermitteln des Zusammenhangs zwischen Meßwert […] oder Erwartungswert […] der Ausgangsgröße […] und dem zugehörigen wahren […] oder richtigen Wert […] der als Eingangsgröße vorliegenden Meßgröße für eine betrachtete Meßeinrichtung […].” <span class="citation" data-cites="DIN1319-1">(<a href="#ref-DIN1319-1" role="doc-biblioref">Deutsches Institut für Normung 1995, 22</a>)</span></p>
+</div>
+</div>
+<p>Im weiteren Sinn ist mit Kalibrierung auch “die Erstellung einer Korrektionstabelle […], die Ermittlung von Kalibrierfaktoren oder einer (empirischen) Kalibrierfunktion” <span class="citation" data-cites="DIN1319-1">(<a href="#ref-DIN1319-1" role="doc-biblioref">Deutsches Institut für Normung 1995, 22</a>)</span> gemeint. Dabei handelt es sich um Methoden, um nicht lineare Messwerte zu korrigieren, ohne das Messgerät zu verändern.</p>
+<p>Im Unterschied dazu verändert die Justierung das Messgerät dauerhaft.</p>
+<div id="imp-justierung" class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition&nbsp;6.4: Justierung nach DIN 1319
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Einstellen oder Abgleichen eines Meßgeräts […], um systematische Meßabweichungen […] soweit zu beseitigen, wie es für die vorgesehene Anwendung erforderlich ist.” <span class="citation" data-cites="DIN1319-1">(<a href="#ref-DIN1319-1" role="doc-biblioref">Deutsches Institut für Normung 1995, 22</a>)</span></p>
+</div>
+</div>
+</section>
+<section id="kalibriermethoden" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="kalibriermethoden"><span class="header-section-number">6.3</span> Kalibriermethoden</h2>
+<p>In der DIN 1319 werden drei Kalibriermethoden genannt:</p>
+<ol type="1">
+<li>Korrektionstabelle,</li>
+<li>Ermittlung von Kalibrierfaktoren und</li>
+<li>Ermittlung einer (empirischen) Kalibrierfunktion.</li>
+</ol>
+<p>Welche Methode verwendet wird, hängt von dem Anwendungsbereich, der Datenverfügbarkeit sowie von der gewünschten Genauigkeit ab.</p>
+<p>… die könnten wir einfach entwickeln. Kalibrierfaktoren kriegen wir nicht hin?!</p>
+<p>Wann nutzt man welche Methode? Siehe Dokument Anwendung der Korrektionsmethoden.docx</p>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Methode</th>
+<th>Anwendung bei …</th>
+<th>Vorteile</th>
+<th>Nachteile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Korrektionstabelle</strong></td>
+<td>nichtlinear, schwer modellierbar</td>
+<td>einfach zu nutzen</td>
+<td>viele Daten erforderlich, Interpolation andernfalls ungenau</td>
+</tr>
+<tr class="even">
+<td><strong>Kalibrierfaktoren</strong></td>
+<td>lineare Abweichung</td>
+<td>leicht umsetzbar</td>
+<td>unzureichend bei Nichtlinearität</td>
+</tr>
+<tr class="odd">
+<td><strong>Kalibrierfunktion</strong></td>
+<td>nichtlinear, modellierbar</td>
+<td>sehr genau</td>
+<td>höherer Aufwand</td>
+</tr>
+</tbody>
+</table>
+<section id="korrektionstabelle" class="level3">
+<h3 class="anchored" data-anchor-id="korrektionstabelle">Korrektionstabelle</h3>
+<p>Mit der Korrektionstabelle können beliebige Korrektionen dargestellt werden, sofern ausreichend Datenpunkte verfügbar sind.</p>
+</section>
+<section id="ermittlung-von-kalibrierfaktoren" class="level3">
+<h3 class="anchored" data-anchor-id="ermittlung-von-kalibrierfaktoren">Ermittlung von Kalibrierfaktoren</h3>
+<p>Ein Kalibrierfaktor kann angegeben werden, wenn eine konstante relative Abweichung vorliegt (z. B. Kalibrierfaktor 1,05 - siehe https://www.lanuk.nrw.de/fileadmin/lanuv/luft/immissionen/ber_trend/Aequivalenznachweis/AEquivalenztest_und_Faktorenbestimmung_2023.pdf S. 1)</p>
+</section>
+<section id="ermittlung-einer-empirischen-kalibrierfunktion" class="level3">
+<h3 class="anchored" data-anchor-id="ermittlung-einer-empirischen-kalibrierfunktion">Ermittlung einer (empirischen) Kalibrierfunktion</h3>
+<p>Eine Kalibrierfunktion erlaubt die Modellierung funktionaler Zusammenhänge (Funktion - funktional: ach wirklich)</p>
+<p>keine empirische Kalibrierfunktion <strong>Beispiel und Darstellung Pt100</strong></p>
+</section>
+</section>
+<section id="resterampe" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="resterampe"><span class="header-section-number">6.4</span> Resterampe</h2>
+<p>(weitere Fehlerquellen: <a href="https://de.wikipedia.org/wiki/Hysterese">Hysterese</a>, Drift, Rauschen oder Nullpunktverschiebung)</p>
+<p>Methoden zur Korrektur: Wo ist die Variablentransformation, um eine lineare Parameterschätzung durchzuführen?</p>
+<ol type="1">
+<li><p>Erstellung einer Kalibrierkurve/Tabelle: Der Sensor wird bei einer Reihe von bekannten Werten gemessen (Kalibrierpunkte). Diese Punkte werden verwendet, um eine individuelle Kurve oder Tabelle zu erstellen, die das tatsächliche Verhalten des Sensors darstellt.</p></li>
+<li><p>Anwendung mathematischer Korrekturen:</p></li>
+</ol>
+<ul>
+<li>Nichtlineare Regression: Eine Funktion (z. B. Polynom) wird durch die Kalibrierdaten angepasst. Die Differenz zwischen Messwerten und der Funktion wird minimiert, um die bestmögliche Anpassung zu erzielen. Diese Methode wird im <a href="https://bausteine-der-datenanalyse.github.io/m-datenfitting-und-optimierung/output/book/">Methodenbaustein Datenfitting und Datenoptimierung</a> gezeigt.</li>
+</ul>
+<p>-Spezifische Koeffizienten: Für bestimmte Sensortypen gibt es Standardmodelle, die mit speziellen Koeffizienten verwendet werden.</p>
+<pre><code> - ITS-90 und Callendar-van-Dusen-Koeffizienten: Für die Kalibrierung von Platin-Sensoren. 
+ - Steinhart-Hart-Koeffizienten: Eine gängige Methode für Thermistoren zur Berechnung der Temperatur. </code></pre>
+<p>Es sollten ausreichend viele Kalibrierpunkte über den gesamten Messbereich erfasst werden, um eine genaue Abbildung der Nichtlinearität zu gewährleisten.</p>
+<p>Fehlerkompensation: Durch die Korrektur werden Nullpunkt- und Spannfehler mitberücksichtigt und die Genauigkeit des Sensors über seinen gesamten Messbereich hinweg verbessert</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-DIN1319-1" class="csl-entry" role="listitem">
+Deutsches Institut für Normung. 1995. <span>„Grundlagen der Meßtechnik - Teil 1: Grundbegriffe“</span>. DIN Media. <a href="https://doi.org/10.31030/2713411">https://doi.org/10.31030/2713411</a>.
+</div>
+<div id="ref-DIN60751" class="csl-entry" role="listitem">
+———. 2023. <span>„Industrielle Platin-Widerstandsthermometer und Platin-Temperatursensoren (IEC 60751:2022). Deutsche Fassung EN IEC 60751:2022“</span>. DIN Media. <a href="https://doi.org/10.31030/3405985">https://doi.org/10.31030/3405985</a>.
+</div>
+<div id="ref-Dubbel2011" class="csl-entry" role="listitem">
+Grote, Karl-Heinrich, und Jörg Feldhusen, Hrsg. 2011. <em>Dubbel: Taschenbuch für den Maschinenbau</em>. 23. Aufl. Springer Berlin, Heidelberg. <a href="https://doi.org/10.1007/978-3-642-17306-6">https://doi.org/10.1007/978-3-642-17306-6</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../skript/übung-hooke.html" class="pagination-link" aria-label="Übung Hooke'sches Gesetz">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Übung Hooke’sches Gesetz</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
