@@ -42,7 +42,7 @@ This chapter uses the terms commonly employed in error analysis to connect them 
 
 ### Confidence Level
 
-Repeated measurements contain a random component of statistical uncertainty. Statistical uncertainty can only be expressed with a probability of confidence. The calculation of confidence intervals was covered in @sec-normalverteilung and @sec-hooke.
+Repeated measurements contain a random component of statistical uncertainty. Statistical uncertainty can only be expressed with a probability of confidence. The calculation of confidence intervals was covered in @sec-normal-distribution and @sec-hooke.
 
 The first step in statistical analysis is to define the confidence level. From this, the multiples of the standard deviation $s$ or the correction factor $t$ to be used are derived. Different disciplines follow different conventions.
 
@@ -63,7 +63,7 @@ The notation is complex: alongside the Latin and Greek alphabets, the Cyrillic a
 
 Notation is also inconsistently applied. While DIN 1319 uses $e$ for measurement deviations, literature often uses $\epsilon$ (epsilon) and $\Delta$ (Delta), with the latter also used for maximum error.
 
-By the way: the $e$ in DIN stands for "error" (¯\_(ツ)_/¯ ).
+By the way: the $e$ in DIN stands for "error" ( ¯\\\_(ツ)\_/¯ ).
 
 ## Types of Errors
 
@@ -154,7 +154,8 @@ The deviation of the **uncorrected measurement result** consists additively of t
 * The systematic deviation $e_s$ consists of a known part $e_{s,b}$ and an unknown part $e_{s,u}$.
 * The known systematic deviation $e_{s,b}$, when applied with opposite sign $- e_{s,b}$, is called a *correction*.
 
-The **corrected measurement result** $\bar{x}*E$ is the arithmetic mean corrected for $e*{s,b}$ and is used as an estimator for the true value $x_w$: $\bar{x}*E = \bar{x} - e*{s,b}$
+The **(corrected) measurement result** $\bar{x}_E$ is the arithmetic mean of a series of measurements $\bar{x}$ corrected for the known systematic measurement deviation $e_{s,b}$, and it is used as an estimator of the true value $x_w$.
+$\bar{x}_E = \bar{x} - e_{s,b}$
 
 [@DIN1319-1, p. 11-13]
 
@@ -175,21 +176,21 @@ Measurement uncertainty of a quantity $Y$ consists of the random deviation $e_r$
 
 **Random Deviation**
 
-If a quantity $Y = y(x)$ is determined by repeated measurements, the measured values $x_i$ scatter around their expected value $\mu$ with standard deviation $\sigma$. Both $\mu$ and $\sigma$ are generally unknown and estimated using the mean $\bar x$ and empirical standard deviation $s_{n-1}$ (see @sec-einleitung).
+If a measured quantity $Y = y(x)$ is determined through multiple direct measurements, the measured values $x_i$ randomly scatter around their expected value $\mu$ with a standard deviation $\sigma$. The expected value $\mu$ and the standard deviation $\sigma$ are usually unknown and are estimated from the measured values using the arithmetic mean $\bar x$ and the empirical standard deviation $s_{n-1}$. (see @sec-introduction)
 
-The uncertainty of the random spread is the standard uncertainty of the mean:
+The uncertainty of the random scatter is represented by the empirical standard deviation of the mean:
 
 $$
 u(\bar x) = \frac{s_{n-1}}{\sqrt{N}} ~ = ~ \sqrt{\frac{1}{N(N-1)} \sum_{i=1}^{N}(x_i - \bar{x})^2}
 $$
 
-[@DIN1319-3, Eq. (4), p. 5, notation adapted]
+[@DIN1319-3, Equation (4), p. 5, notation adjusted]
 
-**Systematic Deviation**
+**systematic measurement error**
 
-The systematic deviation $e_s$ consists of known $e_{s,b}$ and unknown $e_{s,u}$. Since $e_{s,u}$ cannot be determined, the total systematic deviation is estimated via $e_{s,b}$, giving uncertainty $u(e_s)$. This exists even if $e_{s,b} = 0$ because $e_{s,u} \ne 0$.
+The systematic measurement error $e_s$ consists of a known component $e_{s,b}$ and an unknown component $e_{s,u}$. Since the unknown component cannot be determined, the total systematic measurement error is estimated using the known systematic error $e_{s,b}$. This leads to an uncertainty about the actual total systematic measurement error $u(e_s)$. This uncertainty exists even if the known systematic measurement error $e_{s,b}$ is zero, because the unknown component $e_{s,u}$ may be non-zero.
 
-DIN 1319 distinguishes cases depending on whether $u(e_s)$ is negligible. This chapter assumes negligible $u(e_s)$ (see example for the other case).
+DIN 1319 distinguishes two cases, depending on whether the uncertainty $u(e_s)$ is considered negligible or not. In this chapter, we assume the uncertainty $u(e_s)$ is negligible (for the second case, see the example).
 
 ::: {#nte-uncertaintynotnegligible .callout-note collapse="true"}
 
@@ -215,33 +216,33 @@ Random deviation is denoted as $u^2(x_1)$ instead of $u^2(\bar x)$, and systemat
 
 ### Complete Measurement Result
 
-The **corrected measurement** $\bar{x}_E = y$ (notation in DIN 1319 changes from $\bar{x}_E$ to $y$) is computed as:
+The **corrected measurement result** $\bar{x}_E = y$ (in DIN 1319, the notation changes from $\bar{x}_E$ to $y$) is calculated by correcting the known systematic measurement deviation:
 
 $$
 y = \bar x - e_{s,b}
 $$
 
-[@DIN1319-3, Eq. (7), p. 6, notation adapted]
+[@DIN1319-3, Equation (7), p. 6, notation adjusted]
 
-The **complete measurement result** $Y$ consists of the corrected value and the uncertainty:
+The **complete measurement result** $Y$ consists of the corrected measurement result and an indication of the measurement uncertainty, e.g., in the form:
 
 $$
 Y = y \pm u(y)
 $$
 
-[@DIN1319-3, Eq. (9), p. 6]
+[@DIN1319-3, Equation (9), p. 6]
 
-*Additionally*, a confidence interval can be given:
+*Additionally*, a confidence interval (also called confidence range or confidence level) can be specified along with the complete measurement result. We have already introduced the calculation of confidence intervals in Chapter @sec-normal-distribution.
 
 $$
 y - t \cdot u(y) \le Y \le y + t \cdot u(y)
 $$
 
-[@DIN1319-3, Eq. (14), p. 7]
+[@DIN1319-3, Equation (14), p. 7]
 
-Choice of confidence level is at discretion. DIN 1319: "It is customary to specify the confidence level ($1 - \alpha$) as a percentage, usually $\alpha = 0.05$ (95%)." [@DIN1319-1, p. 17] "This 95% confidence level should be used, but not higher." [@DIN1319-3, p. 7]
+The choice of a confidence interval is discretionary. DIN 1319 states: "It is customary to specify the confidence level ($1 - \alpha$) as a percentage, with $\alpha = 0.05$ (confidence level: 95 %) most commonly used." [@DIN1319-1, p. 17] "This 95 % confidence level should be used, but not a higher one." [@DIN1319-3, p. 7] 
 
-Example:
+For example, this yields:
 
 $$
 y - t_{\alpha / 2} \cdot \frac{s_{n-1}}{\sqrt{n}} \le Y \le y + t_{\alpha / 2} \cdot \frac{s_{n-1}}{\sqrt{n}}
@@ -255,112 +256,131 @@ The arithmetic mean of a series is denoted $\bar{v}$ instead of $\bar{x}$.
 :::
 
 ### Overview
-
-DIN 1319 defines further terms; the main concepts are summarized below.
+DIN 1319 defines a number of additional terms, which are compiled in the following box together with the most important basic terms.
 
 ::: {#imp-DIN1319 .callout-important}
+## Basic Terms According to DIN 1319
 
-## Fundamental Concepts According to DIN 1319
+**Measurement Deviation**: "Deviation of a value obtained from measurements and assigned to the measurand [...] from the true value [...]. If $m$ is the value assigned to the measurand and $x_w$ is the true value, then the measurement deviation of the assigned value is $m - x_w$ [...]." [@DIN1319-1, p. 12]
 
-**Measurement deviation**: "Deviation of a value obtained from measurements and assigned to a quantity [...] from the true value [...]. If $m$ is the value assigned to the quantity and $x_w$ the true value, the deviation is $m - x_w$ [...]" [@DIN1319-1, p. 12]
+  - The measurement deviation of the **uncorrected measurement result** consists additively of the random measurement deviation $e_r$ and the systematic measurement deviation $e_s$.
+  - The systematic measurement deviation $e_s$ consists of a known part $e_{s,b}$ and an unknown part $e_{s,u}$.
+  - The systematic measurement deviation is the difference between the expected value $\mu$ and the true value $x_w$. $e_s = \mu - x_w$
+  - The known systematic measurement deviation $e_{s,b}$, when applied with the opposite sign $- e_{s,b}$, is called a *correction*.
 
-* Deviation of the **uncorrected result**: $e_r + e_s$
-* Systematic deviation $e_s = e_{s,b} + e_{s,u}$
-* $e_s = \mu - x_w$
-* Known systematic deviation $e_{s,b}$, opposite sign $-e_{s,b}$ = *correction*
+The **measurement result** $\bar{x}_E$ is the arithmetic mean of a series of measurements $\bar{x}$ corrected for the known systematic measurement deviation $e_{s,b}$, used as an estimator for the expected value $\mu$.  
+$\bar{x}_E = \bar{x} - e_{s,b}$
 
-Corrected mean $\bar{x}*E = \bar{x} - e*{s,b}$ [@DIN1319-1, p. 11-13]
+[@DIN1319-1, pp. 11-13]
 
-**Measurement uncertainty** $u$ or $u(y)$: "Value obtained from measurements [...] to characterize a range of values for the true value of the quantity." [@DIN1319-1, p. 14]
+**Measurement Uncertainty** $u$ or $u(y)$: "Quantity derived from measurements [...] and used together with the measurement result [...] to characterize a range of values for the true value of the measurand [...]" [@DIN1319-1, p. 14]  
 
-* **Standard uncertainty**: expressed as standard deviation [@DIN1319-3, p. 3]
-* **Expanded uncertainty** $U(y) = k \cdot u(y)$: probable range for true value. $k = 2$ recommended. [@DIN1319-3, p. 7]
+  - **Standard measurement uncertainty**, or simply standard uncertainty, is used when the measurement uncertainty is expressed by a standard deviation. [@DIN1319-3, p. 3]
 
-**Complete measurement result**: result with uncertainty $u$: $x = \bar{x}_E \pm u$. [@DIN1319-1, p. 16]
+  - **Expanded measurement uncertainty** $U(y) = k \cdot u(y)$: Range that likely contains the true value of the measurand. The expansion factor $k$ should be set between 2 and 3, with $k = 2$ preferred. The expansion factor $k$ should be reported so that the standard measurement uncertainty $u(y) = U(y) / k$ can be determined. [@DIN1319-3, p. 7]  
+  *Note: The expanded measurement uncertainty differs from a confidence interval in that no normal distribution is assumed – it is simply a factor 'to be on the safe side' that the true value is within the given range.*
 
-* **Confidence interval**: $\bar x - t \cdot u(y) \le Y \le y + t \cdot u(y)$
+The **complete measurement result** is the measurement result with quantitative information about the measurement uncertainty $u$. $x = \bar{x}_E \pm u$. [@DIN1319-1, p. 16]
 
-  * If systematic deviation is known and corrected, true value $Y$ lies within.
-  * If unknown, expectation $\mu$ lies within. [@DIN1319-3, p. 7]
+  - The **confidence range** $\bar x - t \cdot u(y) \le Y \le \bar x + t \cdot u(y)$ can additionally be provided along with the complete measurement result. 
+  
+    - If the systematic measurement deviation is known and has been corrected, the true value of the measurand $Y$ lies within the confidence range.
+    - If the systematic measurement deviation is unknown, the expected value $\mu$ of the distribution lies within the confidence range. [@DIN1319-3, p. 7]  
 
-*Note: DIN uses $\bar{v}$ for series mean instead of $\bar{x}$*.
+    *Note: In the DIN standard, the arithmetic mean of a measurement series is written as $\bar{v}$ instead of $\bar{x}$.*
 :::
 
 ## Absolute and Relative Errors
+In error analysis, a distinction is made between absolute and relative *errors*. It is more precise to speak of absolute and relative measurement uncertainties.
 
-In error analysis, absolute and relative *errors* are distinguished; better called absolute and relative measurement uncertainties.
+  - The **absolute measurement uncertainty** $u$ is given in the unit of the measured quantity: $u(m) = 0.2~kg$. The complete measurement result is written as: $m = 5.0 \pm 0.2~kg$ or $m = 5.0~kg \pm 0.2~kg$.
+  
+  - The **relative measurement uncertainty** $u_{rel}(m) = \frac{u(m)}{| m |}$ is either given in the product form as $m \cdot (1 \pm \frac{u(m)}{| m |})$, for example:
 
-* **Absolute uncertainty** $u$ in unit of the quantity: $u(m) = 0.2 kg$. Complete result: $m = 5.0 \pm 0.2 kg$.
-
-* **Relative uncertainty** $u_{rel}(m) = \frac{u(m)}{| m |}$, e.g., $m \cdot (1 \pm \frac{u(m)}{| m |})$:
-
-  $m = 5.0 kg \cdot (1 \pm \frac{0.2 kg}{5.0 kg}) = 5.0 kg \cdot (1 \pm 0.04)$
-
-  Or in percent: $u_{rel}(m) \cdot 100 ~ %$, e.g., $m = 5.0 kg \pm 4%$.
+      $m = 5.0~kg \cdot \left(1 \pm \frac{0.2~kg}{5.0~kg}\right) = 5.0~kg \cdot (1 \pm 0.04)$
+  
+    Alternatively, the relative measurement uncertainty can be expressed as a percentage: $u_{rel}(m) = \frac{u(m)}{| m |} \cdot 100~\%$, for example:
+    
+      $m = 5.0~kg \pm 4~\%$.
 
 [@DIN1319-1, pp. 9-10, 16; @DIN1319-3, p. 10]
 
 ::: {#wrn-notation .callout-warning}
-
 ## (Alternative) Notations
 
-DIN 1319: deviations $e$, uncertainty $u$. Literature often uses "error". Notation varies:
+In DIN 1319, measurement deviations are denoted by $e$, while measurement uncertainty is denoted by $u$. In error analysis literature, the term (measurement) *error* is more commonly used. The notation, however, is not consistent.
 
-* Absolute error: often $\epsilon x$, sometimes $\Delta x$.
-* Relative error: $\delta x$, e.g., $\delta x = 4%$.
+  - The absolute error is often denoted by $\epsilon x$ (epsilon x). Another common notation is $\Delta x$ (Delta), for example [@HS-Aalen-2016; @Dinter-2011; @SchrüferEtAl2022]. $\Delta$ is also used to denote the maximum error. 
+
+  - The relative error is also denoted by $\delta x$ (delta x), for example: $\delta x = 4~\%$.
 
 :::
 
 ## Maximum Error
+Systematic measurement deviations $e(x)_{s}$ cause a one-sided bias in the measurement result, so that the measured value is always either too high or too low. Random measurement deviations $e(x)_{r}$ lead uncontrolledly to either overestimation or underestimation of the measured value.
 
-Systematic deviations $e_s$ bias measurements in one direction, random deviations $e_r$ vary randomly.
+In general, the different measurement deviations partially cancel each other out. The **maximum error** refers to the worst-case scenario, where all measurement deviations reinforce each other at their respective maximum (or minimum) values, so that the measured value shows the largest possible deviation from the (unknown) true value. The **maximum error** is denoted as $\Delta x$ (Delta x).
 
-Maximum error occurs when all deviations combine to give the largest deviation: $\Delta x = | e_s | + | e_r |$. Gross errors are ignored. Multiple quantities: $\Delta y = \Delta x_1 + \Delta x_2$.
+The maximum error of a series of measurements for a quantity is determined by summing the absolute values of the individual measurement deviations.
 
-::: {#tip-maxerror .callout-tip}
+$$
+\Delta x = | e(x)_{s} | + | e(x)_{r} |
+$$
 
+Since measurements with gross errors are considered invalid, the contribution of gross errors $| e(x)_{gross} |$ is omitted.
+
+(@EdenGebhard-2024, pp. 35-36)
+
+When multiple quantities are considered, the maximum errors of the involved quantities add up to the maximum error of the resulting quantity. For a quantity $Y = f(x_1, x_2)$:
+$$
+\Delta y = \Delta x_1 + \Delta x_2
+$$
+
+::: {#tip-whicherror .callout-tip}
 ## Maximum Error
 
-Maximum error is not standardized in DIN 1319, but a simplified estimation often suffices in introductory lab courses. (@EdenGebhard-2024, p. 35)
+The maximum error is not a standardized specification according to DIN 1319, but a simplified form of error estimation and overestimates the likely measurement uncertainty.
+
+"For many considerations, especially in introductory laboratory courses of the first semesters in technical, scientific, and engineering programs, it is sufficient to determine the maximum error (*absolute maximum error*)." (@EdenGebhard-2024, p. 35)
 :::
+
 
 ## Significant Figures
-
-Significant figures must be considered when reporting results.
+When reporting a complete measurement result, the number of significant or reliably known digits must be taken into account.
 
 ::: {#imp-signif .callout-important}
-
 ## Significant Figures
 
-"Each reliably known digit, except leading zeros indicating decimal position, is a significant figure." [@EdenGebhard-2024, p. 24]
+"Every reliably known digit, except for zeros that indicate the position of the decimal point, is called a significant figure." [@EdenGebhard-2024, p. 24]
 
-Rounded uncertainties: two (or three) significant digits, rounded up. Result rounded to the same decimal place as uncertainty. Example: $y = 245.5716 mm \to y = 245.57 mm$, if $u(y) = 0.4528 mm \to 0.46 mm$. [@DIN1319-3, p. 6]
+"Rounded numerical uncertainty values should be given **with two (or if necessary three) significant digits**. **They must be rounded up.** The measurement result should be rounded to the same place as the associated uncertainty, e.g., $y = 245.5716 \text{ mm}$ is rounded to $y = 245.57 \text{ mm}$ if $u(y) = 0.4528 \text{ mm}$ is rounded up to $u(y) = 0.46 \text{ mm}$." [@DIN1319-3, p. 6, emphasis added]
 :::
 
-Example: distance measurements $153.29$ have 5 significant figures. Mean $153.008889$ → 5 significant figures → rounded to $153.01$.
+For example, the distance measurements used in the previous chapter are given in the format $153.29$, which means the measurements have 5 significant figures. Therefore, the arithmetic mean of a series of measurements, $153.008889$, should also be reported with 5 significant figures. It is rounded at the first non-significant digit, so the arithmetic mean is reported as $153.01$.
 
-Rules for significance:
+However, the number of significant figures is not always straightforward to determine. The rules are:
 
-1. Non-zero digits always significant.
-2. Leading zeros never significant: 0012 km → 2 significant figures; 0.001 mm → 1.
-3. Trailing zeros after decimal are significant: 12.100 km → 5.
-4. Trailing zeros without decimal may
+1. All non-zero digits are always significant.
+2. Leading zeros are never significant. For example, 0012 km has 2 significant figures. 0.001 mm has 1 significant figure.
+3. Zeros at the end of a number are significant if they are to the right of the decimal point, e.g., 12.100 km has 5 significant figures.
+4. Zeros at the end of a number without a decimal point may or may not be significant. 1200 m can have two or four significant figures.
 
 ::: {.callout-tip}
-
 ## Significant Figures and Scientific Rounding
 
-Although measurement uncertainties are usually rounded, it’s still important to ask: Do you know the difference between commercial rounding and scientific rounding?
+Although uncertainty values are rounded up, it is useful to know: do you know the difference between commercial rounding and scientific rounding?
 
-{{< video [https://www.youtube.com/watch?v=s0gPyypiGOs](https://www.youtube.com/watch?v=s0gPyypiGOs) >}}
+{{< video https://www.youtube.com/watch?v=s0gPyypiGOs >}}
 
-Rounding and Significant Figures (Mathematics Prep Course) by Edmund Weitz is available on [YouTube](https://www.youtube.com/watch?v=q2iZDtotiM0), 2019.
+"Rounding and Significant Figures (Mathematics Prep Course)" by Edmund Weitz is available on [YouTube](https://www.youtube.com/watch?v=q2iZDtotiM0), 2019.
 
-Python performs scientific rounding:
+Python rounds scientifically:
 
-```{python}
+``` {python}
 print(round(2.5), round(3.5))
 ```
+
+:::
 
 ## Methods of Error Analysis
 
@@ -382,7 +402,7 @@ The choice of the appropriate method also depends on the available information. 
    * The measurement deviation of the system is up to 3 mm according to the datasheet, symmetrically, i.e., $e_r = 3 mm = 0.003 m$.
    * The random component of the measurement deviation is therefore $e_r(x) = 0.0001 m + 0.003 m = 0.0031 m$.
 
-3. the statistical estimate of the spring constant $k = \frac{m \cdot g}{\Delta x} = 33.019 \pm 0.378$, or within the specified confidence interval $k_{95%} = 32.269 ≤ 33.019 ≤ 33.769$.
+3. the statistical estimate of the spring constant $k = \frac{m \cdot g}{\Delta x} = 33.019 \pm 0.378$, or within the specified confidence interval $k_{95\%} = 32.269 ≤ 33.019 ≤ 33.769$.
 
 ::: {#wrn-formelzeichen .callout-warning appearance="simple"}
 
@@ -403,7 +423,7 @@ Since the true value of a measured quantity is unknown, error estimation aims to
 * the guaranteed error limit of the instrument, provided by the manufacturer on the device or in the manual (see example), i.e., the known systematic measurement deviation $e_{s,b}$, and
 * an estimated component depending on the specific experimental conditions, e.g., the scale division or reading conditions. This component can consist of a systematic part (e.g., an analog scale read from an angle) and a random part (e.g., reading accuracy of the instrument).
 
-The maximum error $\Delta x$ is obtained by adding the absolute values of the known systematic deviation and the estimated random deviation: $\Delta x = |e(x)*{s,b}| + |e(x)*{r}|$.
+The maximum error $\Delta x$ is obtained by adding the absolute values of the known systematic deviation and the estimated random deviation: $\Delta x = |e(x)_{s,b}| + |e(x)_{r}|$.
 
 (@Hempel-2016, p. 3)
 
@@ -437,12 +457,12 @@ If you are certain you can distinguish "exactly on the line" vs. "between two li
 
 ## Sample Solution: Temperature Measurement
 
-**Systematic Error**
+**Systematic measurement deviation**
 
-Absolute measurement deviation: $u(T) = 0.3 ~ °C$
-Relative deviation: $0.05~%$, i.e.:
+The absolute measurement deviation is: $u(T) = 0.3 ~ °C$
+The relative deviation is: $0.05~ \%$. That means:
 
-$\frac{u(T)}{112.1 °C} \cdot 100~% = 0.05~%$
+$\frac{u(T)}{112.1 °C} \cdot 100~ \% = 0.05~ \%$
 
 $\frac{u(T)}{112.1 °C} \cdot 100 = 0.05$
 
@@ -450,97 +470,109 @@ $u(T) = 0.05 \cdot \frac{112.1 °C}{100}$
 
 $u(T) = 0.05605 °C$
 
-Known systematic deviation: $e(T)_{s,b} = 0.3 ~ °C + 0.05605 ~ °C = 0.35605 ~ °C$
+Therefore, the known systematic measurement deviation is: 
+$e(T)_{s,b} = 0.3 ~ °C + 0.05605 ~ °C = 0.35605 ~ °C$
 
-**Random Error**
+**Random measurement deviation**
 
-Random deviation equals one scale unit: $e(T)_r = 0.1 ~ °C$
+The random measurement deviation equals one scale unit: $e(T)_r = 0.1 ~ °C$
 
 **Maximum Error**
 
+The maximum error is:
+
 $\Delta T = |e(T)_{s,b}| + |e(T)_r|$
 
-Rounding to two decimal places:
+Rounding the measurement uncertainty to two decimal places:
 
 $\Delta T = |0.35605 °C| + |0.1 ~ °C| = 0.45605 ~ °C \approx 0.46 °C$
 
-Final measurement: $T = 112.1 \pm 0.46 ~ °C$.
+The complete measurement result is therefore: $T = 112.1 \pm 0.46 ~ °C$.
 :::
 
-#### Example: Measurement Conditions
+#### Example Measurement Conditions
+What is meant by the concrete conditions of a measurement process? This is demonstrated using two simple measurement procedures.
 
-What do we mean by the specific conditions of a measurement? Demonstrated with two simple measurements.
+**You can participate here!**
 
-**Hands-on Activity**
+You will need:
 
-You need:
+  - a suitable measuring instrument, e.g. a ruler, and
+  - a coin (ideally a 1-euro coin).
 
-* a suitable measuring instrument, e.g., a ruler, and
-* a coin (ideally 1-Euro coin).
+In the first measurement procedure, the diameter of the 1-euro coin is to be determined.
 
-In the first measurement, determine the diameter of the 1-Euro coin.
+::: {#nte-coin .callout-note collapse="true"}
+## First Measurement Procedure: Coin
 
-::: {#nte-münze .callout-note collapse="true"}
+The measurement is carried out using a [vernier caliper](https://en.wikipedia.org/wiki/Vernier_scale) with a resolution of 0.05 mm according to DIN 862. DIN 862 standardizes symmetrical error limits for vernier calipers. The error limit depends on the scale resolution of the caliper as well as on the measured length and can be read from a table. (DIN 862 was replaced in 2011 by DIN EN ISO 13385-1, in which the term deviation is used. However, DIN 862 is still printed on the caliper.)
 
-## First Measurement: Coin
+Measured value: $x = 23.25\ \text{mm}$
 
-Measured with a [vernier caliper](https://en.wikipedia.org/wiki/Vernier_scale) to 0.05 mm according to DIN 862. The standard specifies symmetrical error limits. The error limit depends on the scale division and the measured length, read from a table. (DIN 862 was replaced by DIN EN ISO 13385-1 in 2011, using the term deviation.)
+  - The scale division is 0.05 mm, so the random reading error $e_r$ is $\pm 0.025\ \text{mm}$.
+  - DIN 862 standardizes error limits that increase with the measured length, but are at least 50 $\mu m$ or 0.05 mm. For the measured value of 23.25 mm, the known systematic measurement deviation is therefore $e_{s,b} = \pm 0.05\ \text{mm}$.
 
-Measurement: $x = 23.25 mm$
+From the sum of the absolute values, the maximum error is obtained:  
+$\Delta x = |0.05|\ \text{mm} + |0.025|\ \text{mm} = 0.075\ \text{mm}$.
 
-* Scale division 0.05 mm → random reading error $e_r = \pm 0.025 mm$.
-* DIN 862 specifies minimum systematic error 50 μm (0.05 mm). Known systematic deviation: $e_{s,b} = \pm 0.05 mm$.
+The complete measurement result, consisting of the measured value and the measurement uncertainty, is therefore:  
+$23.25 \pm 0.075\ \text{mm}$.  
+The relative maximum error is: $23.25\ \text{mm} \pm 0.32\%$.
 
-Maximum error: $\Delta x = |0.05| mm + |0.025| mm = 0.075 mm$
-Final result: $23.25 ± 0.075 mm$, relative maximum error: $23.25 mm ± 0.32%$.
 :::
 
-Second measurement: length of the thumb. ([Thumb has only 2 phalanges](https://en.wikipedia.org/wiki/Thumb))
+In the second measurement procedure, the length of the thumb is to be determined. ([Anatomically, the thumb consists of only 2 phalange bones](https://en.wikipedia.org/wiki/Thumb))
 
 ::: {#nte-daumen .callout-note collapse="true"}
 
-## Second Measurement: Thumb
+## Second Measurement Process – Thumb
 
-Measured again with the caliper.
+The measurement is carried out again using the vernier caliper.
 
-Measurement: $x = 64.70 mm$
+Measured value: $x = 64.70 \, \text{mm}$
 
-* Scale division 0.05 mm → random error $\pm 0.025 mm$.
-* DIN 862 error limit for lengths 50–300 mm = 50 μm → $e_{s,b} = \pm 0.05 mm$.
-* Additional symmetrical deviation of 3 mm due to:
+- The scale division is 0.05 mm, therefore the random reading uncertainty is $\pm 0.025 \, \text{mm}$.
+- According to DIN 862, the standardized error limit for measured lengths between 50 and 300 mm is 50 $\mu$m or 0.05 mm. For the measured value of 64.7 mm, the error limit is therefore $\pm 0.05 \, \text{mm}$.
+- In addition, a symmetric measurement deviation of 3 mm is assumed because
+  - the measuring device was not applied straight,
+  - the base of the thumb could not be located exactly, and
+  - the elastic fingertip could not be fixed.
 
-  * caliper misalignment,
-  * imprecise thumb base localization,
-  * elastic fingertip movement.
+From the sum of the absolute values, the maximum error is obtained:
+$\Delta x = |0.025| \, \text{mm} + |0.05| \, \text{mm} + |3| \, \text{mm} = 3.075 \, \text{mm} \approx 3.08 \, \text{mm}$.
 
-Maximum error: $\Delta x = |0.025| mm + |0.05| mm + |3| mm = 3.075 mm \approx 3.08 mm$
-Result: $64.70 ± 3.08 mm$, relative maximum error: $64.70 mm ± 4.76%$.
+The measurement result, consisting of the measured value and the error interval, is therefore:
+$64.70 \pm 3.08 \, \text{mm}$.
+
+The relative maximum error is:
+$64.70 \, \text{mm} \pm 4.76\%$.
+
 :::
 
-### 2. Statistical Error Analysis
+### 2. Error Statistics
+Error statistics are used when
 
-Statistical error analysis is used when
+  - **a quantity**
+  - **is measured multiple times**
+  
+The error statistics are only considered reliable if the measurement deviations are random, meaning the values fluctuate in magnitude and sign. In this case, the measurement deviation is included in the calculated standard deviation. However, if a known systematic measurement error exists, the measurement result must be corrected accordingly: $\bar x_E = \bar x - e_{s,b}$.
 
-* **one quantity**
-* **is measured multiple times**.
+In previous chapters, we anticipated error statistics with the statistical description of the empirical spread of the mean. To recap:
 
-It is reliable only if deviations are random, i.e., values vary in magnitude and sign. The measurement deviation is then contained in the calculated standard deviation. If a known systematic deviation exists, correct the mean: $\bar x_E = \bar x - e_{s,b}$.
+1. Set a significance level $\alpha$ or a two-sided confidence level $1 - \frac{\alpha}{2}$.
+2. Determine the sample mean $\bar{x}$.
+3. Determine the sample standard deviation $s$, the sample size $N$, and the empirical standard error $\frac{s_{n-1}}{\sqrt{N}}$.
+4. Determine the values of the normal or t-distribution for the chosen confidence level — for a two-sided hypothesis test $\frac{\alpha}{2}$ and $1 - \frac{\alpha}{2}$.
+5. Calculate the confidence interval $\bar{x} \pm t_{\alpha / 2} ~ \frac{s_{n-1}}{\sqrt{n}}$.
 
-Earlier chapters introduced statistical description of mean variation. Summary:
-
-1. Set significance level $\alpha$ or two-sided confidence level $1 - \frac{\alpha}{2}$.
-2. Determine sample mean $\bar{x}$.
-3. Determine sample standard deviation $s$, sample size $N$, and empirical standard error $\frac{s_{n-1}}{\sqrt{N}}$.
-4. Determine values of the normal or t-distribution for the confidence level - for two-sided test $\frac{\alpha}{2}$ and $1 - \frac{\alpha}{2}$.
-5. Compute confidence interval $\bar{x} \pm t_{\alpha / 2} ~ \frac{s_{n-1}}{\sqrt{n}}$.
-
-This interval indicates where the mean of a repeated measurement series, or the *true value* if systematic deviation is zero/negligible, will likely lie. The standard deviation $s$ indicates the range for a single measurement. Confidence can be increased by widening the interval (e.g., $2 \cdot s$).
+This confidence interval indicates, for a chosen probability, the range in which the mean of a repeated measurement series will lie, or, if the unknown systematic measurement error is zero (or negligible), the *true value*.  
+In contrast, the standard deviation $s$ indicates the range in which a single measurement value is likely to fall. The certainty of this statement can be increased by widening the confidence interval (e.g., $2 \cdot s$).
 
 [@Hempel-2016, pp. 3-7]
 
-Example using the Pandas `.sem()` method:
+The following example demonstrates the procedure. It also introduces the Pandas method `.sem()` for easy calculation of the standard error.
 
-::: {#nte-fehlerstatistik .callout-note collapse="true"}
+::: {#nte-error-statistics .callout-note collapse="true"}
 
 ## Statistical Error Analysis
 
@@ -555,7 +587,9 @@ hooke_503g = hooke.loc[hooke['mass'] == 503, :]
 print(hooke_503g.head(), hooke_503g.describe(), sep = "\n\n")
 ```
 
-Examine the arithmetic mean (uncorrected measurement) and standard error of the mean. `.sem()` calculates the empirical standard error (default `ddof=1`).
+Let us consider once again the arithmetic mean (the uncorrected measurement result) and the standard error of the mean (the statistical measure of dispersion of the mean) for this series of measurements. The method `.sem()` computes the empirical standard error of the mean (by default, the parameter `ddof = 1` is used).
+
+Output accurate to 3 decimal places.
 
 ```{python}
 print(f"Weight in grams: {hooke_503g['mass'].unique()}",
@@ -584,7 +618,7 @@ print(f"Weight in grams: {hooke_503g['mass'].unique()}",
       sep = "\n")
 ```
 
-# Additional specification of the 95% confidence interval
+Additional specification of the 95% confidence interval.
 
 ```{python}
 # Determine t-value for significance level (choose alpha-level 1 - 95%)
@@ -639,7 +673,7 @@ When are the errors considered small relative to the measured values? Unfortunat
 
 ## Taylor Series
 
-{{< video [https://www.youtube.com/watch?v=F2lKRaUguBM](https://www.youtube.com/watch?v=F2lKRaUguBM) >}}
+{{< video https://www.youtube.com/watch?v=F2lKRaUguBM >}}
 
 The Taylor series - simply explained by Denkbar is available on [YouTube](https://www.youtube.com/watch?v=F2lKRaUguBM), 2015.
 
@@ -708,9 +742,9 @@ $$
 k = \frac{m \cdot g}{\Delta{x}} = \frac{m \cdot g}{s}
 $$
 
-Inserting the values ($s$ now stands for meters, $m$ for kilograms):
+Inserting the values ($s$ now stands for seconds, $m$ for meters):
 $$
-k = \frac{0.503 \text{ kg} \cdot 9.81 \text{ m/s}^2}{0.1489 \text{ m}} = \frac{0.503 \cdot 9.81}{0.1489} \frac{N}{m} = 33.139 \frac{N}{m}
+k = \frac{0,503 kg \cdot 9,81 m}{0,1489 m \cdot s^2} = \frac{0,503 \cdot 9,81}{0,1489} \frac{N}{{m}} = 33.139 \frac{N}{{m}}
 $$
 
 The maximum error of the function is given by:
@@ -749,7 +783,7 @@ $$
 \Delta k = \left| \frac{9.81 \cdot 0.0005}{0.1489} \frac{\text{kg m}}{\text{s}^2 \cdot \text{m}} \right| + \left| - \frac{0.503 \cdot 9.81 \cdot 0.0031}{0.02217121} \frac{\text{kg m}^2}{\text{s}^2 \cdot \text{m}^2} \right|
 $$
 
-Calculate and convert to Newtons ($\text{kg m/s}^2$):
+Calculate and convert to Newtons ($\frac{kg \cdot m}{s^2}$):
 $$
 \Delta k = |0.0329 \frac{N}{m}| + | -0.6899 \frac{N \cdot m}{m^2} |
 $$
@@ -809,11 +843,10 @@ $$
 
 *Note: Typically, the empirical standard deviation $s_{n-1} / \sqrt{N}$ is used.*
 
-::: {#example-503g .callout-note collapse="true"}
-
+::: {#nte-example-503g .callout-note collapse="true"}
 ## Example: Measurement Series 503 Grams
 
-Let’s revisit the measurement series for the 503-gram weight. The agreed confidence level of $95~%$ is assumed.
+Let’s revisit the measurement series for the 503-gram weight. The agreed confidence level of $95 ~ \%$ is assumed.
 
 ```{python}
 # Restore measurement data from hooke.qmd
@@ -972,7 +1005,7 @@ $$
 
 So:
 $$
-k_{95%} = 33.11 \frac{N}{m} \le 34.46 \frac{N}{m} \le 35.81 \frac{N}{m}
+k_{95\%} = 33,11 \frac{N}{m} \le 34,46 \frac{N}{m} \le 35,81 \frac{N}{m}
 $$
 
 ::::
@@ -1030,9 +1063,9 @@ $$
 $$
 
 * The reading error of the kitchen scale is estimated as $e_r (m) = 0.5 g = 0.0005 kg$. No systematic measurement deviation is known. Therefore, the maximum error of the mass is $\Delta m = 0.0005 kg$.
-* The empirical standard error of the extension is $\sigma_x = 0.00247 m$, corresponding to the agreed confidence level of $\sigma_{x 95 %} = 0.00247 m * 2.2622 = 0.00559 m$.
+* The empirical standard error of the extension is $\sigma_x = 0.00247 m$, corresponding to the agreed confidence level of $\sigma_{x 95 \%} = 0.00247 m * 2.2622 = 0.00559 m$.
 
-The measured values, the constant $g$, and the maximum errors are substituted:
+Insert the measured values, the constant $g$, and the maximum errors:
 $$
 \Delta k = | \frac{9.81 m}{{s}^2 \cdot 0.1432 m} | \cdot 0.0005 kg ~ + ~ | (-) \frac{0.503 kg \cdot 9.81  m}{{s}^2 \cdot (0.1432 m)^2} | \cdot 0.00247 m
 $$

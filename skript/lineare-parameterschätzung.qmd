@@ -423,7 +423,7 @@ $$
 \sum_{i=1}^{n} y_i - n \cdot \beta_0 - \beta_1 \cdot \sum_{i=1}^{n} x_i = 0
 $$
 
-Dividing by $n$ gives the means:
+Now we can divide by $n$. Here, $\frac{\sum_{i=1}^{n} y_i}{n}$ corresponds to the arithmetic mean of $y$, and $\frac{\sum_{i=1}^{n} x_i}{n}$ to the arithmetic mean of $x$. Thus, we obtain:
 $$
 \bar{y} - \beta_0 - \beta_1 \cdot \bar{x}= 0
 $$
@@ -476,75 +476,68 @@ $$
 
 Solve for $\beta_1$:
 $$
-\beta_1 = \frac{\sum_{i=1}^{n} x_iy_i - n\bar{x}\bar{y}}{\sum_{i=1}^{n} x_i^2 - n \bar{x}^2} = \frac{\sum_{i=1}^{n} (x_i - \bar{x}) (y_i - \bar{y})}{\sum_{i=1}^{n}  (x_i - \bar{x})^2}
+\beta_1 \cdot \left( \sum_{i=1}^{n} x_i^2 - n \bar{x}^2 \right) = \sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}
 $$
+
+Then:
+$$
+\beta_1 = \frac{\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}}{\sum_{i=1}^{n} x_i^2 - n \bar{x}^2}
+$$
+
+Now, we can first rewrite using $\sum_{i=1}^{n} x_i^2 - n \bar{x}^2 = \sum_{i=1}^{n} (x_i - \bar{x})^2$.
+$$
+\beta_1 = \frac{\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+$$
+
+Then—and this will be shown next—using $\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y} = \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})$. Thus, we obtain:
+$$
+\beta_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+$$
+
+The final step is shown starting from the result and begins by expanding the product:
+$$
+\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} (x_i y_i - x_i \bar{y} - \bar{x} y_i + \bar{x} \bar{y})
+$$
+
+This can also be written as:
+$$
+\sum_{i=1}^{n} x_i y_i - \sum_{i=1}^{n} x_i \bar{y} - \sum_{i=1}^{n} \bar{x} y_i + \sum_{i=1}^{n} \bar{x} \bar{y}
+$$
+
+$\bar{x}$ and $\bar{y}$ are constants, so we can write $\bar{x} \cdot \sum_{i=1}^{n} y_i$ and $\bar{y} \cdot \sum_{i=1}^{n} x_i$. Since $\sum_{i=1}^{n} x_i = n \cdot \bar{x}$ (analogously for $y$), we obtain:
+$$
+\sum_{i=1}^{n} x_i y_i - \bar{y} \cdot n \cdot \bar{x} - \bar{x} \cdot n \cdot \bar{y} + \sum_{i=1}^{n} \bar{x} \bar{y}
+$$
+
+Reordering:
+$$
+\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y} - n \bar{x} \bar{y} + \sum_{i=1}^{n} \bar{x} \bar{y}
+$$
+
+The last term $\sum_{i=1}^{n} \bar{x} \bar{y}$ can also be written as $n \cdot \bar{x} \bar{y}$, which yields:
+$$
+\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y} - n \bar{x} \bar{y} + n \bar{x} \bar{y}
+$$
+
+The last two terms therefore cancel out, leaving:
+$$
+\sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}
+$$
+
 
 [@Baitsch-2019, pp. 73-74]
 
 ::::
 
-Both `numpy.polynomial` (specifically `numpy.polynomial.polynomial`) and `scipy.stats.linregress` provide functions to compute this. Below we demonstrate the calculation with NumPy first, then show the SciPy functions. The operation of both modules is similar.
+:::
+
+The functions required for this are provided both by the `numpy.polynomial` package—specifically its `numpy.polynomial.polynomial` module for polynomial functions—and by the `scipy.stats.linregress` module. In the following, the computation using NumPy is demonstrated first, followed by an introduction to the functions from the SciPy module. The way both modules work is similar.
 
 #### NumPy polyfit and polyeval
 
 ```{python}
 import numpy.polynomial.polynomial as poly
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 To estimate function parameters using the least squares method, the function `poly.polyfit(x, y, deg)` is used. `x` represents the values of the independent variable, `y` the values of the dependent variable, and `deg` specifies the degree of the polynomial function to be fitted. `deg = 1` specifies a linear function.
@@ -624,13 +617,14 @@ print(np.polyfit(x, y, deg = 1))
 :::: {.border}
 ::::: {.callout-note}
 
-This is part of the old polynomial API. Since version 1.4, the new polynomial API defined in `numpy.polynomial` is recommended. A summary of the differences can be found in the [transition guide](https://numpy.org/doc/stable/reference/routines.polynomials.html).
+This forms part of the old polynomial API. Since version 1.4, the new polynomial API defined in `numpy.polynomial` is preferred. A summary of the differences can be found in the [transition guide](https://numpy.org/doc/stable/reference/routines.polynomials.html).
 
 :::::
 
 [NumPy Documentation](https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html)
 
 ::::
+:::
 
 The parameters of the linear function fitted to the measured values and the coefficient of determination are:
 ```{python}
@@ -777,8 +771,6 @@ This allows the confidence interval to be calculated using the corresponding t-v
 ```{python}
 alpha = 0.05
 n = len(x)
-
-# Print the confidence interval for the slope
 
 print(f"{slope - scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f} ≤ {slope:.3f} ≤ {slope + scipy.stats.t.ppf(q = 1 - alpha / 2, df = n - 2) * slope_stderr:.3f}")
 ```

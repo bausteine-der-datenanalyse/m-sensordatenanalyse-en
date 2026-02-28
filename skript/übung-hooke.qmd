@@ -14,7 +14,7 @@ In the folder '01-daten/hooke', there are several txt files containing measureme
 2. What values can be determined for the spring constants?
 3. Were the measurements taken with the same spring (or with springs of the same spring constant) if a confidence level of 90% or 95% is assumed?
 
-In section @sec-read-files you will find guidance, and in section @sec-task-read a sample solution for reading the files. Afterwards, you are expected to work on the tasks independently. Section @sec-solution-data-prep provides a sample solution for data preprocessing. Section @sec-solution-spring-constants contains the sample solution for determining the spring constants.
+In section @sec-reading-files you will find guidance, and in section @sec-task-reading a sample solution for reading the files. Afterwards, you are expected to work on the tasks independently. Section @sec-solution-data-preparation provides a sample solution for data preprocessing. Section @sec-solution-springconstants contains the sample solution for determining the spring constants.
 
 *Note: Depending on the approach chosen, different results may arise (for example, when evaluating and handling extreme values / outliers).*
 
@@ -301,11 +301,7 @@ for i in range(len(teams)):
 
         print(teams[i], team_weights[i][j])
 
-        measurement_series = pd.concat([
-            hooke.loc[
-                (hooke['Team'] == teams[i]) & (hooke['Weight'] == team_weights[i][j])
-            ]
-        ])
+        measurement_series = pd.concat([measurement_series, hooke.loc[(hooke['Team'] == teams[i]) & (hooke['Weight'] == team_weights[i][j]) ]])
 
 # Compute studentized z-scores of the measurement series
 ## Solution for SciPy 1.14.1 (returns pd.Series)
