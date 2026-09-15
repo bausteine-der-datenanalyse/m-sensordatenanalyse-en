@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>4&nbsp; Error Calculation – Bausteine Computergestützter Datenanalyse</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -59,7 +65,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -89,15 +94,14 @@ div.csl-indent {
 <link href="../skript/lineare-parameterschätzung.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c8cd78f0f7a4102d54b040ada74a3c93.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-41d1ed59529443dc312b46011c211845.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -129,7 +133,7 @@ div.csl-indent {
 <link rel="icon" type="image/x-icon" href="logo.ico">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -621,7 +625,7 @@ Hinweis&nbsp;4.3: (Alternative) Notations
 <div class="callout-body-container callout-body">
 <p>In DIN 1319, measurement deviations are denoted by <span class="math inline">\(e\)</span>, while measurement uncertainty is denoted by <span class="math inline">\(u\)</span>. In error analysis literature, the term (measurement) <em>error</em> is more commonly used. The notation, however, is not consistent.</p>
 <ul>
-<li><p>The absolute error is often denoted by <span class="math inline">\(\epsilon x\)</span> (epsilon x). Another common notation is <span class="math inline">\(\Delta x\)</span> (Delta), for example <span class="citation" data-cites="HS-Aalen-2016 Dinter-2011 SchrüferEtAl2022">(<a href="#ref-HS-Aalen-2016" role="doc-biblioref">Hochschule Aalen 2016</a>; <a href="#ref-Dinter-2011" role="doc-biblioref">Dinter, Ralf 2011</a>; <a href="#ref-SchrüferEtAl2022" role="doc-biblioref">Schrüfer, Reindl, und Zagar 2022</a>)</span>. <span class="math inline">\(\Delta\)</span> is also used to denote the maximum error.</p></li>
+<li><p>The absolute error is often denoted by <span class="math inline">\(\epsilon x\)</span> (epsilon x). Another common notation is <span class="math inline">\(\Delta x\)</span> (Delta), for example <span class="citation" data-cites="HS-Aalen-2016 Dinter-2011 SchrüferEtAl2022">(<a href="#ref-HS-Aalen-2016" role="doc-biblioref">Hochschule Aalen 2016</a>; <a href="#ref-Dinter-2011" role="doc-biblioref">Dinter, Ralf 2011</a>; <a href="#ref-SchrüferEtAl2022" role="doc-biblioref">Schrüfer u.&nbsp;a. 2022</a>)</span>. <span class="math inline">\(\Delta\)</span> is also used to denote the maximum error.</p></li>
 <li><p>The relative error is also denoted by <span class="math inline">\(\delta x\)</span> (delta x), for example: <span class="math inline">\(\delta x = 4~\%\)</span>.</p></li>
 </ul>
 </div>
@@ -694,7 +698,7 @@ Definition&nbsp;4.4: Significant Figures
 <div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/s0gPyypiGOs" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <p>“Rounding and Significant Figures (Mathematics Prep Course)” by Edmund Weitz is available on <a href="https://www.youtube.com/watch?v=q2iZDtotiM0">YouTube</a>, 2019.</p>
 <p>Python rounds scientifically:</p>
-<div id="86a1fac3" class="cell" data-execution_count="2">
+<div id="d4f471e4" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="fl">2.5</span>), <span class="bu">round</span>(<span class="fl">3.5</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2 4</code></pre>
@@ -711,7 +715,7 @@ Definition&nbsp;4.4: Significant Figures
 <li>Statistical error analysis, and</li>
 <li>Error propagation.</li>
 </ol>
-<p>There is some discretion in choosing the method. (<span class="citation" data-cites="Hempel-2016">Hempel (<a href="#ref-Hempel-2016" role="doc-biblioref">2016</a>)</span>, p.&nbsp;2) For routine measurements, it is sufficient to report uncertainty in percentage terms. In calibration or when comparing with a <a href="https://en.wikipedia.org/wiki/Standard">standard</a>, more precise information is required. <span class="citation" data-cites="SchrüferEtAl2022">(<a href="#ref-SchrüferEtAl2022" role="doc-biblioref">Schrüfer, Reindl, und Zagar 2022</a>, p.&nbsp;33)</span></p>
+<p>There is some discretion in choosing the method. (<span class="citation" data-cites="Hempel-2016">Hempel (<a href="#ref-Hempel-2016" role="doc-biblioref">2016</a>)</span>, p.&nbsp;2) For routine measurements, it is sufficient to report uncertainty in percentage terms. In calibration or when comparing with a <a href="https://en.wikipedia.org/wiki/Standard">standard</a>, more precise information is required. <span class="citation" data-cites="SchrüferEtAl2022">(<a href="#ref-SchrüferEtAl2022" role="doc-biblioref">Schrüfer u.&nbsp;a. 2022</a>, p.&nbsp;33)</span></p>
 <p>The choice of the appropriate method also depends on the available information. For example, the spring constant determined in the previous chapter depends on three quantities:</p>
 <ol type="1">
 <li><p>the mass <span class="math inline">\(m\)</span>, measured with a kitchen scale, whose reading accuracy is estimated as <span class="math inline">\(e_r(m) = 0.5 g = 0.0005 kg\)</span>.</p></li>
@@ -930,7 +934,7 @@ Beispiel&nbsp;4.5: Statistical Error Analysis
 <div id="callout-18" class="callout-18-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>From the previous chapter’s experiment, select the measurement series for weight 503g.</p>
-<div id="b15dba6a" class="cell" data-execution_count="3">
+<div id="eebcc622" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> <span class="st">"01-daten/hooke_data.csv"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>hooke <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> filepath, sep <span class="op">=</span> <span class="st">';'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hooke.drop(index <span class="op">=</span> <span class="dv">113</span>, inplace <span class="op">=</span> <span class="va">True</span>) <span class="co"># missing value</span></span>
@@ -958,7 +962,7 @@ max    49.00000  503.0  160.610000</code></pre>
 </div>
 <p>Let us consider once again the arithmetic mean (the uncorrected measurement result) and the standard error of the mean (the statistical measure of dispersion of the mean) for this series of measurements. The method <code>.sem()</code> computes the empirical standard error of the mean (by default, the parameter <code>ddof = 1</code> is used).</p>
 <p>Output accurate to 3 decimal places.</p>
-<div id="1c12dc3a" class="cell" data-execution_count="4">
+<div id="a0e42dd0" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weight in grams: </span><span class="sc">{</span>hooke_503g[<span class="st">'mass'</span>]<span class="sc">.</span>unique()<span class="sc">}</span><span class="ss">"</span>,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Mean of measurements: </span><span class="sc">{</span>hooke_503g[<span class="st">'distance'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss"> cm"</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Empirical standard error: </span><span class="sc">{</span>hooke_503g[<span class="st">'distance'</span>]<span class="sc">.</span>sem()<span class="sc">:.3f}</span><span class="ss"> cm"</span>,</span>
@@ -970,7 +974,7 @@ Empirical standard error: 0.247 cm</code></pre>
 </div>
 </div>
 <p>The measurement uncertainty is rounded up to 2 decimal places. For this, the NumPy function <code>np.ceil()</code> can be used. However, it rounds to the next integer, and there is no parameter to round to a specific decimal place. Therefore, the decimal place must be shifted by multiplying with the corresponding power of ten. For 2 decimal places, multiply by <span class="math inline">\(10^2\)</span>: <code>np.ceil(value * 100) / 100</code>.</p>
-<div id="31a4fa01" class="cell" data-execution_count="5">
+<div id="19131c00" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>value <span class="op">=</span> pd.Series([<span class="fl">0.247</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.ceil(value <span class="op">*</span> <span class="dv">100</span>) <span class="op">/</span> <span class="dv">100</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -984,7 +988,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>For chaining with further methods in Pandas, the return value of the function, a NumPy scalar or array, must be converted back into a <code>pd.Series</code>.</p>
-<div id="5ce4e149" class="cell" data-execution_count="6">
+<div id="836b7658" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weight in grams: </span><span class="sc">{</span>hooke_503g[<span class="st">'mass'</span>]<span class="sc">.</span>unique()<span class="sc">}</span><span class="ss">"</span>,</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Mean of measurements: </span><span class="sc">{</span>hooke_503g[<span class="st">'distance'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss"> cm"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Empirical standard error: </span><span class="sc">{</span> ( sem_hooke_503g<span class="op">:=</span> pd.Series(hooke_503g[<span class="st">'distance'</span>].sem()).mul(<span class="dv">100</span>).<span class="bu">apply</span>(np.ceil).div(<span class="dv">100</span>) )<span class="sc">.</span>item() <span class="sc">:.3f}</span><span class="ss"> cm"</span>,</span>
@@ -998,7 +1002,7 @@ Complete measurement result: 159.31 cm ± 0.25 cm</code></pre>
 </div>
 </div>
 <p>Additional specification of the 95% confidence interval.</p>
-<div id="4f4ab125" class="cell" data-execution_count="7">
+<div id="7fa44f18" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine t-value for significance level (choose alpha-level 1 - 95%)</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> hooke_503g.shape[<span class="dv">0</span>]  <span class="co"># Number of rows</span></span>
@@ -1108,7 +1112,7 @@ Beispiel&nbsp;4.8: Example: Spring Constant
 <div id="callout-21" class="callout-21-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>As an example, we consider the first measurement from the series with a weight of 503 grams.</p>
-<div id="edaf8296" class="cell" data-execution_count="8">
+<div id="39bdde03" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>hooke_503g_single_value <span class="op">=</span> hooke_503g.iloc[<span class="dv">0</span>, :].copy()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke_503g_single_value)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1119,7 +1123,7 @@ Name: 40, dtype: float64</code></pre>
 </div>
 </div>
 <p>Since multiple magnitudes are considered, the measurements are converted to SI units. The zero point is defined as the first measurement in the series with a weight of 0 grams.</p>
-<div id="4f5bf392" class="cell" data-execution_count="9">
+<div id="9408f250" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>hooke_503g_single_value[<span class="st">'mass'</span>] <span class="op">=</span> hooke_503g_single_value[<span class="st">'mass'</span>] <span class="op">/</span> <span class="dv">1000</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>hooke_503g_single_value[<span class="st">'distance'</span>] <span class="op">=</span> hooke_503g_single_value[<span class="st">'distance'</span>] <span class="op">/</span> <span class="dv">100</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1219,7 +1223,7 @@ Beispiel&nbsp;4.9: Example: Measurement Series 503 Grams
 <div id="callout-22" class="callout-22-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Let’s revisit the measurement series for the 503-gram weight. The agreed confidence level of <span class="math inline">\(95 ~ \%\)</span> is assumed.</p>
-<div id="bcabc3a3" class="cell" data-execution_count="10">
+<div id="3c357ef9" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Restore measurement data from hooke.qmd</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Read file and remove error</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>filepath <span class="op">=</span> <span class="st">"01-daten/hooke_data.csv"</span></span>
@@ -1266,7 +1270,7 @@ k = \frac{0.503\ \text{kg} \cdot 9.81\ \text{m/s}^2}{0.1432\ \text{m}} = \frac{0
 \]</span></p>
 <p>&nbsp;</p>
 <p>To determine the uncertainty of the resulting quantity <span class="math inline">\(k\)</span> using Gaussian error propagation, the mass of the weight used would also need to be determined through a series of measurements. (How measurement series and single measurements can be combined will be shown in the next section.) Therefore, it is assumed that multiple measurements were performed to determine the weight. The measurement series, along with its mean and standard error, could look as follows:</p>
-<div id="0517ff29" class="cell" data-execution_count="11">
+<div id="2cea33f6" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>measurement_series_503g <span class="op">=</span> pd.Series([<span class="dv">503</span>, <span class="dv">503</span>, <span class="dv">504</span>, <span class="dv">502</span>, <span class="dv">503</span>, <span class="dv">502</span>, <span class="dv">503</span>, <span class="dv">504</span>])</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>measurement_series_503g <span class="op">/=</span> <span class="dv">1000</span>  <span class="co"># convert to kilograms</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1394,7 +1398,7 @@ Beispiel&nbsp;4.10: Example Spring Constant
 </div>
 <div id="callout-23" class="callout-23-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="a512e357" class="cell" data-execution_count="12">
+<div id="87cf555a" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Output</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Weight in kilograms: </span><span class="sc">{</span>hooke_503g[<span class="st">'mass'</span>]<span class="sc">.</span>unique()<span class="sc">}</span><span class="ss">"</span>,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Mean extension: </span><span class="sc">{</span>hooke_503g[<span class="st">'extension'</span>]<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> m"</span>,</span>
@@ -1494,27 +1498,27 @@ k_{95\%} = 33.11 \frac{N}{m} \le 34.46 \frac{N}{m} \le 35.81 \frac{N}{m}
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-DIN1319-1" class="csl-entry" role="listitem">
-Deutsches Institut für Normung. 1995. <span>„Grundlagen der Meßtechnik - Teil 1: Grundbegriffe“</span>. DIN Media. <a href="https://doi.org/10.31030/2713411">https://doi.org/10.31030/2713411</a>.
+Deutsches Institut für Normung. 1995. <em>Grundlagen der Meßtechnik - Teil 1: Grundbegriffe</em>. DIN Media. <a href="https://doi.org/10.31030/2713411">https://doi.org/10.31030/2713411</a>.
 </div>
 <div id="ref-DIN1319-3" class="csl-entry" role="listitem">
-———. 1996. <span>„Grundlagen der Meßtechnik - Teil 3: Auswertung von Messungen einer einzelnen Meßgröße, Meßunsicherheit“</span>. DIN Media. <a href="https://doi.org/10.31030/7204542">https://doi.org/10.31030/7204542</a>.
+Deutsches Institut für Normung. 1996. <em>Grundlagen der Meßtechnik - Teil 3: Auswertung von Messungen einer einzelnen Meßgröße, Meßunsicherheit</em>. DIN Media. <a href="https://doi.org/10.31030/7204542">https://doi.org/10.31030/7204542</a>.
 </div>
 <div id="ref-Dinter-2011" class="csl-entry" role="listitem">
-Dinter, Ralf. 2011. <span>„Fehlerrechnung für Einsteiger. Eine beispielorientierte Einführung für Studierende der TUHH“</span>. <a href="https://www2.physnet.uni-hamburg.de/TUHH/Versuchsanleitung/Fehlerrechnung.pdf">https://www2.physnet.uni-hamburg.de/TUHH/Versuchsanleitung/Fehlerrechnung.pdf</a>.
+Dinter, Ralf. 2011. <em>Fehlerrechnung für Einsteiger. Eine beispielorientierte Einführung für Studierende der TUHH</em>. <a href="https://www2.physnet.uni-hamburg.de/TUHH/Versuchsanleitung/Fehlerrechnung.pdf">https://www2.physnet.uni-hamburg.de/TUHH/Versuchsanleitung/Fehlerrechnung.pdf</a>.
 </div>
 <div id="ref-EdenGebhard-2024" class="csl-entry" role="listitem">
 Eden, Klaus, und Hermann Gebhard. 2024. <em>Dokumentation in der Mess- und Prüftechnik: Messen - Auswerten - Darstellen Protokolle - Berichte - Präsentationen</em>. 3. Auflage. <a href="https://doi.org/10.1007/978-3-658-44779-3">https://doi.org/10.1007/978-3-658-44779-3</a>.
 </div>
 <div id="ref-Hempel-2016" class="csl-entry" role="listitem">
-Hempel, Rainer. 2016. <span>„Script zur Einführung in die Grundlagen der Fehlerrechnung“</span>. <a href="https://www.tu-braunschweig.de/index.php?eID=dumpFile&amp;t=f&amp;f=45992&amp;token=b041478add5f7a3e136b69905b72bfa0e192d82b">https://www.tu-braunschweig.de/index.php?eID=dumpFile&amp;t=f&amp;f=45992&amp;token=b041478add5f7a3e136b69905b72bfa0e192d82b</a>.
+Hempel, Rainer. 2016. <em>Script zur Einführung in die Grundlagen der Fehlerrechnung</em>. <a href="https://www.tu-braunschweig.de/index.php?eID=dumpFile&amp;t=f&amp;f=45992&amp;token=b041478add5f7a3e136b69905b72bfa0e192d82b">https://www.tu-braunschweig.de/index.php?eID=dumpFile&amp;t=f&amp;f=45992&amp;token=b041478add5f7a3e136b69905b72bfa0e192d82b</a>.
 </div>
 <div id="ref-HS-Aalen-2016" class="csl-entry" role="listitem">
-Hochschule Aalen. 2016. <span>„Anleitung zur Fehlerrechnung im Physikpraktikum“</span>. <a href="https://www.hs-aalen.de/uploads/mediapool/media/file/13430/F_Fehlerrechnung.pdf">https://www.hs-aalen.de/uploads/mediapool/media/file/13430/F_Fehlerrechnung.pdf</a>.
+Hochschule Aalen. 2016. <em>Anleitung zur Fehlerrechnung im Physikpraktikum</em>. <a href="https://www.hs-aalen.de/uploads/mediapool/media/file/13430/F_Fehlerrechnung.pdf">https://www.hs-aalen.de/uploads/mediapool/media/file/13430/F_Fehlerrechnung.pdf</a>.
 </div>
 <div id="ref-SchrüferEtAl2022" class="csl-entry" role="listitem">
-Schrüfer, Elmar, Leonhard M. Reindl, und Bernhard Zagar. 2022. <em>Elektrische Messtechnik: Messung elektrischer und nichtelektrischer Größen</em>. 13. Aufl. München: Carl Hanser Verlag.
+Schrüfer, Elmar, Leonhard M. Reindl, und Bernhard Zagar. 2022. <em>Elektrische Messtechnik: Messung elektrischer und nichtelektrischer Größen</em>. 13. Aufl. Carl Hanser Verlag.
 </div>
 </div>
 </section>
