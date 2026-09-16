@@ -503,10 +503,8 @@ For data analysis, the tabular format is less suitable. The [consolidated versio
 
 ``` {raw}
 'skript/01-daten/pt100-table-below-zero.csv'
-'script/01-daten/pt100-table-above-zero.csv'
+'skript/01-daten/pt100-table-above-zero.csv'
 ```
-
-**Marc can try another sample solution**
 
 ::: {#tip-pt100 .callout-tip collapse="true"}
 ## Read Sample Solution Pt100 Table

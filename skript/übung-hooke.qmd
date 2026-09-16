@@ -30,7 +30,7 @@ import glob
 ```
 
 ## Reading Files {#sec-reading-files}
-To read files, you can use the `glob` module (see [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-sensordatenanalyse/output/book/)).
+To read files, you can use the `glob` module (see [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-einlesen-strukturierter-datensaetze-en/output/book/)).
 
 First, you can pass the argument `pathname = *` to the function `glob.glob()`. The wildcard `*` stands for any sequence of characters (except path elements like `/` or `.`), allowing you to list all files stored in the specified folder. This way, you can determine the number of files and their extensions if they are not yet known.
 
@@ -62,7 +62,7 @@ Now read in the files. While doing so, check:
 You can:
 
   a) Read each file individually.  
-  b) Use the `glob` module to read the files automatically and store each in a separate object (*Note:* This approach is demonstrated in the [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-sensordatenanalyse/output/book/)).  
+  b) Use the `glob` module to read the files automatically and store each in a separate object (*Note:* This approach is demonstrated in the [Module on Reading Structured Datasets](https://bausteine-der-datenanalyse.github.io/m-einlesen-strukturierter-datensaetze-en/output/book/)).
   c) Use the `glob` module to read the files automatically and merge them into a single file.
 
 These options require increasing levels of programming effort. The more separate files you want to analyze, the more automation is needed. Since sensor data analysis often involves numerous files, the model solution shows variant c).
