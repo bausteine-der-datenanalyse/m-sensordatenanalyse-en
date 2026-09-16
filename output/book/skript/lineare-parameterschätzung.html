@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.18">
@@ -116,17 +116,17 @@ div.csl-indent {
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "Keine Treffer",
-    "search-matching-documents-text": "Treffer",
-    "search-copy-link-title": "Link in die Suche kopieren",
-    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
-    "search-more-match-text": "weitere Treffer in diesem Dokument",
-    "search-more-matches-text": "weitere Treffer in diesem Dokument",
-    "search-clear-button-title": "Zurücksetzen",
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Abbrechen",
-    "search-submit-button-title": "Abschicken",
-    "search-label": "Suchen"
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
@@ -173,13 +173,13 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/lineare-parameterschätzung.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Linear Parameter Estimation</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Suchen" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -195,12 +195,12 @@ window.Quarto = {
       <img src="../skript/00-bilder/logo_with_text_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">Methodenbaustein Sensordatenanalyse</a> 
+      <a href="../">Sensor Data Analysis Method Module</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Suchen"></div>
+        <div id="quarto-search" class="" title="Search"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -254,7 +254,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
   <li><a href="#measurement-series-hookes-law" id="toc-measurement-series-hookes-law" class="nav-link active" data-scroll-target="#measurement-series-hookes-law"><span class="header-section-number">3.1</span> Measurement Series: Hooke’s Law</a>
@@ -316,16 +316,16 @@ where <span class="math inline">\(k\)</span> is the spring constant.</p>
 </figure>
 </div>
 <p>The measurement series is provided as a CSV file located at the path <code>01-daten/hooke_data.csv</code>. The file is read using Pandas.</p>
-<div id="57b54f48" class="cell" data-execution_count="2">
+<div id="499f1897" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="op">=</span> <span class="st">"01-daten/hooke_data.csv"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>hooke <span class="op">=</span> pd.read_csv(filepath_or_buffer<span class="op">=</span>file_path, sep<span class="op">=</span><span class="st">';'</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>hooke <span class="op">=</span> pd.read_csv(filepath_or_buffer<span class="op">=</span>file_path, sep<span class="op">=</span><span class="st">';'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="descriptive-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h3>
 <p>After loading the data, you should get an overview of it. With the methods <code>pd.DataFrame.head()</code> and <code>pd.DataFrame.tail()</code> you can view a snippet from the beginning and the end of the dataset.</p>
-<div id="b0f414d2" class="cell" data-execution_count="3">
+<div id="7a8da756" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.tail())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.tail())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   no  mass  distance
 0   0   705    153.29
@@ -345,8 +345,8 @@ where <span class="math inline">\(k\)</span> is the spring constant.</p>
 <p>The method <code>pd.DataFrame.describe()</code> generates descriptive statistics for the dataset.<br>
 In this case, however, the output is not particularly useful yet.<br>
 The column ‘no’ contains only a running experiment number, and the column ‘mass’ contains different weights.</p>
-<div id="8dbaeb6c" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hooke.describe()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="080e333b" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hooke.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
@@ -417,8 +417,8 @@ The column ‘no’ contains only a running experiment number, and the column �
 </div>
 <p>&nbsp;</p>
 <p>It is more useful to have a descriptive statistic of the measured extension, grouped by the applied weight. For this, the Pandas method <code>pd.DataFrame.groupby()</code> can be used. This way, the arithmetic mean and standard deviation can be read for each of the measured weights.</p>
-<div id="2cb3ea96" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by<span class="op">=</span><span class="st">'mass'</span>)[<span class="st">'distance'</span>].describe()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="dcf1027a" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by<span class="op">=</span><span class="st">'mass'</span>)[<span class="st">'distance'</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
@@ -578,11 +578,11 @@ The column ‘no’ contains only a running experiment number, and the column �
 </div>
 <p>&nbsp;</p>
 <p>Even at this point, the high standard deviation in the measurement series with 0 grams could be noticeable. It is, however, easier to spot when looking at the graphical representation.</p>
-<div id="0e57b697" class="cell" data-execution_count="6">
+<div id="8fe0da89" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hooke.plot(x<span class="op">=</span><span class="st">'mass'</span>, y<span class="op">=</span><span class="st">'distance'</span>, kind<span class="op">=</span><span class="st">'scatter'</span>, title<span class="op">=</span><span class="st">"Hooke's Law Measurement Series"</span>, ylabel<span class="op">=</span><span class="st">'Distance in cm'</span>, xlabel<span class="op">=</span><span class="st">'Weight in grams'</span>, label<span class="op">=</span><span class="st">'Measured distance'</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -602,7 +602,7 @@ Z = \frac{x - \mu}{\sigma}
 <p><span class="math display">\[
 z_{i} = \frac{x_{i} - \bar{x}}{s}
 \]</span></p>
-<div id="06bb1ff0" class="cell" data-execution_count="7">
+<div id="7ca613c3" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>weight <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate z-transformation manually</span></span>
@@ -619,7 +619,7 @@ z_{i} = \frac{x_{i} - \bar{x}}{s}
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>scipy_z_values.name <span class="op">=</span> <span class="st">'scipy z-values'</span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># combined output of the data</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.concat([hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> weight], z_values, scipy_z_values], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.concat([hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> weight], z_values, scipy_z_values], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        no  mass  distance  z-values  scipy z-values
 102  102.0   0.0    173.32 -0.329171             NaN
@@ -668,10 +668,10 @@ Definition&nbsp;3.1: Outlier
 </div>
 </div>
 </div>
-<div id="5d955c2b" class="cell" data-execution_count="8">
+<div id="9dada679" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hooke.drop(index <span class="op">=</span> <span class="dv">113</span>, inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by <span class="op">=</span> <span class="st">'mass'</span>)[<span class="st">'distance'</span>].describe()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by <span class="op">=</span> <span class="st">'mass'</span>)[<span class="st">'distance'</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
@@ -831,7 +831,7 @@ Definition&nbsp;3.1: Outlier
 </div>
 <p>&nbsp;</p>
 <p>The highest standard deviation is observed for the measurement series of 301 grams. However, the measured values appear unremarkable.</p>
-<div id="7f9990de" class="cell" data-execution_count="9">
+<div id="a56d7780" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>weight <span class="op">=</span> <span class="dv">301</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">## scipy returns a np.array</span></span>
@@ -841,7 +841,7 @@ Definition&nbsp;3.1: Outlier
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>z_values <span class="op">=</span> pd.Series(scipy.stats.zscore(hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> weight].loc[:, <span class="st">'distance'</span>], ddof<span class="op">=</span><span class="dv">1</span>))</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>z_values.name <span class="op">=</span> <span class="st">'z-values'</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.concat([hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> weight], z_values], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.concat([hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> weight], z_values], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      no   mass  distance  z-values
 70  70.0  301.0    162.38       NaN
@@ -870,11 +870,11 @@ Definition&nbsp;3.1: Outlier
 <section id="exploratory-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="exploratory-statistics">Exploratory Statistics</h3>
 <p>The plot of the cleaned dataset suggests a linear relationship. Additionally, the downward trend of the data points with increasing weight is striking.</p>
-<div id="b8f1060f" class="cell" data-execution_count="10">
+<div id="73f56ff0" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>hooke.plot(x <span class="op">=</span> <span class="st">'mass'</span>, y <span class="op">=</span> <span class="st">'distance'</span>, kind <span class="op">=</span> <span class="st">'scatter'</span>, title <span class="op">=</span> <span class="st">'cleaned dataset'</span>, ylabel <span class="op">=</span> <span class="st">'Distance in cm'</span>, xlabel <span class="op">=</span> <span class="st">'Weight in grams'</span>, label <span class="op">=</span> <span class="st">'measured distance'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -885,7 +885,7 @@ Definition&nbsp;3.1: Outlier
 </div>
 <p>&nbsp;</p>
 <p>According to the experimental setup, as the spring is stretched, the distance to the distance sensor decreases. Since the spring elongation is to be measured, it is useful to transform the data accordingly. For this purpose, the measured distance at 0 grams of weight is taken as the zero point, from which the spring elongation is measured. This means that the arithmetic mean of the elongation measured at 0 grams is subtracted from all data points, and the result is multiplied by -1.</p>
-<div id="462e1b66" class="cell" data-execution_count="11">
+<div id="13bbb4d5" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>zero_point <span class="op">=</span> hooke[hooke[<span class="st">'mass'</span>] <span class="op">==</span> <span class="dv">0</span>].loc[:, <span class="st">'distance'</span>].mean()</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Zero point: </span><span class="sc">{</span>zero_point<span class="sc">:.2f}</span><span class="ss"> cm"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -902,7 +902,7 @@ Definition&nbsp;3.1: Outlier
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Zero point: 173.63 cm</code></pre>
 </div>
@@ -916,7 +916,7 @@ Definition&nbsp;3.1: Outlier
 </div>
 <p>&nbsp;</p>
 <p>With the function <code>plt.errorbar()</code>, the means and standard errors for each weight can be displayed graphically. Since the standard errors are relatively small, horizontal lines are drawn at the ends of the error bars using the <code>capsize</code> parameter.</p>
-<div id="79a2bd1b" class="cell" data-execution_count="12">
+<div id="120c2613" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean spring extension by weight</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>spring_means_by_weight <span class="op">=</span> hooke[<span class="st">'distance'</span>].groupby(by<span class="op">=</span>hooke[<span class="st">'mass'</span>]).mean()</span>
@@ -956,7 +956,7 @@ Definition&nbsp;3.1: Outlier
 <span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
 <span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, pd.concat([spring_means_by_weight, spring_stderr_by_weight], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, pd.concat([spring_means_by_weight, spring_stderr_by_weight], axis<span class="op">=</span><span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -987,13 +987,13 @@ mass
 <h2 data-number="3.2" class="anchored" data-anchor-id="determining-the-spring-constant"><span class="header-section-number">3.2</span> Determining the Spring Constant</h2>
 <p>The relationship between the force <span class="math inline">\(F\)</span> and the change in length <span class="math inline">\(\Delta{x}\)</span> of a spring with spring constant <span class="math inline">\(k\)</span> is described by the equation <span class="math inline">\(F = k \cdot \Delta{x}\)</span>. Here, the force <span class="math inline">\(F\)</span> corresponds to the weight in kilograms <span class="math inline">\(m\)</span> multiplied by the gravitational acceleration <span class="math inline">\(g\)</span>. On Earth, the gravitational acceleration is <span class="math inline">\(9.81 \frac{m}{s^2}\)</span>.</p>
 <p>Therefore, in the dataset, the weight recorded in the ‘mass’ column (in grams) is converted to the actual force. Similarly, the measured displacement in the ‘distance’ column is converted from centimeters to meters.</p>
-<div id="54d8e420" class="cell" data-execution_count="13">
+<div id="94c32887" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>hooke[<span class="st">'mass'</span>] <span class="op">=</span> hooke[<span class="st">'mass'</span>].div(<span class="dv">1000</span>).mul(<span class="fl">9.81</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>hooke.rename(columns <span class="op">=</span> {<span class="st">'mass'</span>: <span class="st">'force'</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>hooke[<span class="st">'distance'</span>] <span class="op">=</span> hooke[<span class="st">'distance'</span>].div(<span class="dv">100</span>)</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.head())</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.head())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   no    force  distance
 0   0  6.91605  0.203409
@@ -1004,11 +1004,11 @@ mass
 </div>
 </div>
 <p>For the graphical representation of the relationship <span class="math inline">\(F = k \cdot \Delta{x}\)</span>, it is more practical to plot the displacement on the x-axis and the resulting force on the y-axis.</p>
-<div id="e3e88b3e" class="cell" data-execution_count="14">
+<div id="35756e10" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>hooke.plot(x<span class="op">=</span><span class="st">'distance'</span>, y<span class="op">=</span><span class="st">'force'</span>, kind<span class="op">=</span><span class="st">'scatter'</span>, title<span class="op">=</span><span class="st">'Transformed Dataset'</span>, ylabel<span class="op">=</span><span class="st">'Resulting Force in $N$'</span>, xlabel<span class="op">=</span><span class="st">'Change in Distance in meters'</span>, label<span class="op">=</span><span class="st">'Measured Change in Distance'</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1035,7 +1035,7 @@ y = \beta_0 + \beta_1 \cdot x + e_i
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Beispiel&nbsp;3.2: Least Squares Method
+Example&nbsp;3.2: Least Squares Method
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1050,7 +1050,7 @@ Beispiel&nbsp;3.2: Least Squares Method
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Plot</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="697d02fe" class="cell" data-execution_count="15">
+<div id="1e8d2301" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1064,7 +1064,7 @@ Beispiel&nbsp;3.2: Least Squares Method
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="f0a9dd3f" class="cell" data-execution_count="16">
+<div id="382c07bd" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="op">-</span> x.copy() <span class="op">+</span> <span class="dv">4</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>y[<span class="dv">0</span>] <span class="op">-=</span> <span class="dv">2</span></span>
@@ -1083,7 +1083,7 @@ Beispiel&nbsp;3.2: Least Squares Method
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Regression coefficients:"</span>, lm)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Regression coefficients:"</span>, lm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1113,7 +1113,7 @@ f(\beta_0, \beta_1) = (y_1 - (\beta_0 + \beta_1 \cdot x_1))^2 ~ + ~ (y_2 - (\bet
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Beispiel&nbsp;3.1: Partial Derivative
+Example&nbsp;3.1: Partial Derivative
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -1220,7 +1220,7 @@ Beispiel&nbsp;3.1: Partial Derivative
 <p>The last two terms therefore cancel out, leaving: <span class="math display">\[
 \sum_{i=1}^{n} x_i y_i - n \bar{x} \bar{y}
 \]</span></p>
-<p><span class="citation" data-cites="Baitsch-2019">(<a href="#ref-Baitsch-2019" role="doc-biblioref">Baitsch, Matthias 2019</a>, pp.&nbsp;73-74)</span></p>
+<p><span class="citation" data-cites="Baitsch-2019">(<a href="#ref-Baitsch-2019" role="doc-biblioref">Baitsch, Matthias 2019, 73–74</a>)</span></p>
 </div>
 </div>
 </div>
@@ -1230,8 +1230,8 @@ Beispiel&nbsp;3.1: Partial Derivative
 <p>The functions required for this are provided both by the <code>numpy.polynomial</code> package—specifically its <code>numpy.polynomial.polynomial</code> module for polynomial functions—and by the <code>scipy.stats.linregress</code> module. In the following, the computation using NumPy is demonstrated first, followed by an introduction to the functions from the SciPy module. The way both modules work is similar.</p>
 <section id="numpy-polyfit-and-polyeval" class="level4">
 <h4 class="anchored" data-anchor-id="numpy-polyfit-and-polyeval">NumPy polyfit and polyeval</h4>
-<div id="32e1b9fb" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.polynomial.polynomial <span class="im">as</span> poly</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e95ea43d" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.polynomial.polynomial <span class="im">as</span> poly</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To estimate function parameters using the least squares method, the function <code>poly.polyfit(x, y, deg)</code> is used. <code>x</code> represents the values of the independent variable, <code>y</code> the values of the dependent variable, and <code>deg</code> specifies the degree of the polynomial function to be fitted. <code>deg = 1</code> specifies a linear function.</p>
 <div id="nte-polyfitpolyeval" class="callout callout-style-default callout-note callout-titled">
@@ -1240,31 +1240,31 @@ Beispiel&nbsp;3.1: Partial Derivative
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Beispiel&nbsp;3.3: Explaining polyfit and polyeval
+Example&nbsp;3.3: Explaining polyfit and polyeval
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="e198e7d4" class="cell" data-execution_count="18">
+<div id="ba1ae940" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate example data</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array(<span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">100</span>)))</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> x <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(x, y, <span class="dv">1</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(x, y, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[-1617.    99.]</code></pre>
 </div>
 </div>
 <p>The function returns the estimated regression parameters as a NumPy array. The terms are arranged in ascending order, i.e., the intercept is at index position 0, and the slope coefficient is at index position 1. The output for a second-degree polynomial, for example, would look like this:</p>
-<div id="1531cb53" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(x, y, <span class="dv">2</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="eeb57cac" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(x, y, <span class="dv">2</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[-0.  0.  1.]</code></pre>
 </div>
 </div>
 <p>With the regression coefficients, the predicted values of the linear function can be computed. For this, the function <code>poly.polyeval(x, c)</code> is used. It calculates the function values for the values passed in <code>x</code> using the function parameters <code>c</code>. From the difference between the measured values and the predicted values, the residuals can be determined.</p>
-<div id="751931c5" class="cell" data-execution_count="20">
+<div id="4a443c55" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 'manual' calculation</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>regressions_koeffizienten <span class="op">=</span> poly.polyfit(x, y, <span class="dv">1</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>vorhersagewerte <span class="op">=</span> regressions_koeffizienten[<span class="dv">0</span>] <span class="op">+</span> x <span class="op">*</span> regressions_koeffizienten[<span class="dv">1</span>]</span>
@@ -1275,7 +1275,7 @@ Beispiel&nbsp;3.3: Explaining polyfit and polyeval
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>vorhersagewerte_polyval <span class="op">=</span> poly.polyval(x, lm)</span>
 <span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The results match:"</span>, np.equal(vorhersagewerte, vorhersagewerte_polyval).<span class="bu">all</span>())</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Excerpt of predicted values:"</span>, vorhersagewerte[:<span class="dv">10</span>])</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Excerpt of predicted values:"</span>, vorhersagewerte[:<span class="dv">10</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The results match: True
 
@@ -1283,16 +1283,16 @@ Excerpt of predicted values: [-1617. -1518. -1419. -1320. -1221. -1122. -1023.  
 </div>
 </div>
 <p>The <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of determination</a> <span class="math inline">\(R^2\)</span> indicates how well the estimated function fits the data. Its range goes from 0 to 1. A value of 1 represents a perfect fit. For a simple linear regression with only one explanatory variable, the coefficient of determination can be calculated as the square of the <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Bravais–Pearson correlation coefficient</a> <span class="math inline">\(r\)</span>. It can be obtained using the function <code>np.corrcoef(x, y)</code> (which returns a matrix of correlation coefficients).</p>
-<div id="12d3beee" class="cell" data-execution_count="21">
+<div id="bd890ef2" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"r = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(x, y)[<span class="dv">0</span>, <span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R</span><span class="ch">\u00b2</span><span class="ss"> = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(x, y)[<span class="dv">0</span>, <span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R</span><span class="ch">\u00b2</span><span class="ss"> = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(x, y)[<span class="dv">0</span>, <span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>r = 0.97
 R² = 0.94</code></pre>
 </div>
 </div>
 <p>The data and the estimated line can be displayed graphically.</p>
-<div id="f5c7d9b6" class="cell" data-execution_count="22">
+<div id="40d58473" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, label<span class="op">=</span><span class="st">'Sample data'</span>)</span>
@@ -1304,7 +1304,7 @@ R² = 0.94</code></pre>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y-values'</span>)</span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1323,16 +1323,16 @@ R² = 0.94</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Beispiel&nbsp;3.4: np.polyfit &amp; np.polyval
+Example&nbsp;3.4: np.polyfit &amp; np.polyval
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The functions <code>np.polyfit(x, y, deg)</code> and <code>np.polyval(p, x)</code> work similarly to the functions introduced from the <code>numpy.polynomial.polynomial</code> module. However, an important difference is that <strong>the parameters returned by <code>polyfit</code> are in reverse order</strong>.</p>
-<div id="1d413219" class="cell" data-execution_count="23">
+<div id="bc5026fd" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(x, y, deg <span class="op">=</span> <span class="dv">1</span>))</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.polyfit(x, y, deg <span class="op">=</span> <span class="dv">1</span>))</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.polyfit(x, y, deg <span class="op">=</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[-1617.    99.]
 [   99. -1617.]</code></pre>
@@ -1345,7 +1345,7 @@ Beispiel&nbsp;3.4: np.polyfit &amp; np.polyval
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Hinweis
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1358,11 +1358,11 @@ Hinweis
 </div>
 </div>
 <p>The parameters of the linear function fitted to the measured values and the coefficient of determination are:</p>
-<div id="935531ca" class="cell" data-execution_count="24">
+<div id="59b7727e" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly.polyfit(hooke[<span class="st">'distance'</span>], hooke[<span class="st">'force'</span>], <span class="dv">1</span>))</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"r = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(hooke[<span class="st">'distance'</span>], hooke[<span class="st">'force'</span>])[<span class="dv">0</span>, <span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R</span><span class="ch">\u00b2</span><span class="ss"> = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(hooke[<span class="st">'distance'</span>], hooke[<span class="st">'force'</span>])[<span class="dv">0</span>, <span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"R</span><span class="ch">\u00b2</span><span class="ss"> = </span><span class="sc">{</span>np<span class="sc">.</span>corrcoef(hooke[<span class="st">'distance'</span>], hooke[<span class="st">'force'</span>])[<span class="dv">0</span>, <span class="dv">1</span>] <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[ 0.05753159 33.01899551]
 r = 0.99
@@ -1370,14 +1370,14 @@ R² = 0.99</code></pre>
 </div>
 </div>
 <p>With the regression coefficients, the predicted values of the linear function can be calculated.</p>
-<div id="6dba7c06" class="cell" data-execution_count="25">
+<div id="a15e27b0" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculation with polyeval</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> poly.polyfit(hooke[<span class="st">'distance'</span>], hooke[<span class="st">'force'</span>], <span class="dv">1</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>predicted_values_hooke <span class="op">=</span> poly.polyval(hooke[<span class="st">'distance'</span>], lm)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>predicted_values_hooke <span class="op">=</span> poly.polyval(hooke[<span class="st">'distance'</span>], lm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The measurement series and the linear function fitted to it can be displayed graphically.</p>
-<div id="a6759cb8" class="cell" data-execution_count="26">
+<div id="ecf3bf5c" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Placeholder x &amp; y</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> hooke[<span class="st">'distance'</span>]</span>
@@ -1395,7 +1395,7 @@ R² = 0.99</code></pre>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1426,7 +1426,7 @@ SE = \sqrt{\frac{\frac{1}{n-2} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{ \sum_{i=1}^{
 <li><code>scipy.stats.t.ppf(q = 1 - alpha/2, df = n - 2)</code> for the upper bound of the interval.</li>
 </ul></li>
 </ul>
-<div id="1ad39bd8" class="cell" data-execution_count="27">
+<div id="4ca971b7" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Regression coefficient: </span><span class="sc">{</span>lm[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the standard error of the regression coefficient 'manually'</span></span>
@@ -1442,7 +1442,7 @@ SE = \sqrt{\frac{\frac{1}{n-2} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{ \sum_{i=1}^{
 <span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"t-value 95% interval (two-sided): </span><span class="sc">{</span>t_value<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"95% confidence interval: </span><span class="sc">{</span>lm[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss"> ± </span><span class="sc">{</span>t_value<span class="sc">:.4f}</span><span class="ss"> * </span><span class="sc">{</span>standard_error_beta_1<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"lower 95% interval bound: </span><span class="sc">{</span>lm[<span class="dv">1</span>] <span class="op">-</span> t_value <span class="op">*</span> standard_error_beta_1<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"upper 95% interval bound: </span><span class="sc">{</span>lm[<span class="dv">1</span>] <span class="op">+</span> t_value <span class="op">*</span> standard_error_beta_1<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"upper 95% interval bound: </span><span class="sc">{</span>lm[<span class="dv">1</span>] <span class="op">+</span> t_value <span class="op">*</span> standard_error_beta_1<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Regression coefficient: 33.0190
 Standard error of the regression coefficient: 0.3784
@@ -1453,7 +1453,7 @@ upper 95% interval bound: 33.7688</code></pre>
 </div>
 </div>
 <p>The confidence interval can also be represented graphically.</p>
-<div id="92377530" class="cell" data-execution_count="28">
+<div id="aaee1963" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Placeholder x &amp; y</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> hooke[<span class="st">'distance'</span>]</span>
@@ -1483,7 +1483,7 @@ upper 95% interval bound: 33.7688</code></pre>
 <span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
-<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1505,7 +1505,7 @@ upper 95% interval bound: 33.7688</code></pre>
 <li>Standard error of the y-intercept.</li>
 </ul>
 <p>The standard error of the y-intercept is only available if the return values are stored in an object. The values can then be accessed as attributes.</p>
-<div id="6462dc7e" class="cell" data-execution_count="29">
+<div id="8565c9cd" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assigning multiple objects</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>slope, intercept, rvalue, pvalue, slope_stderr <span class="op">=</span> scipy.stats.linregress(x, y)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"y = </span><span class="sc">{</span>intercept<span class="sc">:.4f}</span><span class="ss"> + </span><span class="sc">{</span>slope<span class="sc">:.4f}</span><span class="ss"> * x</span><span class="ch">\n</span><span class="ss">"</span>,</span>
@@ -1516,23 +1516,23 @@ upper 95% interval bound: 33.7688</code></pre>
 <span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> scipy.stats.linregress(x, y)</span>
 <span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, lm, sep<span class="op">=</span><span class="st">''</span>)</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"y-intercept: </span><span class="sc">{</span>lm<span class="sc">.</span>intercept<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">Standard error of y-intercept: </span><span class="sc">{</span>lm<span class="sc">.</span>intercept_stderr<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"y-intercept: </span><span class="sc">{</span>lm<span class="sc">.</span>intercept<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">Standard error of y-intercept: </span><span class="sc">{</span>lm<span class="sc">.</span>intercept_stderr<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>y = 0.0575 + 33.0190 * x
 r = 0.9928 R2 = 0.9856 p = 0.0000
 Standard error of slope: 0.3784
 
-LinregressResult(slope=np.float64(33.018995509180165), intercept=np.float64(0.057531589079702794), rvalue=np.float64(0.9927907555799096), pvalue=np.float64(4.1152117198381846e-104), stderr=np.float64(0.3783732001932878), intercept_stderr=np.float64(0.050670797267693676))
+LinregressResult(slope=np.float64(33.01899550918017), intercept=np.float64(0.057531589079701906), rvalue=np.float64(0.9927907555799097), pvalue=np.float64(4.1152117198346e-104), stderr=np.float64(0.37837320019328485), intercept_stderr=np.float64(0.05067079726769328))
 y-intercept: 0.0575
 Standard error of y-intercept: 0.0507</code></pre>
 </div>
 </div>
 <p>This allows the confidence interval to be calculated using the corresponding t-value.</p>
-<div id="fd03a6c7" class="cell" data-execution_count="30">
+<div id="07297161" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(x)</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>slope <span class="op">-</span> scipy<span class="sc">.</span>stats<span class="sc">.</span>t<span class="sc">.</span>ppf(q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> <span class="dv">2</span>, df <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span>) <span class="op">*</span> slope_stderr<span class="sc">:.3f}</span><span class="ss"> ≤ </span><span class="sc">{</span>slope<span class="sc">:.3f}</span><span class="ss"> ≤ </span><span class="sc">{</span>slope <span class="op">+</span> scipy<span class="sc">.</span>stats<span class="sc">.</span>t<span class="sc">.</span>ppf(q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> <span class="dv">2</span>, df <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span>) <span class="op">*</span> slope_stderr<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>slope <span class="op">-</span> scipy<span class="sc">.</span>stats<span class="sc">.</span>t<span class="sc">.</span>ppf(q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> <span class="dv">2</span>, df <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span>) <span class="op">*</span> slope_stderr<span class="sc">:.3f}</span><span class="ss"> ≤ </span><span class="sc">{</span>slope<span class="sc">:.3f}</span><span class="ss"> ≤ </span><span class="sc">{</span>slope <span class="op">+</span> scipy<span class="sc">.</span>stats<span class="sc">.</span>t<span class="sc">.</span>ppf(q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> alpha <span class="op">/</span> <span class="dv">2</span>, df <span class="op">=</span> n <span class="op">-</span> <span class="dv">2</span>) <span class="op">*</span> slope_stderr<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>32.269 ≤ 33.019 ≤ 33.769</code></pre>
 </div>
@@ -1547,7 +1547,7 @@ Standard error of y-intercept: 0.0507</code></pre>
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Baitsch-2019" class="csl-entry" role="listitem">
-Baitsch, Matthias. 2019. <em>Vorlesungsskript Mathematik B (Master) Stochastik</em>. Hochschule Bochum.
+Baitsch, Matthias. 2019. <em>Vorlesungsskript Mathematik b (Master) Stochastik</em>. Hochschule Bochum.
 </div>
 </div>
 </section>
@@ -1579,12 +1579,12 @@ Baitsch, Matthias. 2019. <em>Vorlesungsskript Mathematik B (Master) Stochastik</
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Kopiert");
+      button.setAttribute("title", "Copied!");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Kopiert");
+        button.setAttribute("data-bs-title", "Copied!");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",

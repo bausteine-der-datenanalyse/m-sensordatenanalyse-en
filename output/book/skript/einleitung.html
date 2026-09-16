@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.18">
@@ -97,17 +97,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "Keine Treffer",
-    "search-matching-documents-text": "Treffer",
-    "search-copy-link-title": "Link in die Suche kopieren",
-    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
-    "search-more-match-text": "weitere Treffer in diesem Dokument",
-    "search-more-matches-text": "weitere Treffer in diesem Dokument",
-    "search-clear-button-title": "Zurücksetzen",
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Abbrechen",
-    "search-submit-button-title": "Abschicken",
-    "search-label": "Suchen"
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <link rel="shortcut icon" href="skript/00-bilder/favicon_bcd_new.svg">
@@ -151,13 +151,13 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../skript/einleitung.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Principle of Measurements</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Seitenleiste umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Suchen" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -173,12 +173,12 @@ window.Quarto = {
       <img src="../skript/00-bilder/logo_with_text_new.svg" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">Methodenbaustein Sensordatenanalyse</a> 
+      <a href="../">Sensor Data Analysis Method Module</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Suchen"></div>
+        <div id="quarto-search" class="" title="Search"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -232,7 +232,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Inhaltsverzeichnis</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
   <li><a href="#measurement" id="toc-measurement" class="nav-link active" data-scroll-target="#measurement"><span class="header-section-number">1.1</span> Measurement</a>
@@ -290,13 +290,13 @@ window.Quarto = {
 </div>
 </div>
 <p>In this module, the following packages are used:</p>
-<div id="e06a49bb" class="cell" data-execution_count="1">
+<div id="1a7c34d0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.polynomial.polynomial <span class="im">as</span> poly</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> glob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Physical quantities are determined with the help of measuring instruments. These assign a numerical value to the actual characteristic relative to a reference system.</p>
 <p>An example: “Johanna measures 173 centimeters on the measuring board.”</p>
@@ -340,7 +340,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coastlines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Abbildung&nbsp;1.1: Coastline paradox
+Figure&nbsp;1.1: Coastline paradox
 </figcaption>
 </figure>
 </div>
@@ -395,7 +395,7 @@ Definition&nbsp;1.1: Measurement
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-direktemessung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Abbildung&nbsp;1.2: Direct measurement
+Figure&nbsp;1.2: Direct measurement
 </figcaption>
 </figure>
 </div>
@@ -427,7 +427,7 @@ Abbildung&nbsp;1.2: Direct measurement
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-indirektemessung-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Abbildung&nbsp;1.3: Indirect measurement
+Figure&nbsp;1.3: Indirect measurement
 </figcaption>
 </figure>
 </div>
@@ -469,7 +469,7 @@ Abbildung&nbsp;1.3: Indirect measurement
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genauigkeit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Abbildung&nbsp;1.4: Accuracy and precision
+Figure&nbsp;1.4: Accuracy and precision
 </figcaption>
 </figure>
 </div>
@@ -511,7 +511,7 @@ s_{N-1} = \sqrt{\frac{1}{N-1} \sum_{i=1}^{N}(x_i - \bar{x})^2}
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Hinweis&nbsp;1.1: Standard deviation and variance in the population
+Note&nbsp;1.1: Standard deviation and variance in the population
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -551,7 +551,7 @@ Hinweis&nbsp;1.1: Standard deviation and variance in the population
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Results</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">graphical representation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="9a9ab34f" class="cell" data-execution_count="2">
+<div id="9674e125" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rolls per person: 3             Sample size: 300
 Smallest mean: 1.00     Largest mean: 6.00
@@ -572,7 +572,7 @@ Sample mean: 3.50       Standard error: 0.02
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>The frequency of the individual mean values is shown in the following histograms.</p>
-<div id="8eb2c009" class="cell" data-execution_count="3">
+<div id="586ea015" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -584,7 +584,7 @@ Sample mean: 3.50       Standard error: 0.02
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
 <p>Calculation</p>
-<div id="ca6219dd" class="cell" data-execution_count="4">
+<div id="a81f9ed3" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>people <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>population_std_dev <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">7</span>).std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">1</span></span>
@@ -632,9 +632,9 @@ Sample mean: 3.50       Standard error: 0.02
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Largest mean: </span><span class="sc">{</span>dice50<span class="sc">.</span>mean(axis <span class="op">=</span> <span class="dv">1</span>)<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span>,</span>
 <span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Sample mean: </span><span class="sc">{</span>dice50<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ch">\t\t</span><span class="ss">"</span>,</span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Standard error: </span><span class="sc">{</span>population_std_dev <span class="op">/</span> ( dice50.size <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) )<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span>,</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      sep <span class="op">=</span> <span class="st">""</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      sep <span class="op">=</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ed91c8c0" class="cell" data-execution_count="5">
+<div id="68542935" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>people <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>population_std_dev <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">7</span>).std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">1</span></span>
@@ -680,7 +680,7 @@ Sample mean: 3.50       Standard error: 0.02
 <span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>ax3.set_title(<span class="st">"50 rolls per person"</span>)</span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -693,20 +693,20 @@ Sample mean: 3.50       Standard error: 0.02
 <div id="lst-readfile" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <div aria-describedby="lst-readfile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="bff00887" class="cell" data-execution_count="6">
+<div id="634f6cd4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="op">=</span> <span class="st">"01-daten/ToothGrowth.csv"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>guinea_pigs <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> file_path, sep <span class="op">=</span> <span class="st">','</span>, header <span class="op">=</span> <span class="dv">0</span>, <span class="op">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  names <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'len'</span>, <span class="st">'supp'</span>, <span class="st">'dose'</span>], dtype <span class="op">=</span> {<span class="st">'ID'</span>: <span class="st">'int'</span>, <span class="st">'len'</span>: <span class="st">'float'</span>, <span class="st">'dose'</span>: <span class="st">'float'</span>, <span class="st">'supp'</span>: <span class="st">'category'</span>})</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  names <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'len'</span>, <span class="st">'supp'</span>, <span class="st">'dose'</span>], dtype <span class="op">=</span> {<span class="st">'ID'</span>: <span class="st">'int'</span>, <span class="st">'len'</span>: <span class="st">'float'</span>, <span class="st">'dose'</span>: <span class="st">'float'</span>, <span class="st">'supp'</span>: <span class="st">'category'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-lst quarto-uncaptioned" id="lst-readfile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Code-Block&nbsp;1.1
+Code Block&nbsp;1.1
 </figcaption>
 </figure>
 </div>
 <p>Crampton, E. W. 1947. “THE GROWTH OF THE ODONTOBLASTS OF THE INCISOR TOOTH AS A CRITERION OF THE VITAMIN C INTAKE OF THE GUINEA PIG.” The Journal of Nutrition 33 (5): 491–504. <a href="https://doi.org/10.1093/jn/33.5.491">https://doi.org/10.1093/jn/33.5.491</a></p>
 <p>The dataset can be accessed in R using the command <code>ToothGrowth</code>.</p>
-<div id="12e43fd7" class="cell" data-execution_count="7">
+<div id="92d25bfe" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -719,7 +719,7 @@ Code-Block&nbsp;1.1
 <p>&nbsp;</p>
 <p><strong>Calculate the arithmetic mean, variance, standard deviation, and sampling error of the measurement series for tooth length (<code>len</code>). Use the formulas provided.</strong></p>
 <p>The result could look like this:</p>
-<div id="7d96effe" class="cell" data-execution_count="8">
+<div id="600c79af" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>N: 60
 Arithmetic mean: 18.81
@@ -734,13 +734,13 @@ Sample standard deviation: 7.65</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tipp&nbsp;1.1: Sample Solution: Distribution Statistics
+Tip&nbsp;1.1: Sample Solution: Distribution Statistics
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="097066c0" class="cell" data-execution_count="9">
+<div id="6f963b3f" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> distribution_statistics(x, output <span class="op">=</span> <span class="va">True</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Determine the number of measurements</span></span>
@@ -770,7 +770,7 @@ Tipp&nbsp;1.1: Sample Solution: Distribution Statistics
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>: <span class="co"># output = False</span></span>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> N, sample_mean, sampling_error, sample_variance, sample_std_dev</span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>distribution_statistics(guinea_pigs[<span class="st">'len'</span>])</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>distribution_statistics(guinea_pigs[<span class="st">'len'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -779,14 +779,14 @@ Tipp&nbsp;1.1: Sample Solution: Distribution Statistics
 <section id="variance-and-standard-deviation-with-numpy-and-pandas" class="level3">
 <h3 class="anchored" data-anchor-id="variance-and-standard-deviation-with-numpy-and-pandas">Variance and Standard Deviation with NumPy and Pandas</h3>
 <p>The NumPy and Pandas modules have built-in functions for calculating variance and standard deviation. Variance and standard deviation are calculated using the functions <code>np.var()</code> and <code>np.std()</code>, or the methods <code>pd.var()</code> and <code>pd.std()</code>. The parameter <code>ddof</code> (delta degrees of freedom) controls which denominator is used for calculating variance in the form N - ddof. While NumPy’s default is <code>ddof=0</code>, Pandas calculates the sample variance with the default value <code>ddof=1</code>.</p>
-<div id="54f8de13" class="cell" data-execution_count="10">
+<div id="2003edd2" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variance:"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"NumPy:</span><span class="ch">\t</span><span class="sc">{</span>np<span class="sc">.</span>var(guinea_pigs[<span class="st">'len'</span>])<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pandas:</span><span class="ch">\t</span><span class="sc">{</span>guinea_pigs[<span class="st">'len'</span>]<span class="sc">.</span>var()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Standard Deviation:"</span>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"NumPy:</span><span class="ch">\t</span><span class="sc">{</span>np<span class="sc">.</span>std(guinea_pigs[<span class="st">'len'</span>])<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pandas:</span><span class="ch">\t</span><span class="sc">{</span>guinea_pigs[<span class="st">'len'</span>]<span class="sc">.</span>std()<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pandas:</span><span class="ch">\t</span><span class="sc">{</span>guinea_pigs[<span class="st">'len'</span>]<span class="sc">.</span>std()<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Variance:
 NumPy:  57.54
@@ -828,12 +828,12 @@ Pandas: 7.65</code></pre>
       // flash "checked"
       button.classList.add('code-copy-button-checked');
       var currentTitle = button.getAttribute("title");
-      button.setAttribute("title", "Kopiert");
+      button.setAttribute("title", "Copied!");
       let tooltip;
       if (window.bootstrap) {
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
-        button.setAttribute("data-bs-title", "Kopiert");
+        button.setAttribute("data-bs-title", "Copied!");
         tooltip = new bootstrap.Tooltip(button, 
           { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
