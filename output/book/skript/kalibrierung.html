@@ -204,7 +204,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Methodenbaustein Sensordatenanalyse</span></a>
+ <span class="menu-text">Sensor Data Analysis Method Module</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -423,7 +423,7 @@ Definition&nbsp;6.2: Adjustment according to DIN 1319
 <section id="additive-errors-the-zero-offset-error" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="additive-errors-the-zero-offset-error"><span class="header-section-number">6.3</span> Additive Errors: The Zero Offset Error</h2>
 <p>The zero offset error describes the deviation of the measured quantity from zero when the true value is actually zero. The zero offset error is also referred to as zero adjustment error, zero shift, or offset error. The zero offset error is constant and acts additively on every measured value. (<a href="https://www.ics-schneider.de/wie-wirken-sich-nullpunktfehler-spannfehler-und-nichtlinearitaet-auf-die-genauigkeit-von-drucksensoren-aus/">ICS Schneider Messtechnik</a>)</p>
-<div id="a16a14d9" class="cell" data-execution_count="2">
+<div id="d740f448" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">+</span> <span class="dv">4</span></span>
@@ -454,14 +454,14 @@ Definition&nbsp;6.2: Adjustment according to DIN 1319
 <h3 class="anchored" data-anchor-id="quantifying-the-zero-offset-error">Quantifying the Zero-Offset Error</h3>
 <p><strong>The calculations here are not yet correct. With simple values it seems to work by chance, but with shifted values it no longer does. The correct approach is shown in the test using Kelvin.</strong></p>
 <p>The zero-offset error can be easily determined if measurement values for the zero point are available and the true value is known. (If it is also known that no further systematic measurement deviations are present, the zero-offset error can be determined using any true reference value.) This is the case for the data created for graphical representation.</p>
-<div id="e14cf0a4" class="cell" data-execution_count="3">
+<div id="4cdecedf" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The zero-offset error is: </span><span class="sc">{</span>measured_values[<span class="dv">0</span>] <span class="op">-</span> measured_quantity[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The zero-offset error is: 4</code></pre>
 </div>
 </div>
 <p>If no data for the zero point is available, the zero-point error can be estimated using linear regression from at least two known reference points. This involves estimating an ideal calibration curve and determining its intersection with the y-axis. Likewise, a linear function is estimated for the measured values. The difference between the y-axis intercepts gives an estimate of the zero-point error.</p>
-<div id="1020b25f" class="cell" data-execution_count="4">
+<div id="51f48488" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># known reference points</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="dv">4</span></span>
@@ -503,7 +503,7 @@ estimated zero-point of the ideal calibration curve is the zero-point error:
 </div>
 </div>
 <p>The procedure is illustrated graphically.</p>
-<div id="c8ec6190" class="cell" data-execution_count="5">
+<div id="be94ef3c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate linear functions</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>estimated_ideal_curve <span class="op">=</span> poly.polyval(x <span class="op">=</span> np.arange(measured_values.size), c <span class="op">=</span> lm_curve)</span>
@@ -540,7 +540,7 @@ estimated zero-point of the ideal calibration curve is the zero-point error:
 <section id="correcting-the-zero-point-error" class="level3">
 <h3 class="anchored" data-anchor-id="correcting-the-zero-point-error">Correcting the zero-point error</h3>
 <p>The zero-point error is corrected by subtracting it from the measured values. The procedure for determining the zero-point error is illustrated in the following example with different values.</p>
-<div id="0da68ed3" class="cell" data-execution_count="6">
+<div id="304ba1dd" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>) <span class="op">+</span> <span class="dv">5</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">+</span> <span class="fl">2.5</span></span>
@@ -578,7 +578,7 @@ estimated zero-point of the ideal calibration curve is the zero-point error:
 <h2 data-number="6.4" class="anchored" data-anchor-id="multiplicative-error-span-error"><span class="header-section-number">6.4</span> Multiplicative Error: Span Error</h2>
 <p><strong>Span error seems to be a rarely used term.</strong></p>
 <p>A span error is an error that increases or decreases over the measurement range (the span) of the quantity being measured. The relative measurement deviation <span class="math inline">\(\delta\)</span> remains constant, while the absolute measurement deviation <span class="math inline">\(\Delta\)</span> depends on the measured value. (<a href="https://www.ics-schneider.de/wie-wirken-sich-nullpunktfehler-spannfehler-und-nichtlinearitaet-auf-die-genauigkeit-von-drucksensoren-aus/">ics Schneider Messtechnik</a>)</p>
-<div id="bceddb43" class="cell" data-execution_count="7">
+<div id="8679989e" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">-</span> measured_quantity <span class="op">/</span> <span class="dv">3</span></span>
@@ -607,14 +607,14 @@ estimated zero-point of the ideal calibration curve is the zero-point error:
 <section id="quantifying-span-error" class="level3">
 <h3 class="anchored" data-anchor-id="quantifying-span-error">Quantifying Span Error</h3>
 <p>The span error can be estimated if reference values are known. With the complete example data, it’s straightforward (in this example, a warning due to division by 0 is suppressed):</p>
-<div id="12efbf4c" class="cell" data-execution_count="8">
+<div id="76c99b9c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The span error is: </span><span class="sc">{</span><span class="bu">round</span>((np.nanmean((measured_values <span class="op">/</span> measured_quantity)) <span class="op">-</span> <span class="dv">1</span> ) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">2</span>)<span class="sc">}</span><span class="ss"> %"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The span error is: -33.33 %</code></pre>
 </div>
 </div>
 <p>For sparse data points, an ideal curve is estimated to approximate the span error.</p>
-<div id="9fec4af2" class="cell" data-execution_count="9">
+<div id="6cbcdbf3" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># known reference values</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> <span class="dv">4</span></span>
@@ -641,7 +641,7 @@ Slope of the ideal curve: 1.0</code></pre>
 </div>
 </div>
 <p>The procedure is illustrated graphically.</p>
-<div id="f4919be8" class="cell" data-execution_count="10">
+<div id="db1afc73" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Points and lines</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">10</span>], [measured_quantity[<span class="dv">0</span>], measured_quantity[<span class="op">-</span><span class="dv">1</span>]], marker<span class="op">=</span><span class="st">'none'</span>, linestyle<span class="op">=</span><span class="st">'dashed'</span>, color<span class="op">=</span><span class="st">'C0'</span>, label<span class="op">=</span><span class="st">'ideal characteristic curve'</span>)</span>
@@ -666,7 +666,7 @@ Slope of the ideal curve: 1.0</code></pre>
 <section id="correcting-span-error" class="level3">
 <h3 class="anchored" data-anchor-id="correcting-span-error">Correcting Span Error</h3>
 <p>The span error is corrected by dividing the measured values by 1 plus the span error. The procedure for determining the span error is illustrated in the following example with different values.</p>
-<div id="da4baf08" class="cell" data-execution_count="11">
+<div id="f46c6acd" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>) <span class="op">+</span> <span class="dv">5</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">-</span> measured_quantity <span class="op">/</span> <span class="dv">5</span></span>
@@ -712,7 +712,7 @@ Corrected measured values:
 <section id="zero-point-and-span-errors" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="zero-point-and-span-errors"><span class="header-section-number">6.5</span> Zero-Point and Span Errors</h2>
 <p>Absolute and multiplicative deviations can occur simultaneously. In this example, the absolute measurement deviation decreases over the displayed value range, because the zero-point error has a positive sign and the span error has a negative sign.</p>
-<div id="8b728666" class="cell" data-execution_count="12">
+<div id="9f8da889" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">+</span> <span class="dv">4</span> <span class="op">-</span> measured_quantity <span class="op">/</span> <span class="dv">3</span></span>
@@ -750,7 +750,7 @@ Corrected measured values:
 <p>Using at least two known reference points, the zero-point and span errors can be estimated with linear regression. In linear regression, an index starting at 0 is used for the x-values. To correctly determine the zero-point error, this index is shifted by the estimated true zero point.</p>
 <p>This is necessary because if the measured quantity does not include a value for 0, the span error would also be applied to the value at index 0. Therefore, the span error must be corrected first.<br>
 (<strong>If the values include 0, this step is not noticeable.</strong>)</p>
-<div id="3aa202f8" class="cell" data-execution_count="13">
+<div id="f77d4927" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>) <span class="op">+</span> <span class="dv">7</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>measured_values <span class="op">=</span> measured_quantity <span class="op">+</span> <span class="dv">4</span> <span class="op">-</span> measured_quantity <span class="op">/</span> <span class="dv">3</span></span>
@@ -795,7 +795,7 @@ The span error is: -33.33 %</code></pre>
 <li>First, the zero-point error is corrected.</li>
 <li>Then, the span error is corrected.</li>
 </ol>
-<div id="358a44f4" class="cell" data-execution_count="14">
+<div id="8e10ac82" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>measured_quantity <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">11</span>) <span class="op">+</span> <span class="dv">7</span></span>
@@ -921,8 +921,7 @@ Figure&nbsp;6.1: Excerpt from Table A.1
 <h3 class="anchored" data-anchor-id="task-reading-the-pt100-table">Task: Reading the Pt100 Table</h3>
 <p>For data analysis, the tabular format is less suitable. The <a href="https://s8b8d6a7.delivery.rocketcdn.me/wp-content/uploads/2022/08/Pt100-Tabelle-Screen.pdf">consolidated version</a> was copied into two CSV files. Read the files so that the electrical resistance and temperature each form ascending sequences (e.g., as a list, NumPy array, or a Pandas data structure). The file paths are:</p>
 <pre class="{raw}"><code>'skript/01-daten/pt100-table-below-zero.csv'
-'script/01-daten/pt100-table-above-zero.csv'</code></pre>
-<p><strong>Marc can try another sample solution</strong></p>
+'skript/01-daten/pt100-table-above-zero.csv'</code></pre>
 <div id="tip-pt100" class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -935,12 +934,12 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="6473af1f" class="cell" data-execution_count="15">
+<div id="7d028590" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>file_path_below_zero <span class="op">=</span> <span class="st">'01-daten/pt100-table-below-zero.csv'</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>file_path_above_zero <span class="op">=</span> <span class="st">'01-daten/pt100-table-above-zero.csv'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Import and view files. First, the file with temperatures below 0 degrees Celsius.</p>
-<div id="f39a74da" class="cell" data-execution_count="16">
+<div id="a756109b" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># below_zero</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>below_zero <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> file_path_below_zero, sep <span class="op">=</span> <span class="st">','</span>)</span>
@@ -979,7 +978,7 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 <p>There are 201 values (from -200 to 0). The data starts at the row with index 1 (if the first row is read as header). This row contains only one entry in column ‘0’. The following rows should be read from right to left. The decimal separator is <code>,</code>.</p>
 <p>Reading the data from right to left can be done in many ways. A one-line solution starts by passing a negative step size to the method <code>pd.iloc[::-1]</code>.</p>
-<div id="ce512618" class="cell" data-execution_count="17">
+<div id="f791ab04" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(np.array([[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>], [<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>]]))</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.iloc[::<span class="op">-</span><span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -994,7 +993,7 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 </div>
 <p>This causes the <em>rows</em> of the DataFrame to be displayed in reverse order. To display the <em>columns</em> in reverse order, the DataFrame is transposed twice using the <code>pd.T</code> method.</p>
-<div id="3a66d46a" class="cell" data-execution_count="18">
+<div id="75c49d20" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   2  1  0
@@ -1003,7 +1002,7 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 </div>
 <p>The NumPy method <code>np.flatten()</code> can be used to reduce an array to a one-dimensional structure. To do this, the DataFrame is converted to a NumPy array using the <code>pd.to_numpy()</code> method.</p>
-<div id="23c84088" class="cell" data-execution_count="19">
+<div id="145292f3" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy())</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>() <span class="co"># empty line</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1015,7 +1014,7 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 </div>
 <p>Let’s try looking at the head of the Pt100 data.</p>
-<div id="7bc1f703" class="cell" data-execution_count="20">
+<div id="8670df7a" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>below_zero <span class="op">=</span> pd.read_csv(filepath_or_buffer<span class="op">=</span>file_path_below_zero, sep<span class="op">=</span><span class="st">','</span>, decimal<span class="op">=</span><span class="st">','</span>, header<span class="op">=</span><span class="dv">0</span>, skiprows<span class="op">=</span><span class="dv">1</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(below_zero.head())</span>
@@ -1037,7 +1036,7 @@ Tip&nbsp;6.1: Read Sample Solution Pt100 Table
 </div>
 </div>
 <p>To skip the missing values, we convert the current result back into a <code>pd.Series()</code> and use the <code>pd.Series.dropna()</code> method.</p>
-<div id="56f3eb7d" class="cell" data-execution_count="21">
+<div id="daaae2fa" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pd.Series(below_zero.head().T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten()).dropna()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>9     18.52
@@ -1085,7 +1084,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>And now for the entire file:</p>
-<div id="16bc654b" class="cell" data-execution_count="22">
+<div id="1b911652" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>below_zero_ohm <span class="op">=</span> pd.Series(below_zero.T.iloc[::<span class="op">-</span><span class="dv">1</span>].T.to_numpy().flatten()).dropna()</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(below_zero_ohm.head(), below_zero_ohm.tail(), sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1104,7 +1103,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>We can simply generate the temperature using a range object</p>
-<div id="c6d8fa9e" class="cell" data-execution_count="23">
+<div id="b4af315a" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>below_zero_temperature <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="op">-</span><span class="dv">200</span>, <span class="dv">1</span>))  <span class="co"># range stop is exclusive</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(below_zero_temperature.head(), below_zero_temperature.tail(), sep<span class="op">=</span><span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1123,7 +1122,7 @@ dtype: int64</code></pre>
 </div>
 </div>
 <p>For temperatures above 0 degrees, the procedure can be simplified, since the file has the same structure and the values are sorted in ascending order.</p>
-<div id="e59f3def" class="cell" data-execution_count="24">
+<div id="9502f8bf" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>above_zero <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> file_path_above_zero, sep <span class="op">=</span> <span class="st">','</span>, decimal <span class="op">=</span> <span class="st">','</span>, header <span class="op">=</span> <span class="dv">0</span>, skiprows <span class="op">=</span> <span class="dv">1</span>, index_col <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>above_zero_ohm <span class="op">=</span> pd.Series(above_zero.to_numpy().flatten()).dropna()</span>
@@ -1144,7 +1143,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>Both datasets contain an entry for 0 degrees, so it can be removed from the second file</p>
-<div id="9b7fafd7" class="cell" data-execution_count="25">
+<div id="ce7d5795" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>above_zero_ohm <span class="op">=</span> above_zero_ohm[<span class="dv">1</span>:]</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(above_zero_ohm.head(), above_zero_ohm.tail(), sep<span class="op">=</span><span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1163,11 +1162,11 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>The temperature is generated again using a range object.</p>
-<div id="347edd51" class="cell" data-execution_count="26">
+<div id="ce22d629" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>abovezero_temperature <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">851</span>))  <span class="co"># range stop is exclusive</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The Series generated from both datasets can be combined:</p>
-<div id="1e37124b" class="cell" data-execution_count="27">
+<div id="df290492" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pt100 <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="st">'Temperature'</span>: pd.concat([below_zero_temperature, abovezero_temperature], ignore_index<span class="op">=</span><span class="va">True</span>),</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="st">'Ohm'</span>: pd.concat([below_zero_ohm, above_zero_ohm], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
@@ -1212,7 +1211,7 @@ None</code></pre>
 <section id="representing-nonlinearity" class="level3">
 <h3 class="anchored" data-anchor-id="representing-nonlinearity">Representing Nonlinearity</h3>
 <p>Using the data from <a href="#tip-pt100" class="quarto-xref">Tip&nbsp;<span>6.1</span></a>, the nonlinearity of the sensor can be visualized.</p>
-<div id="ef6f6bc3" class="cell" data-execution_count="28">
+<div id="0378c23d" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperature'</span>], pt100[<span class="st">'Ohm'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">''</span>, label<span class="op">=</span><span class="st">'electrical resistance'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>plt.plot([pt100[<span class="st">'Temperature'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperature'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>         [pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
@@ -1235,7 +1234,7 @@ None</code></pre>
 </div>
 <p>&nbsp;</p>
 <p>It is noticeable that the data contains a missing value. The position of the missing value is determined using two Pandas methods. <code>pd.diff()</code> returns the difference between each value and its predecessor. <code>pd.idxmin()</code> returns the row index (specifically the label) of the smallest value. (If the missing value were above the line, <code>pd.idxmax()</code> would be used.)</p>
-<div id="a44eaff9" class="cell" data-execution_count="29">
+<div id="fc74982a" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># := is the so-called walrus operator</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(( missing_value_position <span class="op">:=</span> pt100[<span class="st">'Ohm'</span>].diff().idxmin() ))</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.iloc[<span class="bu">list</span>(<span class="bu">range</span>(missing_value_position <span class="op">-</span> <span class="dv">2</span>, missing_value_position <span class="op">+</span> <span class="dv">3</span>))])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1263,7 +1262,7 @@ Example&nbsp;6.2: Interpolation
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The simplest form of interpolation is linear interpolation.</p>
-<div id="2c253fdd" class="cell" data-execution_count="30">
+<div id="b1f36668" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>interpolate_values <span class="op">=</span> pt100.loc[missing_value_position <span class="op">-</span> <span class="dv">1</span> : missing_value_position <span class="op">+</span> <span class="dv">1</span>, <span class="st">'Ohm'</span>].copy()</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>interpolate_values[missing_value_position] <span class="op">=</span> np.nan</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(interpolate_values, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -1283,7 +1282,7 @@ Name: Ohm, dtype: float64</code></pre>
 </div>
 </div>
 <p>Rounding produces the correct result (but one should not rely on it)</p>
-<div id="302b5204" class="cell" data-execution_count="31">
+<div id="0503bcdc" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"linearly interpolated value:"</span>, interpolate_values.interpolate().<span class="bu">round</span>(<span class="dv">2</span>), sep <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>correct_value <span class="op">=</span> interpolate_values.interpolate().<span class="bu">round</span>(<span class="dv">2</span>)[missing_value_position]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1308,7 +1307,7 @@ Example&nbsp;6.1: Nonlinear Interpolation
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Nonlinear interpolation requires more data points. Let’s try cubic interpolation:</p>
-<div id="02e4668f" class="cell" data-execution_count="32">
+<div id="33a5a8ed" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>interpolate_values_again <span class="op">=</span> pt100.loc[missing_value_position <span class="op">-</span> <span class="dv">3</span> : missing_value_position <span class="op">+</span> <span class="dv">4</span>, <span class="st">'Ohm'</span>].copy()</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>interpolate_values_again[missing_value_position] <span class="op">=</span> np.nan</span>
 <span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"polynomial interpolated value:"</span>, interpolate_values_again.interpolate(method <span class="op">=</span> <span class="st">'polynomial'</span>, order <span class="op">=</span> <span class="dv">3</span>), sep <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1333,7 +1332,7 @@ Name: Ohm, dtype: float64</code></pre>
 </div>
 </div>
 <p>The missing value (whose position is determined in the example above) is corrected:</p>
-<div id="878a6516" class="cell" data-execution_count="33">
+<div id="a6687dfa" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pt100.loc[missing_value_position, <span class="st">'Ohm'</span>] <span class="op">=</span> correct_value</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pt100.loc[missing_value_position <span class="op">-</span> <span class="dv">1</span> : missing_value_position <span class="op">+</span> <span class="dv">1</span>, <span class="st">'Ohm'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1344,7 +1343,7 @@ Name: Ohm, dtype: float64</code></pre>
 </div>
 </div>
 <p>The nonlinearity can then be represented again:</p>
-<div id="e982d87f" class="cell" data-execution_count="34">
+<div id="14dd9c0e" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>plt.plot(pt100[<span class="st">'Temperature'</span>], pt100[<span class="st">'Ohm'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">''</span>, label<span class="op">=</span><span class="st">'electrical resistance'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>plt.plot([pt100[<span class="st">'Temperature'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperature'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>[pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
@@ -1385,7 +1384,7 @@ Definition&nbsp;6.3: Fixed-Point Method
 </div>
 </div>
 <p>First, we determine the predicted values of a line defined by the endpoints.</p>
-<div id="173ecf9d" class="cell" data-execution_count="35">
+<div id="2659665e" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> poly.polyfit(</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> [pt100[<span class="st">'Temperature'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Temperature'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> [pt100[<span class="st">'Ohm'</span>].iloc[<span class="dv">0</span>], pt100[<span class="st">'Ohm'</span>].iloc[<span class="op">-</span><span class="dv">1</span>]],</span>
@@ -1417,7 +1416,7 @@ Definition&nbsp;6.3: Fixed-Point Method
 </div>
 <p>&nbsp;</p>
 <p>The maximum linearity error can be determined from the difference between the measured electrical resistance and the linear predicted values.</p>
-<div id="52821f69" class="cell" data-execution_count="36">
+<div id="00ba79f7" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>linearity_error <span class="op">=</span> (pt100[<span class="st">'Ohm'</span>] <span class="op">-</span> predicted_values).<span class="bu">abs</span>().<span class="bu">max</span>()</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linearity error using fixed-point method: </span><span class="sc">{</span>linearity_error<span class="sc">:.2f}</span><span class="ss"> Ohm."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1441,7 +1440,7 @@ Definition&nbsp;6.4: Tolerance Band Method
 </div>
 </div>
 <p>We have already learned the principle of the least squares method.</p>
-<div id="fe32bffa" class="cell" data-execution_count="37">
+<div id="4c2fe97a" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> poly.polyfit(</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> pt100[<span class="st">'Temperature'</span>],</span>
 <span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> pt100[<span class="st">'Ohm'</span>],</span>
@@ -1473,7 +1472,7 @@ Definition&nbsp;6.4: Tolerance Band Method
 </div>
 <p>&nbsp;</p>
 <p>The maximum linearity error (i.e., the largest residual) can be determined from the difference between the measured electrical resistance and the linear predicted values.</p>
-<div id="1024467a" class="cell" data-execution_count="38">
+<div id="d4b3101f" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>linearity_error <span class="op">=</span> (pt100[<span class="st">'Ohm'</span>] <span class="op">-</span> predicted_values).<span class="bu">abs</span>().<span class="bu">max</span>()</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Linearity error according to the tolerance band method: </span><span class="sc">{</span>linearity_error<span class="sc">:.2f}</span><span class="ss"> Ohm."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
