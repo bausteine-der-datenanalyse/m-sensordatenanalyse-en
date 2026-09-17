@@ -292,7 +292,7 @@ window.Quarto = {
 <h2 data-number="5.1" class="anchored" data-anchor-id="sec-reading-files"><span class="header-section-number">5.1</span> Reading Files</h2>
 <p>To read files, you can use the <code>glob</code> module (see <a href="https://bausteine-der-datenanalyse.github.io/m-einlesen-strukturierter-datensaetze-en/output/book/">Module on Reading Structured Datasets</a>).</p>
 <p>First, you can pass the argument <code>pathname = *</code> to the function <code>glob.glob()</code>. The wildcard <code>*</code> stands for any sequence of characters (except path elements like <code>/</code> or <code>.</code>), allowing you to list all files stored in the specified folder. This way, you can determine the number of files and their extensions if they are not yet known.</p>
-<div id="2b1d1b85" class="cell" data-execution_count="2">
+<div id="39a2535b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>folder_path <span class="op">=</span> <span class="st">'01-daten/hooke'</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>file_path_list <span class="op">=</span> glob.glob(pathname<span class="op">=</span><span class="st">'*'</span>, root_dir<span class="op">=</span>folder_path, recursive<span class="op">=</span><span class="va">False</span>)</span>
@@ -304,7 +304,7 @@ Number of files: 4</code></pre>
 </div>
 </div>
 <p>Using the file paths, the files can be read into a list using a loop. Initially, only the first 3 rows of each file are read to get an impression of the file structure.</p>
-<div id="808f2c8f" class="cell" data-execution_count="3">
+<div id="93d82902" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_path <span class="kw">in</span> file_path_list:</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  temp_storage <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> folder_path <span class="op">+</span> <span class="st">'/'</span> <span class="op">+</span> file_path, nrows <span class="op">=</span> <span class="dv">3</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(file_path, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, temp_storage, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, sep <span class="op">=</span> <span class="st">''</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -381,7 +381,7 @@ Tip&nbsp;5.2: Model Solution: Reading Files
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The first attempt to read the files may fail with an error message. Therefore, the instructions are embedded in a try-except structure to catch the problematic file. (If multiple files cause errors, they would need to be stored in a list and processed later with a loop, if possible.)</p>
-<div id="a0a83d6f" class="cell" data-execution_count="4">
+<div id="a2362052" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hooke <span class="op">=</span> pd.DataFrame(columns <span class="op">=</span> [<span class="st">'Time'</span>, <span class="st">'Distance'</span>, <span class="st">'Weight'</span>, <span class="st">'Team'</span>]) <span class="co"># an empty DataFrame</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> path <span class="kw">in</span> file_path_list:</span>
@@ -423,7 +423,7 @@ Successfully read:
 </div>
 </div>
 <p>According to the error message, line 135 contains 4 columns instead of 3. Therefore, the file causing the error is processed line by line, and each line with more than 3 entries is printed. For verification, the first 5 lines are also displayed.</p>
-<div id="4f97d3b7" class="cell" data-execution_count="5">
+<div id="b6078a90" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create an empty DataFrame with 3 columns</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data <span class="op">=</span> [], columns <span class="op">=</span> [<span class="st">'Time'</span>, <span class="st">'Distance'</span>, <span class="st">'Weight'</span>])</span>
@@ -460,7 +460,7 @@ Index = 134 : ['10:29:27', '105.49 cm', '300', '\n']</code></pre>
 </div>
 </div>
 <p>Every second line is empty. In line 134, a newline ‘\n’ is read. Therefore, the file is processed again using an adjusted loop. The extra newline ‘\n’ is removed from the relevant line. Empty lines are skipped. The correct lines are appended to the DataFrame ‘hooke’.</p>
-<div id="058821e3" class="cell" data-execution_count="6">
+<div id="64803269" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>problem_file_object <span class="op">=</span> <span class="bu">open</span>(<span class="bu">file</span> <span class="op">=</span> folder_path <span class="op">+</span> <span class="st">'/'</span> <span class="op">+</span> problem_file_path, mode <span class="op">=</span> <span class="st">'r'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> line <span class="kw">in</span> problem_file_object:</span>
@@ -504,7 +504,7 @@ None</code></pre>
 </div>
 </div>
 <p>Next, we look at the rows that contain null values …</p>
-<div id="42477d82" class="cell" data-execution_count="7">
+<div id="d3b4f4df" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.loc[hooke.<span class="bu">apply</span>(pd.isna).<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>), :])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Time Distance Weight              Team
@@ -515,7 +515,7 @@ None</code></pre>
 </div>
 </div>
 <p>… and removed.</p>
-<div id="7bba4dff" class="cell" data-execution_count="8">
+<div id="ace9ce41" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>hooke.drop(np.where(hooke.<span class="bu">apply</span>(pd.isna).<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>))[<span class="dv">0</span>], inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next, the data types are checked.</p>
@@ -526,7 +526,7 @@ None</code></pre>
 <li>The Team column could be assigned the <a href="https://pandas.pydata.org/docs/user_guide/categorical.html">Pandas category datatype</a>, but this is not necessary.</li>
 </ul>
 <p>Remove the string ’ cm’.</p>
-<div id="e4c36849" class="cell" data-execution_count="9">
+<div id="8db3d790" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hooke.replace(<span class="st">' cm'</span>, <span class="st">''</span>, regex <span class="op">=</span> <span class="va">True</span>, inplace <span class="op">=</span> <span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
@@ -628,7 +628,7 @@ None</code></pre>
 </div>
 </div>
 <p>You can check if all elements of a column are numeric using the Pandas method <code>pd.Series.str.isnumeric()</code>. A look at the data shows the cause.</p>
-<div id="cac3c11a" class="cell" data-execution_count="10">
+<div id="1b1b14a8" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke[<span class="st">'Weight'</span>].<span class="bu">str</span>.isnumeric().<span class="bu">sum</span>())</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke[<span class="st">'Weight'</span>].head())</span>
@@ -650,7 +650,7 @@ Name: Weight, dtype: object</code></pre>
 </div>
 </div>
 <p>The line breaks are also removed.</p>
-<div id="1ef46a54" class="cell" data-execution_count="11">
+<div id="1bb45a77" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>hooke.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">''</span>, regex<span class="op">=</span><span class="va">True</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke[<span class="st">'Weight'</span>].<span class="bu">str</span>.isnumeric().<span class="bu">sum</span>())</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke[<span class="st">'Weight'</span>].tail())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -664,7 +664,7 @@ Name: Weight, dtype: object</code></pre>
 Name: Weight, dtype: object</code></pre>
 </div>
 </div>
-<div id="3220dc9a" class="cell" data-execution_count="12">
+<div id="3c508b4d" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hooke.info(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># explicit assignment</span></span>
@@ -705,7 +705,7 @@ None</code></pre>
 </div>
 </div>
 <p>The result might look like this:</p>
-<div id="076c1c88" class="cell" data-execution_count="13">
+<div id="faf07da1" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by <span class="op">=</span> [<span class="st">'Team'</span>, <span class="st">'Weight'</span>], sort <span class="op">=</span> <span class="va">False</span>)[<span class="st">'Distance'</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div>
@@ -1336,7 +1336,7 @@ Note&nbsp;5.1: glob, pd.groupby, and SciPy
 <ol type="1">
 <li>Determine the number of outliers and display their positions.</li>
 </ol>
-<div id="19f2bd07" class="cell" data-execution_count="14">
+<div id="8fd0757a" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find z-scores greater than or equal to abs(3)</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Solution for SciPy 1.14.1 (returns pd.Series)</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">## z_values_ge3_sum = hooke.groupby(by=['Team', 'Weight'])['Distance'].apply(lambda x: scipy.stats.zscore(x, ddof=1)).abs().ge(3).sum()</span></span>
@@ -1376,7 +1376,7 @@ Outliers are located at these index positions: (array([ 44, 186, 201, 206]),)</c
 <ol start="2" type="1">
 <li>Output of the lines from the measurement series</li>
 </ol>
-<div id="c2f71970" class="cell" data-execution_count="15">
+<div id="4f183307" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecting rows with z-values greater than or equal to 2.5</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>z_values_ge_25 <span class="op">=</span> hooke.iloc[bool_index , :]  <span class="co"># --&gt; The problem is likely here</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(z_values_ge_25, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
@@ -1420,7 +1420,7 @@ Name: Weight, dtype: float64
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>This output is intended for illustration and verification.</p>
-<div id="33dbb7a9" class="cell" data-execution_count="16">
+<div id="7bff440d" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select measurement series</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>measurement_series <span class="op">=</span> pd.DataFrame()</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(teams)):</span>
@@ -1514,7 +1514,7 @@ die_ahnungslosen 350.0
 </div>
 </div>
 <p>The values can be visualized easily using the Pandas method <code>pd.plot()</code>. However, this method is not as flexible as the matplotlib package. For example, a scatter plot (<code>kind = 'scatter'</code>) is only available for DataFrames, not for groupby objects. This can be worked around by setting a marker and setting the line width to 0.</p>
-<div id="418b66ae" class="cell" data-execution_count="17">
+<div id="aced9d0b" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>measurement_series.reset_index(drop <span class="op">=</span> <span class="va">True</span>).groupby(by <span class="op">=</span> [<span class="st">'Team'</span>, <span class="st">'Weight'</span>], sort <span class="op">=</span> <span class="va">False</span>)[<span class="st">'Distance'</span>].plot(marker <span class="op">=</span> <span class="st">'o'</span>, lw <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Measurement'</span>)</span>
@@ -1551,7 +1551,7 @@ Tip&nbsp;5.3: Example Solution
 <section id="normalize-distance-measurements-to-meters-and-zero-point" class="level4">
 <h4 class="anchored" data-anchor-id="normalize-distance-measurements-to-meters-and-zero-point">Normalize Distance Measurements to Meters and Zero Point</h4>
 <p>Normalize distance measurements to the zero point. Rename the column <code>Distance</code> to <code>Distance_Change</code>.</p>
-<div id="09c55df1" class="cell" data-execution_count="18">
+<div id="02d1785c" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>zero_points <span class="op">=</span> hooke.loc[hooke[<span class="st">'Weight'</span>] <span class="op">==</span> <span class="dv">0</span>, : ].groupby(by <span class="op">=</span> <span class="st">'Team'</span>, sort <span class="op">=</span> <span class="va">False</span>)[<span class="st">'Distance'</span>].mean()</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Zero points"</span>, zero_points, sep <span class="op">=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
@@ -1578,7 +1578,7 @@ Name: Distance, dtype: float64</code></pre>
 <section id="convert-weight-to-acting-force" class="level4">
 <h4 class="anchored" data-anchor-id="convert-weight-to-acting-force">Convert Weight to Acting Force</h4>
 <p>Convert weight in <span class="math inline">\(g\)</span> to the acting force in <span class="math inline">\(N\)</span>. The column will be added to the dataset.</p>
-<div id="3103b5a5" class="cell" data-execution_count="19">
+<div id="e9412516" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>hooke[<span class="st">'Force'</span>] <span class="op">=</span> hooke[<span class="st">'Weight'</span>].div(<span class="dv">1000</span>).mul(<span class="fl">9.81</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -1586,7 +1586,7 @@ Name: Distance, dtype: float64</code></pre>
 </div>
 </div>
 <p>The result might look like this. The column <code>Distance</code> was renamed to <code>Distance_Change</code>.</p>
-<div id="e94fe64a" class="cell" data-execution_count="20">
+<div id="91ec33e5" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hooke.groupby(by <span class="op">=</span> [<span class="st">'Team'</span>, <span class="st">'Force'</span>], sort <span class="op">=</span> <span class="va">False</span>)[<span class="st">'Distance_Change'</span>].describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
@@ -2188,7 +2188,7 @@ Name: Distance, dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Graphical Representation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Calculating Means and Standard Errors</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-4" role="tab" aria-controls="tabset-2-4" aria-selected="false" href="">Evaluation</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="c2f43384" class="cell" data-execution_count="21">
+<div id="78bc339b" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2200,7 +2200,7 @@ Name: Distance, dtype: float64</code></pre>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>The output is limited to the first few rows for space reasons.</p>
-<div id="4f8ea400" class="cell" data-execution_count="22">
+<div id="8e5a5747" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-stdout">
 <pre><code>Means of distance change by team and force:
 Team  Force  
@@ -2223,7 +2223,7 @@ Name: StandardError, dtype: float64</code></pre>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div id="5970f30a" class="cell" data-execution_count="23">
+<div id="a7459d85" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean values of teams by force</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>distance_means_by_team_and_force <span class="op">=</span> hooke.groupby(by <span class="op">=</span> [hooke[<span class="st">'Team'</span>], hooke[<span class="st">'Force'</span>]], sort <span class="op">=</span> <span class="va">False</span>)[<span class="st">'Distance_Change'</span>].mean()</span>
@@ -2284,7 +2284,7 @@ Name: StandardError, dtype: float64</code></pre>
 <li>The measurement series of the team <em>ma</em> appears to be affected by significant measurement errors, at least for the first four attached weights.</li>
 </ul>
 <p>The measurement series of team <em>ma</em> will be removed from the dataset due to major measurement errors. For team <em>fabi</em>, the measurement for the 50-gram weight will be removed.</p>
-<div id="1982ebb0" class="cell" data-execution_count="24">
+<div id="bb9d927e" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>hooke.drop(index <span class="op">=</span> hooke.loc[hooke[<span class="st">'Team'</span>] <span class="op">==</span> <span class="st">'ma'</span>, :].index, inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>hooke.drop(index <span class="op">=</span> hooke.loc[(hooke[<span class="st">'Team'</span>] <span class="op">==</span> <span class="st">'fabi'</span>) <span class="op">&amp;</span> (hooke[<span class="st">'Weight'</span>] <span class="op">==</span> <span class="dv">50</span>), :].index, inplace <span class="op">=</span> <span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -2319,7 +2319,7 @@ Tip&nbsp;5.4: Approach for Large Numbers of Datasets
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href=""><span class="math inline">\(\alpha = 0.10\)</span></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href=""><span class="math inline">\(\alpha = 0.05\)</span></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">Code</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false" href="">Evaluation</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="0b2b6e6d" class="cell" data-execution_count="25">
+<div id="a3add3ee" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 fabi Confidence Level: 0.9
@@ -2343,7 +2343,7 @@ Standard error of the slope: 0.6148
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div id="bcee0751" class="cell" data-execution_count="26">
+<div id="e6fa9bce" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 fabi Confidence level: 0.95
@@ -2367,7 +2367,7 @@ Standard error of the slope: 0.6148
 </div>
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
-<div id="0c75a58a" class="cell" data-execution_count="27">
+<div id="9de53928" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>num_teams <span class="op">=</span> hooke[<span class="st">'Team'</span>].unique().size</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.10</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>

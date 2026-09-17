@@ -290,7 +290,7 @@ window.Quarto = {
 </div>
 </div>
 <p>In this module, the following packages are used:</p>
-<div id="b5af80c8" class="cell" data-execution_count="1">
+<div id="8c56e487" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.polynomial.polynomial <span class="im">as</span> poly</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -551,7 +551,7 @@ Note&nbsp;1.1: Standard deviation and variance in the population
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Results</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">graphical representation</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Code</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="a8602b56" class="cell" data-execution_count="2">
+<div id="85310674" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rolls per person: 3             Sample size: 300
 Smallest mean: 1.00     Largest mean: 6.00
@@ -572,7 +572,7 @@ Sample mean: 3.50       Standard error: 0.02
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>The frequency of the individual mean values is shown in the following histograms.</p>
-<div id="c05aa5ab" class="cell" data-execution_count="3">
+<div id="d82a1eaa" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -584,7 +584,7 @@ Sample mean: 3.50       Standard error: 0.02
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
 <p>Calculation</p>
-<div id="44cc9f59" class="cell" data-execution_count="4">
+<div id="8848a541" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>people <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>population_std_dev <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">7</span>).std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">1</span></span>
@@ -634,7 +634,7 @@ Sample mean: 3.50       Standard error: 0.02
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"Standard error: </span><span class="sc">{</span>population_std_dev <span class="op">/</span> ( dice50.size <span class="op">**</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) )<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">"</span>,</span>
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      sep <span class="op">=</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ad29079f" class="cell" data-execution_count="5">
+<div id="307d977c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>people <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>population_std_dev <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">7</span>).std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">1</span></span>
@@ -693,7 +693,7 @@ Sample mean: 3.50       Standard error: 0.02
 <div id="lst-readfile" class="listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <div aria-describedby="lst-readfile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="a8183188" class="cell" data-execution_count="6">
+<div id="2ffb8df9" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>file_path <span class="op">=</span> <span class="st">"01-daten/ToothGrowth.csv"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>guinea_pigs <span class="op">=</span> pd.read_csv(filepath_or_buffer <span class="op">=</span> file_path, sep <span class="op">=</span> <span class="st">','</span>, header <span class="op">=</span> <span class="dv">0</span>, <span class="op">\</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  names <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'len'</span>, <span class="st">'supp'</span>, <span class="st">'dose'</span>], dtype <span class="op">=</span> {<span class="st">'ID'</span>: <span class="st">'int'</span>, <span class="st">'len'</span>: <span class="st">'float'</span>, <span class="st">'dose'</span>: <span class="st">'float'</span>, <span class="st">'supp'</span>: <span class="st">'category'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -706,7 +706,7 @@ Code Block&nbsp;1.1
 </div>
 <p>Crampton, E. W. 1947. “THE GROWTH OF THE ODONTOBLASTS OF THE INCISOR TOOTH AS A CRITERION OF THE VITAMIN C INTAKE OF THE GUINEA PIG.” The Journal of Nutrition 33 (5): 491–504. <a href="https://doi.org/10.1093/jn/33.5.491">https://doi.org/10.1093/jn/33.5.491</a></p>
 <p>The dataset can be accessed in R using the command <code>ToothGrowth</code>.</p>
-<div id="e0acf745" class="cell" data-execution_count="7">
+<div id="f87f634d" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -719,7 +719,7 @@ Code Block&nbsp;1.1
 <p>&nbsp;</p>
 <p><strong>Calculate the arithmetic mean, variance, standard deviation, and sampling error of the measurement series for tooth length (<code>len</code>). Use the formulas provided.</strong></p>
 <p>The result could look like this:</p>
-<div id="905e5388" class="cell" data-execution_count="8">
+<div id="f7e1d86d" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>N: 60
 Arithmetic mean: 18.81
@@ -740,7 +740,7 @@ Tip&nbsp;1.1: Sample Solution: Distribution Statistics
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div id="5387d002" class="cell" data-execution_count="9">
+<div id="eec6ed6e" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> distribution_statistics(x, output <span class="op">=</span> <span class="va">True</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Determine the number of measurements</span></span>
@@ -779,7 +779,7 @@ Tip&nbsp;1.1: Sample Solution: Distribution Statistics
 <section id="variance-and-standard-deviation-with-numpy-and-pandas" class="level3">
 <h3 class="anchored" data-anchor-id="variance-and-standard-deviation-with-numpy-and-pandas">Variance and Standard Deviation with NumPy and Pandas</h3>
 <p>The NumPy and Pandas modules have built-in functions for calculating variance and standard deviation. Variance and standard deviation are calculated using the functions <code>np.var()</code> and <code>np.std()</code>, or the methods <code>pd.var()</code> and <code>pd.std()</code>. The parameter <code>ddof</code> (delta degrees of freedom) controls which denominator is used for calculating variance in the form N - ddof. While NumPy’s default is <code>ddof=0</code>, Pandas calculates the sample variance with the default value <code>ddof=1</code>.</p>
-<div id="655ce60c" class="cell" data-execution_count="10">
+<div id="96fe5d63" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Variance:"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"NumPy:</span><span class="ch">\t</span><span class="sc">{</span>np<span class="sc">.</span>var(guinea_pigs[<span class="st">'len'</span>])<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pandas:</span><span class="ch">\t</span><span class="sc">{</span>guinea_pigs[<span class="st">'len'</span>]<span class="sc">.</span>var()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
